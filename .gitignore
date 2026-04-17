@@ -65,3 +65,19 @@ db/
 
 # Mini services (local dev only)
 /mini-services/
+
+# Internal scripts and tools
+/.zscripts/
+/agent-ctx/
+
+# Debug and output files
+debug_page*.html
+output*.txt
+prod_output*.txt
+
+# Local dev scripts
+keep-alive.sh
+start-dev.sh
+
+# Caddyfile (server config)
+Caddyfile
