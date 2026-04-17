@@ -176,7 +176,7 @@ function IslamicDecoration({ className = '' }: { className?: string }) {
 }
 
 // ─────────────────────────────────────────────────────
-// Unified Daily Inspiration Card with tabs
+// Unified Daily Inspiration Card — Premium Tabbed Design
 // ─────────────────────────────────────────────────────
 type DailyTab = 'wisdom' | 'dua' | 'verse' | 'funfact';
 
@@ -214,6 +214,7 @@ function DailyInspirationCard() {
   }, [funFacts.length]);
 
   const wisdomCategoryIcons = { hadith: '📜', coran: '📗', sagesse: '💫' };
+  const activeIdx = dailyTabs.findIndex(t => t.id === activeTab);
 
   return (
     <motion.div
@@ -223,52 +224,66 @@ function DailyInspirationCard() {
       className="max-w-lg lg:max-w-2xl mx-auto"
     >
       <div className="glass-card rounded-2xl border border-amber-200/30 dark:border-amber-700/20 shadow-sm overflow-hidden">
-        {/* Tabs */}
-        <div className="flex items-center px-1 pt-1 gap-0.5 bg-stone-50/50 dark:bg-stone-800/30">
+        {/* ── Tab Bar ── */}
+        <div className="relative flex items-center px-2 pt-2 pb-0 gap-0.5">
+          {/* Animated underline indicator */}
+          <motion.div
+            layoutId="tab-indicator"
+            className="absolute bottom-0 h-[3px] rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 dark:from-amber-500 dark:via-orange-400 dark:to-amber-500 shadow-sm shadow-amber-500/20 dark:shadow-amber-500/30"
+            style={{
+              width: `calc(${100 / 4}% - 6px)`,
+              left: `calc(${(activeIdx * 100) / 4}% + 3px)`,
+            }}
+            transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+          />
           {dailyTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold
-                transition-all duration-300 relative
+                flex-1 flex items-center justify-center gap-1 py-2.5 text-[11px] font-semibold
+                transition-all duration-200 rounded-t-lg relative z-10
                 ${activeTab === tab.id
-                  ? 'bg-white dark:bg-stone-700/60 text-stone-800 dark:text-stone-100 shadow-sm'
-                  : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 hover:bg-white/40 dark:hover:bg-stone-700/20'
+                  ? 'text-amber-700 dark:text-amber-300'
+                  : 'text-stone-400 dark:text-stone-500 hover:text-stone-500 dark:hover:text-stone-400'
                 }
               `}
             >
-              <span className="text-sm">{tab.icon}</span>
+              <span className="text-[15px] transition-transform duration-200" style={{ transform: activeTab === tab.id ? 'scale(1.2)' : 'scale(1)' }}>{tab.icon}</span>
               <span className="hidden sm:inline">{tab.label}</span>
             </button>
           ))}
         </div>
 
-        {/* Content */}
-        <div className="p-5 min-h-[180px]">
+        {/* ── Thin decorative separator ── */}
+        <div className="h-px bg-gradient-to-r from-transparent via-amber-300/40 dark:via-amber-500/30 to-transparent" />
+
+        {/* ── Content Area ── */}
+        <div className="p-5 pt-4 min-h-[190px]">
           <AnimatePresence mode="wait">
             {/* ── WISDOM TAB ── */}
             {activeTab === 'wisdom' && (
               <motion.div
                 key="wisdom"
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">{wisdomCategoryIcons[wisdom.category]}</span>
-                  <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">{wisdomCategoryIcons[wisdom.category]}</span>
+                  <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-widest">
                     Sagesse du jour
                   </p>
                 </div>
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={showWisdomAr ? 'ar' : 'fr'}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className={`font-medium leading-relaxed mb-3 ${showWisdomAr ? 'text-lg text-stone-800 dark:text-stone-200 font-amiri' : 'text-base text-stone-700 dark:text-stone-300'}`}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.2 }}
+                    className={`font-medium leading-[1.8] mb-4 ${showWisdomAr ? 'text-lg text-stone-800 dark:text-stone-100 font-amiri text-center' : 'text-[15px] text-stone-700 dark:text-stone-200'}`}
                     dir={showWisdomAr ? 'rtl' : 'ltr'}
                   >
                     {showWisdomAr ? wisdom.textAr : wisdom.textFr}
@@ -277,10 +292,10 @@ function DailyInspirationCard() {
                 <div className="flex items-center justify-end">
                   <button
                     onClick={() => setShowWisdomAr(!showWisdomAr)}
-                    className="text-[11px] text-amber-600 dark:text-amber-400 font-medium hover:underline flex items-center gap-1"
+                    className="flex items-center gap-1.5 text-[11px] text-amber-600 dark:text-amber-400 font-semibold hover:text-amber-700 dark:hover:text-amber-300 transition-colors"
                   >
                     <span>{showWisdomAr ? 'Français' : 'Arabe'}</span>
-                    <span className="text-sm">🔄</span>
+                    <span className="text-sm">↺</span>
                   </button>
                 </div>
               </motion.div>
@@ -290,43 +305,59 @@ function DailyInspirationCard() {
             {activeTab === 'dua' && (
               <motion.div
                 key="dua"
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">{duaConfig.icon}</span>
-                    <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    <span className="text-lg">{duaConfig.icon}</span>
+                    <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-widest">
                       Du&apos;a du jour
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${duaConfig.color} bg-white/50 dark:bg-stone-800/50`}>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-semibold ${duaConfig.color} bg-white/60 dark:bg-stone-800/60`}>
                       {duaConfig.label}
                     </span>
                     <motion.button
-                      whileTap={{ scale: 0.8 }}
+                      whileTap={{ scale: 0.85 }}
                       onClick={() => {
                         const next = !isFav;
                         setIsFav(next);
                         if (next) toast.success('Ajouté aux favoris ! 💝');
                         else toast('Retiré des favoris');
                       }}
-                      className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/50 dark:hover:bg-stone-800/50 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
                       aria-label="Ajouter aux favoris"
                     >
-                      <Heart className={`w-3.5 h-3.5 transition-colors ${isFav ? 'text-rose-500 dark:text-rose-400 fill-rose-500 dark:fill-rose-400' : 'text-stone-400 dark:text-stone-500'}`} />
+                      <Heart className={`w-4 h-4 transition-all duration-200 ${isFav ? 'text-rose-500 dark:text-rose-400 fill-rose-500 dark:fill-rose-400 scale-110' : 'text-stone-300 dark:text-stone-500'}`} />
                     </motion.button>
                   </div>
                 </div>
-                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-2 font-medium">{dua.occasion}</p>
-                <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
-                  <p className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center" dir="rtl">{dua.textAr}</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-3 italic">{dua.occasion}</p>
+                {/* Arabic text — elegant container */}
+                <div className="mb-3 py-4 px-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-orange-50/40 to-amber-50/80 dark:from-stone-800/40 dark:via-stone-800/20 dark:to-stone-800/40 border border-amber-200/50 dark:border-amber-700/25 relative">
+                  {/* Decorative corner flourish */}
+                  <div className="absolute top-0 left-0 w-6 h-6">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-amber-400/40 dark:text-amber-500/30">
+                      <path d="M2 2 L2 12 Q2 2 12 2 Q2 2 2 12 L2 2Z" stroke="currentColor" strokeWidth="1" fill="none"/>
+                      <path d="M2 2 L8 2" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path d="M2 2 L2 8" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-6 h-6">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-amber-400/40 dark:text-amber-500/30">
+                      <path d="M22 22 L22 12 Q22 22 12 22 Q22 22 22 12 L22 22Z" stroke="currentColor" strokeWidth="1" fill="none"/>
+                      <path d="M22 22 L16 22" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path d="M22 22 L22 16" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <p className="text-xl text-stone-800 dark:text-amber-100 font-amiri leading-[2.2] text-center" dir="rtl">{dua.textAr}</p>
                 </div>
-                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{dua.textFr}</p>
-                <p className="text-[10px] text-stone-400 dark:text-stone-500">📖 {dua.source}</p>
+                <p className="text-[13px] text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{dua.textFr}</p>
+                <p className="text-[10px] text-stone-400 dark:text-stone-500/70 flex items-center gap-1">📖 <span>{dua.source}</span></p>
               </motion.div>
             )}
 
@@ -334,28 +365,43 @@ function DailyInspirationCard() {
             {activeTab === 'verse' && (
               <motion.div
                 key="verse"
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">📖</span>
-                    <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    <span className="text-lg">📖</span>
+                    <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-widest">
                       Verset du Jour
                     </p>
                   </div>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${verseConfig.color} ${verseConfig.badgeBg}`}>
+                  <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-semibold ${verseConfig.color} ${verseConfig.badgeBg}`}>
                     {verseConfig.icon} {verseConfig.label}
                   </span>
                 </div>
-                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-2 font-medium">Sourate {verse.surahName}</p>
-                <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
-                  <p className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center" dir="rtl">{verse.textAr}</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-3 font-medium">Sourate {verse.surahName}</p>
+                {/* Arabic text — elegant container */}
+                <div className="mb-3 py-4 px-5 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-teal-50/40 to-emerald-50/70 dark:from-stone-800/40 dark:via-stone-800/20 dark:to-stone-800/40 border border-emerald-200/50 dark:border-emerald-700/25 relative">
+                  <div className="absolute top-0 left-0 w-6 h-6">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-emerald-400/40 dark:text-emerald-500/30">
+                      <path d="M2 2 L2 12 Q2 2 12 2 Q2 2 2 12 L2 2Z" stroke="currentColor" strokeWidth="1" fill="none"/>
+                      <path d="M2 2 L8 2" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path d="M2 2 L2 8" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-6 h-6">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-emerald-400/40 dark:text-emerald-500/30">
+                      <path d="M22 22 L22 12 Q22 22 12 22 Q22 22 22 12 L22 22Z" stroke="currentColor" strokeWidth="1" fill="none"/>
+                      <path d="M22 22 L16 22" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path d="M22 22 L22 16" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <p className="text-xl text-stone-800 dark:text-emerald-100 font-amiri leading-[2.2] text-center" dir="rtl">{verse.textAr}</p>
                 </div>
-                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{verse.textFr}</p>
-                <p className="text-[10px] text-stone-400 dark:text-stone-500">📖 {verse.source}</p>
+                <p className="text-[13px] text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{verse.textFr}</p>
+                <p className="text-[10px] text-stone-400 dark:text-stone-500/70 flex items-center gap-1">📖 <span>{verse.source}</span></p>
               </motion.div>
             )}
 
@@ -363,37 +409,37 @@ function DailyInspirationCard() {
             {activeTab === 'funfact' && (
               <motion.div
                 key="funfact"
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">💡</span>
-                  <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">💡</span>
+                  <p className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-widest">
                     Le savais-tu ?
                   </p>
                 </div>
-                <div className="relative h-16 flex items-center overflow-hidden mb-4">
+                <div className="relative h-20 flex items-center justify-center overflow-hidden mb-5">
                   <AnimatePresence mode="wait">
                     <motion.p
                       key={currentFact}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-base text-stone-700 dark:text-stone-200 font-medium leading-relaxed"
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35 }}
+                      className="text-[15px] text-stone-700 dark:text-stone-200 font-medium leading-relaxed text-center"
                     >
                       {funFacts[currentFact]}
                     </motion.p>
                   </AnimatePresence>
                 </div>
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2.5">
                   {funFacts.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => setCurrentFact(i)}
-                      className={`rounded-full transition-all duration-300 ${i === currentFact ? 'w-5 h-1.5 bg-amber-500 dark:bg-amber-400' : 'w-1.5 h-1.5 bg-stone-300 dark:bg-stone-600 hover:bg-stone-400 dark:hover:bg-stone-500'}`}
+                      className={`rounded-full transition-all duration-300 ${i === currentFact ? 'w-6 h-2 bg-amber-500 dark:bg-amber-400 shadow-sm shadow-amber-500/30' : 'w-2 h-2 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600'}`}
                       aria-label={`Fun fait ${i + 1}`}
                     />
                   ))}
