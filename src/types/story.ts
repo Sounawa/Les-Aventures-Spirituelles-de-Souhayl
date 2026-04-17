@@ -95,7 +95,8 @@ export type ScreenType =
   | 'profile'
   | 'memory_game'
   | 'dhikr_counter'
-  | 'greeting_cards';
+  | 'greeting_cards'
+  | 'islamic_names';
 
 export interface GameState {
   currentScreen: ScreenType;

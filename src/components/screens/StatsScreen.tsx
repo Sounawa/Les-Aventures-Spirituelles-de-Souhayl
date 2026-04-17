@@ -125,9 +125,9 @@ function getMotivationalMessage(progress: number) {
   if (progress === 0) return { emoji: '🚀', text: 'Ton aventure t\'attend !', gradient: 'from-stone-400 to-stone-500 dark:from-stone-600 dark:to-stone-700' };
   if (progress <= 25) return { emoji: '🌱', text: 'Tu as posé la première pierre de ton chemin', gradient: 'from-emerald-400 to-teal-500 dark:from-emerald-600 dark:to-teal-700' };
   if (progress <= 50) return { emoji: '📈', text: 'Tu progresses avec persévérance', gradient: 'from-sky-400 to-cyan-500 dark:from-sky-600 dark:to-cyan-700' };
-  if (progress <= 75) return { emoji: '⭐', text: 'Plus de la moitié parcourue !', gradient: 'from-amber-400 to-orange-500 dark:from-amber-600 dark:to-orange-700' };
+  if (progress <= 75) return { emoji: '⭐', text: 'Plus de la moitié parcourue !', gradient: 'from-teal-400 to-emerald-500 dark:from-teal-600 dark:to-emerald-700' };
   if (progress < 100) return { emoji: '🏆', text: 'Presque au bout du voyage !', gradient: 'from-rose-400 to-pink-500 dark:from-rose-600 dark:to-pink-700' };
-  return { emoji: '🌟', text: 'Masha\'Allah ! Aventure complétée !', gradient: 'from-amber-300 via-yellow-400 to-amber-500 dark:from-amber-500 dark:via-yellow-500 dark:to-amber-600' };
+  return { emoji: '🌟', text: 'Masha\'Allah ! Aventure complétée !', gradient: 'from-teal-300 via-yellow-400 to-teal-500 dark:from-teal-500 dark:via-yellow-500 dark:to-teal-600' };
 }
 
 export function StatsScreen() {
@@ -194,16 +194,16 @@ export function StatsScreen() {
   const bestStreak = useMemo(() => computeBestStreak(readingDays), [readingDays]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 via-emerald-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-amber-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
+      <div className="sticky top-0 z-10 bg-teal-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-teal-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Retour
           </Button>
           <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-amber-600" />
+            <TrendingUp className="w-5 h-5 text-teal-600" />
             Statistiques
           </h1>
         </div>
@@ -216,12 +216,12 @@ export function StatsScreen() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-              <BookOpen className="w-10 h-10 text-amber-400" />
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+              <BookOpen className="w-10 h-10 text-teal-400" />
             </div>
             <h2 className="text-lg font-bold text-stone-700 dark:text-stone-300 mb-2">Aucune progression</h2>
             <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">Commence ton aventure pour voir tes statistiques !</p>
-            <Button onClick={() => navigateTo('tome_select')} className="bg-amber-600 hover:bg-amber-700">
+            <Button onClick={() => navigateTo('tome_select')} className="bg-teal-600 hover:bg-teal-700">
               Commencer
             </Button>
           </motion.div>
@@ -319,7 +319,7 @@ export function StatsScreen() {
               className="glass-card rounded-xl p-5 space-y-4"
             >
               <h3 className="text-sm font-semibold text-stone-700 dark:text-stone-200 flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <CalendarDays className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                 Activité de la semaine
               </h3>
 
@@ -332,7 +332,7 @@ export function StatsScreen() {
                     <div key={day.dateStr} className="flex flex-col items-center gap-1.5 flex-1">
                       <span className={`text-[10px] font-medium ${
                         isToday
-                          ? 'text-amber-600 dark:text-amber-400'
+                          ? 'text-teal-600 dark:text-teal-400'
                           : 'text-stone-400 dark:text-stone-500'
                       }`}>
                         {day.dayLabel}
@@ -346,24 +346,24 @@ export function StatsScreen() {
                         {/* Pulsing ring for today */}
                         {isToday && (
                           <motion.div
-                            className="absolute inset-0 rounded-full border-2 border-amber-400 dark:border-amber-500"
+                            className="absolute inset-0 rounded-full border-2 border-teal-400 dark:border-teal-500"
                             animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
                             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                           />
                         )}
                         {isActive ? (
-                          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-amber-400 via-orange-400 to-amber-500 dark:from-amber-500 dark:via-orange-500 dark:to-amber-600 flex items-center justify-center shadow-lg shadow-amber-400/30 dark:shadow-amber-500/20">
+                          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-teal-400 via-emerald-400 to-teal-500 dark:from-teal-500 dark:via-emerald-500 dark:to-teal-600 flex items-center justify-center shadow-lg shadow-teal-400/30 dark:shadow-teal-500/20">
                             <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white" />
                           </div>
                         ) : (
                           <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                             isToday
-                              ? 'border-2 border-dashed border-amber-300 dark:border-amber-600 bg-amber-50/50 dark:bg-amber-900/10'
+                              ? 'border-2 border-dashed border-teal-300 dark:border-teal-600 bg-teal-50/50 dark:bg-teal-900/10'
                               : 'border-2 border-dashed border-stone-200 dark:border-stone-600 bg-stone-50/50 dark:bg-stone-800/30'
                           }`}>
                             <div className={`w-2 h-2 rounded-full ${
                               isToday
-                                ? 'bg-amber-300 dark:bg-amber-600'
+                                ? 'bg-teal-300 dark:bg-teal-600'
                                 : 'bg-stone-200 dark:bg-stone-600'
                             }`} />
                           </div>
@@ -389,9 +389,9 @@ export function StatsScreen() {
                   </div>
                 </div>
                 {/* Best streak */}
-                <div className="flex-1 flex items-center gap-2 p-2.5 rounded-lg bg-amber-50/60 dark:bg-amber-900/15 border border-amber-200/40 dark:border-amber-700/25">
-                  <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-800/30 flex items-center justify-center shrink-0">
-                    <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="flex-1 flex items-center gap-2 p-2.5 rounded-lg bg-teal-50/60 dark:bg-teal-900/15 border border-teal-200/40 dark:border-teal-700/25">
+                  <div className="w-8 h-8 rounded-lg bg-teal-100 dark:bg-teal-800/30 flex items-center justify-center shrink-0">
+                    <Trophy className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[10px] text-stone-400 dark:text-stone-500 font-medium">Meilleure série</p>
@@ -423,9 +423,9 @@ export function StatsScreen() {
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {/* Chapitre favori */}
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50/60 dark:bg-amber-900/20 border border-amber-200/40 dark:border-amber-700/30">
-                  <div className="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-800/40 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-teal-50/60 dark:bg-teal-900/20 border border-teal-200/40 dark:border-teal-700/30">
+                  <div className="w-9 h-9 rounded-lg bg-teal-100 dark:bg-teal-800/40 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[10px] text-stone-400 dark:text-stone-500 font-medium">Chapitre favori</p>

@@ -83,7 +83,7 @@ function ProgressRing({
         r={radius}
         fill="none"
         strokeWidth={strokeWidth}
-        className="stroke-amber-200/40 dark:stroke-amber-700/30"
+        className="stroke-teal-200/40 dark:stroke-teal-700/30"
       />
       {/* Progress ring */}
       <circle
@@ -93,7 +93,7 @@ function ProgressRing({
         fill="none"
         strokeWidth={strokeWidth}
         strokeLinecap="round"
-        className={isComplete ? 'stroke-emerald-400 dark:stroke-emerald-500' : 'stroke-amber-400 dark:stroke-amber-500'}
+        className={isComplete ? 'stroke-emerald-400 dark:stroke-emerald-500' : 'stroke-teal-400 dark:stroke-teal-500'}
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         style={{
@@ -183,9 +183,9 @@ export function DhikrCounterScreen() {
   }, [selectedIdx, handleScrollToSelected]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50/50 to-orange-50/30 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-emerald-50/50 to-teal-50/30 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
+      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-teal-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -219,8 +219,8 @@ export function DhikrCounterScreen() {
                   onClick={() => handleSelectPhrase(idx)}
                   className={`shrink-0 snap-center px-4 py-2 rounded-full text-xs font-medium transition-all whitespace-nowrap border ${
                     isActive
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-amber-400 shadow-md'
-                      : 'bg-white/60 dark:bg-stone-800/60 text-stone-600 dark:text-stone-300 border-stone-200/50 dark:border-stone-700/50 hover:bg-amber-50 dark:hover:bg-stone-800'
+                      ? 'bg-gradient-to-r from-teal-500 to-emerald-500 text-white border-teal-400 shadow-md'
+                      : 'bg-white/60 dark:bg-stone-800/60 text-stone-600 dark:text-stone-300 border-stone-200/50 dark:border-stone-700/50 hover:bg-teal-50 dark:hover:bg-stone-800'
                   }`}
                 >
                   <span className="mr-1">{p.emoji}</span>
@@ -288,7 +288,7 @@ export function DhikrCounterScreen() {
               className={`absolute inset-0 m-auto rounded-full flex items-center justify-center transition-all duration-150 ${
                 isComplete
                   ? 'bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/30 cursor-default'
-                  : 'bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 shadow-lg shadow-amber-500/30 active:shadow-md cursor-pointer'
+                  : 'bg-gradient-to-br from-teal-400 via-emerald-500 to-emerald-500 shadow-lg shadow-teal-500/30 active:shadow-md cursor-pointer'
               } ${isPressed && !isComplete ? 'brightness-90' : ''}`}
               style={{ width: 140, height: 140 }}
               aria-label={`Compter ${phrase.french.split(' — ')[0]}. ${count} sur ${phrase.target}`}
@@ -359,7 +359,7 @@ export function DhikrCounterScreen() {
                 Objectif : {count} / {phrase.target}
               </span>
               {count > 0 && (
-                <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                <span className="text-xs text-teal-600 dark:text-teal-400 font-medium">
                   ({Math.round(progress * 100)}%)
                 </span>
               )}
@@ -397,8 +397,8 @@ export function DhikrCounterScreen() {
             <div className="grid grid-cols-3 gap-3">
               {/* Total this session */}
               <div className="flex flex-col items-center bg-white/40 dark:bg-stone-800/40 rounded-lg p-3">
-                <div className="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="w-9 h-9 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mb-1.5">
+                  <Sparkles className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                 </div>
                 <p className="text-lg font-bold text-stone-700 dark:text-stone-200 tabular-nums">{sessionCount}</p>
                 <p className="text-[10px] text-stone-400 dark:text-stone-500">Cette session</p>

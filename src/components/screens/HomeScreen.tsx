@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import {
   BookOpen, Users, Play, RotateCcw,
   BarChart3, BookHeart, Settings, Sparkles, ChevronRight,
-  Moon, Sun, Map, Trophy, Star, BookmarkCheck, Check, Brain, Heart, CreditCard,
+  Moon, Sun, Map, Trophy, Star, BookmarkCheck, Check, Brain, Heart, CreditCard, ScrollText,
 } from 'lucide-react';
 
 // Floating particle component - enhanced
@@ -1066,14 +1066,14 @@ export function HomeScreen() {
             }}
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => navigateTo('map')}
+            onClick={() => navigateTo('islamic_names')}
             className="flex flex-col items-center gap-1.5 p-3 glass-card rounded-xl shadow-sm hover:shadow-md transition-all group border border-transparent hover:border-emerald-200/40 dark:hover:border-emerald-700/30"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/30 transition-colors shadow-sm">
-              <Map className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <ScrollText className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <span className="text-[11px] font-semibold text-stone-700 dark:text-stone-200">Carte</span>
-            <span className="text-[9px] text-stone-400 dark:text-stone-500">Monde entier</span>
+            <span className="text-[11px] font-semibold text-stone-700 dark:text-stone-200">Noms</span>
+            <span className="text-[9px] text-stone-400 dark:text-stone-500">Beaux prénoms</span>
           </motion.button>
         </motion.div>
       </div>

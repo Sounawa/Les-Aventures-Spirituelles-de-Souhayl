@@ -44,9 +44,9 @@ export const discoveryCategoryConfig: Record<DiscoveryCategory, {
   geographie: {
     label: 'Géographie',
     icon: '🗺️',
-    color: 'text-amber-700 dark:text-amber-300',
-    bg: 'bg-amber-100 dark:bg-amber-900/40',
-    cardAccent: 'border-t-amber-400 dark:border-t-amber-500',
+    color: 'text-teal-700 dark:text-teal-300',
+    bg: 'bg-teal-100 dark:bg-teal-900/40',
+    cardAccent: 'border-t-teal-400 dark:border-t-teal-500',
   },
   nature: {
     label: 'Nature',

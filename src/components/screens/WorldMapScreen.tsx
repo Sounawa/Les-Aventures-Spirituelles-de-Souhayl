@@ -65,20 +65,20 @@ export function WorldMapScreen() {
   const overallProgress = totalChapters > 0 ? (completedCount / totalChapters) * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 via-emerald-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-amber-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
+      <div className="sticky top-0 z-10 bg-teal-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-teal-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Retour
           </Button>
           <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <MapPin className="w-4 h-4 text-teal-600 dark:text-teal-400" />
             <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100">Carte du Monde</h1>
           </div>
           <div className="ml-auto">
-            <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-2.5 py-1 rounded-full">
+            <span className="text-xs font-semibold text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900/30 px-2.5 py-1 rounded-full">
               {completedCount}/{totalChapters}
             </span>
           </div>
@@ -94,10 +94,10 @@ export function WorldMapScreen() {
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <MapPin className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
               Progression du voyage
             </h2>
-            <span className="text-xs font-bold text-amber-700 dark:text-amber-400">{Math.round(overallProgress)}%</span>
+            <span className="text-xs font-bold text-teal-700 dark:text-teal-400">{Math.round(overallProgress)}%</span>
           </div>
           <div className="w-full h-3 bg-stone-100 dark:bg-stone-700 rounded-full overflow-hidden mb-3">
             <motion.div
@@ -113,7 +113,7 @@ export function WorldMapScreen() {
               <span>Terminé</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-200" />
+              <div className="w-3 h-3 rounded-full bg-teal-500 shadow-sm shadow-teal-200" />
               <span>En cours</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -126,7 +126,7 @@ export function WorldMapScreen() {
         {/* Map path - vertical scrolling */}
         <div className="relative">
           {/* Central vertical path line - enhanced */}
-          <div className="absolute left-6 top-0 bottom-0 w-1.5 bg-gradient-to-b from-amber-300/50 via-stone-300/30 to-transparent dark:from-amber-600/30 dark:via-stone-600/15 rounded-full" />
+          <div className="absolute left-6 top-0 bottom-0 w-1.5 bg-gradient-to-b from-teal-300/50 via-stone-300/30 to-transparent dark:from-teal-600/30 dark:via-stone-600/15 rounded-full" />
 
           <div className="space-y-8">
             {tomes.map((tome, tomeIdx) => {
@@ -232,7 +232,7 @@ export function WorldMapScreen() {
                             disabled={!isChapterUnlocked}
                             className={`w-full text-left rounded-xl p-3.5 transition-all flex items-center gap-3 ${
                               isChapterUnlocked
-                                ? 'glass-card hover:shadow-md cursor-pointer group border border-transparent hover:border-amber-200/40 dark:hover:border-amber-700/30'
+                                ? 'glass-card hover:shadow-md cursor-pointer group border border-transparent hover:border-teal-200/40 dark:hover:border-teal-700/30'
                                 : 'bg-white/20 dark:bg-stone-800/20 border border-stone-200/30 dark:border-stone-700/30 opacity-40 cursor-not-allowed'
                             }`}
                           >
@@ -240,7 +240,7 @@ export function WorldMapScreen() {
                             <div
                               className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 transition-all ${
                                 isCompleted ? 'bg-emerald-100 dark:bg-emerald-900/30 shadow-sm' :
-                                isChapterUnlocked ? 'bg-amber-100 dark:bg-amber-900/30 shadow-sm' :
+                                isChapterUnlocked ? 'bg-teal-100 dark:bg-teal-900/30 shadow-sm' :
                                 'bg-stone-100 dark:bg-stone-800'
                               }`}
                               style={isCompleted ? { boxShadow: '0 0 8px #05966920' } : {}}
@@ -261,7 +261,7 @@ export function WorldMapScreen() {
                               </div>
                               <p className={`text-xs font-semibold truncate mt-0.5 ${
                                 isCompleted ? 'text-emerald-700 dark:text-emerald-400' :
-                                isChapterUnlocked ? 'text-stone-800 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400' :
+                                isChapterUnlocked ? 'text-stone-800 dark:text-stone-100 group-hover:text-teal-700 dark:group-hover:text-teal-400' :
                                 'text-stone-400'
                               }`}>
                                 {chapter.title}

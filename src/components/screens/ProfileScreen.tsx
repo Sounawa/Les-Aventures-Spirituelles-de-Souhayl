@@ -16,7 +16,7 @@ const AVATAR_OPTIONS = [
 ];
 
 const COLOR_OPTIONS = [
-  { value: 'amber', label: 'Ambre', tw: 'bg-amber-500', ring: 'ring-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/40', text: 'text-amber-600 dark:text-amber-400' },
+  { value: 'amber', label: 'Ambre', tw: 'bg-teal-500', ring: 'ring-teal-400', bg: 'bg-teal-100 dark:bg-teal-900/40', text: 'text-teal-600 dark:text-teal-400' },
   { value: 'emerald', label: 'Émeraude', tw: 'bg-emerald-500', ring: 'ring-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-900/40', text: 'text-emerald-600 dark:text-emerald-400' },
   { value: 'purple', label: 'Violet', tw: 'bg-purple-500', ring: 'ring-purple-400', bg: 'bg-purple-100 dark:bg-purple-900/40', text: 'text-purple-600 dark:text-purple-400' },
   { value: 'rose', label: 'Rose', tw: 'bg-rose-500', ring: 'ring-rose-400', bg: 'bg-rose-100 dark:bg-rose-900/40', text: 'text-rose-600 dark:text-rose-400' },
@@ -64,9 +64,9 @@ export function ProfileScreen() {
   const totalXP = challengeXP;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50 to-orange-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-emerald-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
+      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-teal-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -123,7 +123,7 @@ export function ProfileScreen() {
               onChange={(e) => setLocalName(e.target.value.slice(0, 20))}
               placeholder="Ton nom d&apos;aventurier..."
               maxLength={20}
-              className="w-full bg-white/60 dark:bg-stone-800/60 rounded-lg px-3 py-2.5 text-sm text-stone-700 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-400/50 dark:focus:ring-amber-500/40 transition-all"
+              className="w-full bg-white/60 dark:bg-stone-800/60 rounded-lg px-3 py-2.5 text-sm text-stone-700 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-teal-400/50 dark:focus:ring-teal-500/40 transition-all"
             />
             <div className="flex justify-between mt-1.5">
               <p className="text-[10px] text-stone-400 dark:text-stone-500">Choisis un joli nom !</p>
@@ -154,8 +154,8 @@ export function ProfileScreen() {
                     onClick={() => setLocalAvatar(emoji)}
                     className={`w-full aspect-square rounded-xl text-2xl flex items-center justify-center transition-all relative ${
                       isSelected
-                        ? `bg-amber-100 dark:bg-amber-900/30 ring-2 ring-amber-400 shadow-sm`
-                        : 'bg-white/50 dark:bg-stone-800/50 hover:bg-amber-50 dark:hover:bg-stone-800 border border-stone-200/50 dark:border-stone-700/50'
+                        ? `bg-teal-100 dark:bg-teal-900/30 ring-2 ring-teal-400 shadow-sm`
+                        : 'bg-white/50 dark:bg-stone-800/50 hover:bg-teal-50 dark:hover:bg-stone-800 border border-stone-200/50 dark:border-stone-700/50'
                     }`}
                     aria-label={`Avatar ${emoji}`}
                   >
@@ -164,7 +164,7 @@ export function ProfileScreen() {
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 flex items-center justify-center"
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-teal-500 flex items-center justify-center"
                       >
                         <Check className="w-2.5 h-2.5 text-white" />
                       </motion.div>
@@ -244,8 +244,8 @@ export function ProfileScreen() {
                 </div>
               </div>
               <div className="flex items-center gap-3 bg-white/40 dark:bg-stone-800/40 rounded-lg p-3">
-                <div className="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
-                  <Trophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="w-9 h-9 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center shrink-0">
+                  <Trophy className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                 </div>
                 <div>
                   <p className="text-lg font-bold text-stone-700 dark:text-stone-200">{totalBadges}</p>
@@ -308,7 +308,7 @@ export function ProfileScreen() {
             className={`w-full py-3 text-sm font-semibold transition-all ${
               saved
                 ? 'bg-emerald-500 hover:bg-emerald-500 text-white'
-                : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md hover:shadow-lg'
+                : 'bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white shadow-md hover:shadow-lg'
             } disabled:opacity-40 disabled:cursor-not-allowed`}
           >
             {saved ? (

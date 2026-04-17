@@ -581,7 +581,7 @@
   color: oklch(0.90 0.04 145);
 }
 
-/* Toast achievement (gold/amber with sparkle) */
+/* Toast achievement (gold/teal with sparkle) */
 .toast-achievement {
   background: linear-gradient(
     135deg,

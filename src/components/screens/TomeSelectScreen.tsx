@@ -10,9 +10,9 @@ import {
 } from 'lucide-react';
 
 const tomeGradients = [
-  { from: '#D97706', to: '#EA580C', light: 'from-amber-500 to-orange-600' },
+  { from: '#D97706', to: '#EA580C', light: 'from-teal-500 to-emerald-600' },
   { from: '#E11D48', to: '#DB2777', light: 'from-rose-500 to-pink-600' },
-  { from: '#CA8A04', to: '#D97706', light: 'from-yellow-500 to-amber-600' },
+  { from: '#CA8A04', to: '#D97706', light: 'from-yellow-500 to-teal-600' },
   { from: '#0D9488', to: '#0891B2', light: 'from-teal-500 to-cyan-600' },
   { from: '#7C3AED', to: '#6D28D9', light: 'from-purple-500 to-violet-600' },
 ];

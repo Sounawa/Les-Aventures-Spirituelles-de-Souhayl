@@ -71,9 +71,9 @@ export function SettingsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50 to-orange-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-emerald-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
+      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-teal-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -97,8 +97,8 @@ export function SettingsScreen() {
 
           <div className="parchment-card rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                {settings.darkMode ? <Moon className="w-5 h-5 text-amber-700 dark:text-amber-400" /> : <Sun className="w-5 h-5 text-amber-600" />}
+              <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                {settings.darkMode ? <Moon className="w-5 h-5 text-teal-700 dark:text-teal-400" /> : <Sun className="w-5 h-5 text-teal-600" />}
               </div>
               <div>
                 <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Mode sombre</p>
@@ -108,7 +108,7 @@ export function SettingsScreen() {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => updateSettings({ darkMode: !settings.darkMode })}
-              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.darkMode ? 'bg-amber-600' : 'bg-stone-200 dark:bg-stone-600'}`}
+              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.darkMode ? 'bg-teal-600' : 'bg-stone-200 dark:bg-stone-600'}`}
             >
               <motion.div className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1" animate={{ left: settings.darkMode ? '24px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
             </motion.button>
@@ -126,10 +126,10 @@ export function SettingsScreen() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {fontSizeOptions.map((opt) => (
-                <button key={opt.value} onClick={() => updateSettings({ fontSize: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.fontSize === opt.value ? 'border-amber-400 bg-amber-50 dark:bg-amber-900/20 shadow-sm' : 'border-stone-200 dark:border-stone-700 bg-white/50 dark:bg-stone-800/50 hover:border-amber-200 dark:hover:border-stone-600'}`}>
+                <button key={opt.value} onClick={() => updateSettings({ fontSize: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.fontSize === opt.value ? 'border-teal-400 bg-teal-50 dark:bg-teal-900/20 shadow-sm' : 'border-stone-200 dark:border-stone-700 bg-white/50 dark:bg-stone-800/50 hover:border-teal-200 dark:hover:border-stone-600'}`}>
                   <p className={`font-medium text-stone-700 dark:text-stone-300 ${opt.size}`}>Aa</p>
                   <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5">{opt.label}</p>
-                  {settings.fontSize === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-amber-600" /></motion.div>}
+                  {settings.fontSize === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-teal-600" /></motion.div>}
                 </button>
               ))}
             </div>

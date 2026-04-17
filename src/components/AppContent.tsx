@@ -20,6 +20,7 @@ import MemoryGameScreen from '@/components/screens/MemoryGameScreen';
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { DhikrCounterScreen } from '@/components/screens/DhikrCounterScreen';
 import { GreetingCardsScreen } from '@/components/screens/GreetingCardsScreen';
+import { IslamicNamesScreen } from '@/components/screens/IslamicNamesScreen';
 import { BottomNavBar } from '@/components/layout/BottomNavBar';
 import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import { OnboardingModal } from '@/components/OnboardingModal';
@@ -45,6 +46,7 @@ const screenComponents: Record<ScreenType, React.ComponentType> = {
   memory_game: MemoryGameScreen,
   dhikr_counter: DhikrCounterScreen,
   greeting_cards: GreetingCardsScreen,
+  islamic_names: IslamicNamesScreen,
 };
 
 function Hydrator({ children }: { children: React.ReactNode }) {

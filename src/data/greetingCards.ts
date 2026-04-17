@@ -74,7 +74,7 @@ export const greetingCards: GreetingCard[] = [
     pattern: 'geometric',
     emoji: '🕋',
     messageDefault: 'Dhul Hijjah Mubarak ! Que tes bonnes actions soient acceptées.',
-    borderColor: 'border-amber-300/30',
+    borderColor: 'border-teal-300/30',
     textColor: 'text-white',
     subtextColor: 'text-white/80',
   },

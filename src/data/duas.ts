@@ -141,11 +141,11 @@ export const duaCategoryConfig: Record<DailyDua['category'], { icon: string; lab
   morning: {
     icon: '🌅',
     label: 'Matin',
-    color: 'text-amber-600 dark:text-amber-400',
-    borderColor: 'border-amber-300/40',
-    darkBorderColor: 'dark:border-amber-700/30',
-    bgColor: 'from-amber-50 to-orange-50',
-    darkBgColor: 'dark:from-amber-950/20 dark:to-orange-950/20',
+    color: 'text-teal-600 dark:text-teal-400',
+    borderColor: 'border-teal-300/40',
+    darkBorderColor: 'dark:border-teal-700/30',
+    bgColor: 'from-teal-50 to-emerald-50',
+    darkBgColor: 'dark:from-teal-950/20 dark:to-emerald-950/20',
   },
   evening: {
     icon: '🌙',
