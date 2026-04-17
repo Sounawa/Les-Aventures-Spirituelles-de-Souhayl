@@ -1,4 +1,116 @@
 ---
+Task ID: 17 — Cron Review Round 8 (GitHub Push, Dark Mode Fixes, Desktop Layout, Toasts, Night Sky, Quran Verse)
+Agent: Main Agent
+Task: QA testing, GitHub deployment, dark mode contrast fixes, desktop layout improvements, new features
+
+Work Log:
+- GitHub Deployment:
+  - Updated .gitignore: excluded db/, *.db, download/, worklog.md, mini-services/
+  - Configured git user as Sounawa
+  - Pushed to https://github.com/Sounawa/Les-Aventures-Spirituelles-de-Nawfel.git (main branch)
+  - Cleaned remote URL (removed token from stored config)
+- QA Testing with agent-browser:
+  - Mobile (375x812): VLM identified dark mode contrast issues (labels too dim, icons hard to see)
+  - Desktop (1280x800): VLM identified narrow content width (max-w-lg too small), excessive whitespace
+  - Story screen: VLM confirmed good quality, no bugs
+  - All screens functional, 0 build errors, 0 lint errors in src/
+  - Dark mode: labels "SAGESSE DU JOUR", "Le savais-tu?", "Défi du jour" had stone-400 color (too dim)
+- Dark Mode Contrast Fixes:
+  - Card labels: stone-400 → stone-200 for better readability in dark mode
+  - Top-right icons (settings/moon): already fixed from previous round (stone-300 with stone-600/40 border)
+  - Fun facts text: stone-300 → stone-200
+- Desktop Layout Improvements:
+  - Hero section: max-w-lg → lg:max-w-2xl (wider centered content on desktop)
+  - All card sections: max-w-lg → lg:max-w-4xl with responsive 2-column grid
+  - WisdomCard + DailyDuaCard: now side-by-side on lg breakpoint (2-col grid)
+  - QuranVerseCard + FunFacts: second 2-col grid row on desktop
+  - Quick access grid, feature cards, secondary actions: all widened to lg:max-w-4xl
+- Sonner Toast Integration (via sub-agent):
+  - Replaced custom Toaster with Sonner Toaster in AppContent.tsx
+  - Created custom sonner.tsx wrapper reading theme from AppContext (not next-themes)
+  - 6 toast notifications across 5 screens (all French with child-friendly emojis)
+- Night Sky Animation (via sub-agent):
+  - 50 twinkling stars with random positions and animations (dark mode only)
+  - 3 shooting star animations streaking diagonally
+  - Enhanced moon glow with radial gradient in dark mode
+  - Deepened hero gradient: dark:via-indigo-950/20 for starfield depth
+- Quran Verse of the Day (via sub-agent):
+  - 15 authentic Quran verses in /src/data/quranVerses.ts
+  - 6 themes with color coding: courage, sagesse, espoir, paix, famille, bonte
+  - getDailyVerse() with day-of-year rotation
+  - Glass-card with theme accent border, Arabic RTL text, French translation
+  - Desktop 2-column grid integration
+
+Stage Summary:
+- 1 new file: src/data/quranVerses.ts
+- 7 modified files: layout.tsx, AppContent.tsx, sonner.tsx, HomeScreen.tsx, ProfileScreen.tsx, DhikrCounterScreen.tsx, MemoryGameScreen.tsx, SettingsScreen.tsx
+- GitHub repo created and pushed: Sounawa/Les-Aventures-Spirituelles-de-Nawfel
+- 4 improvements: dark mode contrast, desktop layout, Sonner toasts, night sky
+- 1 new feature: Quran Verse of the Day
+- 0 lint errors in src/
+- 0 console errors
+- Version 3.6
+
+---
+
+---
+Task ID: 8-a — Sonner Toast Notification Integration
+Agent: Main Agent
+Task: Add meaningful toast notifications using sonner throughout the Nawfel app
+
+Work Log:
+- Verified sonner (v2.0.7) is installed and Toaster is configured in AppContent.tsx with dark mode support
+- Added `import { toast } from 'sonner'` to 5 screen files
+- HomeScreen.tsx — DailyDuaCard heart button:
+  - Favorited: `toast.success('Ajouté aux favoris ! 💝')`
+  - Unfavorited: `toast('Retiré des favoris')`
+- HomeScreen.tsx — DailyChallengeCard complete button:
+  - `toast.success("Masha'Allah ! Défi accompli ! ⭐", { description: '+${xp} XP gagnés' })`
+- ProfileScreen.tsx — Save button:
+  - `toast.success('Profil sauvegardé ! ✨')`
+- DhikrCounterScreen.tsx — Dhikr target completion:
+  - `toast.success("Masha'Allah ! Dhikr terminé ! 📿", { description: phrase.french })`
+  - Fixed React Compiler memoization: added `phrase.french` to handleTap dependency array
+- MemoryGameScreen.tsx — Game win:
+  - `toast.success('Bravo ! 🎉', { description: '${moves} coups - ${stars} étoile(s)' })`
+- SettingsScreen.tsx — Reset progress:
+  - `toast('Progression réinitialisée', { description: "Tu peux recommencer l'aventure !" })`
+
+Stage Summary:
+- 5 modified files: HomeScreen.tsx, ProfileScreen.tsx, DhikrCounterScreen.tsx, MemoryGameScreen.tsx, SettingsScreen.tsx
+- 6 toast notifications added across 5 screens
+- All messages in French with child-friendly emojis
+- 0 lint errors in src/ (verified with `bun run lint`)
+
+---
+
+Task ID: 8-b — Animated Night Sky Background for Dark Mode
+Agent: Full-Stack Developer Agent
+Task: Enhance HomeScreen with animated night sky in dark mode
+
+Work Log:
+- Created NightSky component (lines 62-144 in HomeScreen.tsx):
+  - 50 twinkling stars as white dots (1-3px) with random positions, randomized opacity/scale animation (2-5s duration, 0-5s delay)
+  - 3 shooting star animations streaking diagonally with gradient lines and glow, staggered repeat (6-18s intervals)
+  - Hidden in light mode via `hidden dark:block` — only renders when dark mode is active
+  - Uses framer-motion for all animations, useMemo for stable random positions
+- Enhanced moon glow in dark mode:
+  - Added dark-mode-only radial gradient halo div around moon circle (amber 12% → transparent)
+  - Orbiting stars made brighter in dark mode: `dark:text-amber-200/90 dark:brightness-110`
+- Updated hero section gradient for dark mode:
+  - Changed from `dark:from-stone-900 dark:via-stone-900 dark:to-stone-950`
+  - To `dark:from-stone-950 dark:via-indigo-950/20 dark:to-stone-950` (subtle indigo hint for depth)
+- Placed `<NightSky />` after `<FloatingParticles />` in hero section
+
+Stage Summary:
+- 1 component added: NightSky (twinkling stars + shooting stars)
+- 1 modified file: HomeScreen.tsx
+- Moon glow enhanced with radial gradient in dark mode
+- Hero gradient deepened with subtle starfield effect
+- 0 new lint errors introduced (verified)
+
+---
+
 Task ID: 16 — Cron Review Round 7 (Dhikr Counter, Du'a of the Day, Desktop Layout)
 Agent: Main Agent
 Task: QA testing, new features (Dhikr counter, Du'a of the day), desktop layout improvements
@@ -722,3 +834,40 @@ Stage Summary:
 - Reading stats dashboard with 4 metric cards
 - Full dark mode, responsive, framer-motion animations
 - 0 lint errors (verified)
+
+---
+
+Task ID: 8-c — Verset du Jour (Quran Verse of the Day) Card
+Agent: Main Agent
+Task: Create Quran verse data file and integrate as card on HomeScreen
+
+Work Log:
+- Created `/src/data/quranVerses.ts`:
+  - Defined `QuranVerse` interface with id, textAr, textFr, source, surahName, surahNumber, theme
+  - 15 authentic Quran verses suitable for children (8-12 years), covering themes: kindness, patience, gratitude, knowledge, prayer, honesty, respect for parents, charity, forgiveness
+  - Each verse has authentic Arabic text and child-friendly French translation
+  - Source format: "Coran — [Surah Name] ([surah_number]:[verse_number])"
+  - 6 theme colors: courage (amber), sagesse (emerald), espoir (teal), paix (purple), famille (rose), bonte (orange)
+  - Created `verseThemeConfig` with icon, label, color, borderColor, darkBorderColor, bgColor, darkBgColor, leftBorder, badgeBg per theme
+  - Created `getDailyVerse()` function using day-of-year rotation (same pattern as getDailyWisdom)
+- Updated `/src/components/screens/HomeScreen.tsx`:
+  - Added import: `getDailyVerse`, `verseThemeConfig` from `@/data/quranVerses`
+  - Created `QuranVerseCard` component (following DailyDuaCard pattern):
+    - Glass-card with theme-based 4px left border accent
+    - Header: 📖 "Verset du Jour" label + surah name sub-header + theme pill badge (icon + label)
+    - Arabic text in styled container (font-amiri, text-lg, RTL, centered, white/stone bg)
+    - French translation below
+    - Source reference at bottom with 📖 icon
+    - Framer-motion fade-in at delay 1.8
+    - Full dark mode support throughout
+  - Integrated into 2-column grid with FunFacts:
+    - Row 1 (desktop): WisdomCard + DailyDuaCard (unchanged)
+    - Row 2 (desktop): QuranVerseCard + FunFacts (new)
+    - Mobile: all cards stack vertically at full width
+
+Stage Summary:
+- 1 new file: src/data/quranVerses.ts (15 verses, 6 themes, getDailyVerse, verseThemeConfig)
+- 1 modified file: src/components/screens/HomeScreen.tsx (QuranVerseCard component, grid layout)
+- QuranVerseCard placed in second 2-col grid row on desktop (with FunFacts)
+- Theme-based color coding with 4px left border accent
+- 0 lint errors in src/ (verified with `bun run lint`)
