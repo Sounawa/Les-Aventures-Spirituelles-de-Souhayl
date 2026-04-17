@@ -175,210 +175,37 @@ function IslamicDecoration({ className = '' }: { className?: string }) {
   );
 }
 
-// Daily wisdom card - enhanced
-function WisdomCard() {
+// ─────────────────────────────────────────────────────
+// Unified Daily Inspiration Card with tabs
+// ─────────────────────────────────────────────────────
+type DailyTab = 'wisdom' | 'dua' | 'verse' | 'funfact';
+
+const dailyTabs: { id: DailyTab; icon: string; label: string }[] = [
+  { id: 'wisdom', icon: '📜', label: 'Sagesse' },
+  { id: 'dua', icon: '💝', label: "Du'a" },
+  { id: 'verse', icon: '📖', label: 'Verset' },
+  { id: 'funfact', icon: '💡', label: 'Savais-tu ?' },
+];
+
+function DailyInspirationCard() {
+  const [activeTab, setActiveTab] = useState<DailyTab>('wisdom');
   const wisdom = useMemo(() => getDailyWisdom(), []);
-  const [showFull, setShowFull] = useState(false);
-
-  const categoryColors = {
-    hadith: 'from-emerald-500/10 to-teal-500/10 border-emerald-200/30 dark:from-emerald-900/20 dark:to-teal-900/20 dark:border-emerald-700/30',
-    coran: 'from-amber-500/10 to-orange-500/10 border-amber-200/30 dark:from-amber-900/20 dark:to-orange-900/20 dark:border-amber-700/30',
-    sagesse: 'from-purple-500/10 to-violet-500/10 border-purple-200/30 dark:from-purple-900/20 dark:to-violet-900/20 dark:border-purple-700/30',
-  };
-  const categoryIcons = {
-    hadith: '📜',
-    coran: '📗',
-    sagesse: '💫',
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.6 }}
-      className="max-w-lg lg:max-w-none mx-auto"
-    >
-      <button
-        onClick={() => setShowFull(!showFull)}
-        className={`w-full text-left glass-card rounded-2xl border p-5 shadow-sm hover:shadow-md transition-all ${categoryColors[wisdom.category]}`}
-      >
-        <div className="flex items-start gap-3">
-          <div className="text-2xl shrink-0 mt-0.5">{categoryIcons[wisdom.category]}</div>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-stone-600 dark:text-stone-200 uppercase tracking-wider mb-2">
-              Sagesse du jour
-            </p>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={showFull ? 'ar' : 'fr'}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={`font-medium leading-relaxed ${showFull ? 'text-lg text-stone-800 dark:text-stone-200 font-amiri' : 'text-base text-stone-700 dark:text-stone-300'}`}
-                dir={showFull ? 'rtl' : 'ltr'}
-              >
-                {showFull ? wisdom.textAr : (wisdom.textFr.length > 120 ? wisdom.textFr.slice(0, 120) + '…' : wisdom.textFr)}
-              </motion.p>
-            </AnimatePresence>
-            <div className="flex items-center justify-end mt-2">
-              <span className="text-base text-amber-600 dark:text-amber-400 cursor-pointer hover:scale-110 transition-transform">🔄</span>
-            </div>
-          </div>
-        </div>
-      </button>
-    </motion.div>
-  );
-}
-
-// Daily Dua Card
-function DailyDuaCard() {
   const dua = useMemo(() => getDailyDua(), []);
-  const [isFav, setIsFav] = useState(false);
-  const config = duaCategoryConfig[dua.category];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.7 }}
-      className="max-w-lg lg:max-w-none mx-auto"
-    >
-      <div className={`glass-card rounded-2xl border ${config.borderColor} ${config.darkBorderColor} bg-gradient-to-br ${config.bgColor} ${config.darkBgColor} p-5 shadow-sm`}>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{config.icon}</span>
-            <p className="text-xs font-semibold text-stone-600 dark:text-stone-200 uppercase tracking-wider">
-              Du&apos;a du jour
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${config.color} bg-white/50 dark:bg-stone-800/50`}>
-              {config.label}
-            </span>
-            <motion.button
-              whileTap={{ scale: 0.8 }}
-              onClick={() => {
-                const next = !isFav;
-                setIsFav(next);
-                if (next) {
-                  toast.success('Ajouté aux favoris ! 💝');
-                } else {
-                  toast('Retiré des favoris');
-                }
-              }}
-              className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/50 dark:hover:bg-stone-800/50 transition-colors"
-              aria-label="Ajouter aux favoris"
-            >
-              <Heart
-                className={`w-3.5 h-3.5 transition-colors ${
-                  isFav
-                    ? 'text-rose-500 dark:text-rose-400 fill-rose-500 dark:fill-rose-400'
-                    : 'text-stone-400 dark:text-stone-500'
-                }`}
-              />
-            </motion.button>
-          </div>
-        </div>
-
-        {/* Occasion */}
-        <p className="text-[11px] text-stone-500 dark:text-stone-400 mb-3 font-medium">
-          {dua.occasion}
-        </p>
-
-        {/* Arabic text */}
-        <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
-          <p
-            className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center"
-            dir="rtl"
-          >
-            {dua.textAr}
-          </p>
-        </div>
-
-        {/* French translation */}
-        <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
-          {dua.textFr}
-        </p>
-
-        {/* Source */}
-        <p className="text-[10px] text-stone-400 dark:text-stone-500">
-          📖 {dua.source}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-// Quran Verse of the Day Card
-function QuranVerseCard() {
   const verse = useMemo(() => getDailyVerse(), []);
-  const config = verseThemeConfig[verse.theme];
+  const duaConfig = duaCategoryConfig[dua.category];
+  const verseConfig = verseThemeConfig[verse.theme];
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.8 }}
-      className="max-w-lg lg:max-w-none mx-auto"
-    >
-      <div className={`glass-card rounded-2xl border border-l-4 ${config.borderColor} ${config.darkBorderColor} ${config.leftBorder} bg-gradient-to-br ${config.bgColor} ${config.darkBgColor} p-5 shadow-sm`}>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📖</span>
-            <p className="text-xs font-semibold text-stone-600 dark:text-stone-200 uppercase tracking-wider">
-              Verset du Jour
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${config.color} ${config.badgeBg}`}>
-              {config.icon} {config.label}
-            </span>
-          </div>
-        </div>
+  const [showWisdomAr, setShowWisdomAr] = useState(false);
+  const [isFav, setIsFav] = useState(false);
 
-        {/* Surah name badge */}
-        <p className="text-[11px] text-stone-500 dark:text-stone-400 mb-3 font-medium">
-          Sourate {verse.surahName}
-        </p>
-
-        {/* Arabic text */}
-        <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
-          <p
-            className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center"
-            dir="rtl"
-          >
-            {verse.textAr}
-          </p>
-        </div>
-
-        {/* French translation */}
-        <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
-          {verse.textFr}
-        </p>
-
-        {/* Source */}
-        <p className="text-[10px] text-stone-400 dark:text-stone-500">
-          📖 {verse.source}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-// Fun Facts rotating section
-function FunFacts() {
-  const funFacts = [
+  const funFacts = useMemo(() => [
     "🌍 Le Maroc abrite les montagnes du Rif, où vit Nawfel",
     "📚 Le Tassawuf enseigne la purification du cœur",
     "🌙 Les rêves sont les portes du monde intérieur",
     "⚔️ Le Nafs a 3 états : ammarah, lawwama, mutma'inna",
     "🕯️ Le Dhikr est le rappel d'Allah dans le cœur",
-  ];
-
+  ], []);
   const [currentFact, setCurrentFact] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentFact((prev) => (prev + 1) % funFacts.length);
@@ -386,48 +213,194 @@ function FunFacts() {
     return () => clearInterval(interval);
   }, [funFacts.length]);
 
+  const wisdomCategoryIcons = { hadith: '📜', coran: '📗', sagesse: '💫' };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.9 }}
-      className="max-w-lg lg:max-w-none mx-auto"
+      transition={{ delay: 1.6 }}
+      className="max-w-lg lg:max-w-2xl mx-auto"
     >
-      <div className="glass-card rounded-2xl border border-amber-200/30 dark:border-amber-700/20 p-5 shadow-sm">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-lg">💡</span>
-          <p className="text-xs font-semibold text-stone-600 dark:text-stone-200 uppercase tracking-wider">
-            Le savais-tu ?
-          </p>
-        </div>
-        <div className="relative h-12 flex items-center overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={currentFact}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="text-sm text-stone-700 dark:text-stone-200 font-medium leading-relaxed"
-            >
-              {funFacts[currentFact]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-        {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-1.5 mt-3">
-          {funFacts.map((_, i) => (
+      <div className="glass-card rounded-2xl border border-amber-200/30 dark:border-amber-700/20 shadow-sm overflow-hidden">
+        {/* Tabs */}
+        <div className="flex items-center px-1 pt-1 gap-0.5 bg-stone-50/50 dark:bg-stone-800/30">
+          {dailyTabs.map((tab) => (
             <button
-              key={i}
-              onClick={() => setCurrentFact(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === currentFact
-                  ? 'w-5 h-1.5 bg-amber-500 dark:bg-amber-400'
-                  : 'w-1.5 h-1.5 bg-stone-300 dark:bg-stone-600 hover:bg-stone-400 dark:hover:bg-stone-500'
-              }`}
-              aria-label={`Fun fait ${i + 1}`}
-            />
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`
+                flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold
+                transition-all duration-300 relative
+                ${activeTab === tab.id
+                  ? 'bg-white dark:bg-stone-700/60 text-stone-800 dark:text-stone-100 shadow-sm'
+                  : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 hover:bg-white/40 dark:hover:bg-stone-700/20'
+                }
+              `}
+            >
+              <span className="text-sm">{tab.icon}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
           ))}
+        </div>
+
+        {/* Content */}
+        <div className="p-5 min-h-[180px]">
+          <AnimatePresence mode="wait">
+            {/* ── WISDOM TAB ── */}
+            {activeTab === 'wisdom' && (
+              <motion.div
+                key="wisdom"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">{wisdomCategoryIcons[wisdom.category]}</span>
+                  <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    Sagesse du jour
+                  </p>
+                </div>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={showWisdomAr ? 'ar' : 'fr'}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className={`font-medium leading-relaxed mb-3 ${showWisdomAr ? 'text-lg text-stone-800 dark:text-stone-200 font-amiri' : 'text-base text-stone-700 dark:text-stone-300'}`}
+                    dir={showWisdomAr ? 'rtl' : 'ltr'}
+                  >
+                    {showWisdomAr ? wisdom.textAr : wisdom.textFr}
+                  </motion.p>
+                </AnimatePresence>
+                <div className="flex items-center justify-end">
+                  <button
+                    onClick={() => setShowWisdomAr(!showWisdomAr)}
+                    className="text-[11px] text-amber-600 dark:text-amber-400 font-medium hover:underline flex items-center gap-1"
+                  >
+                    <span>{showWisdomAr ? 'Français' : 'Arabe'}</span>
+                    <span className="text-sm">🔄</span>
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* ── DU'A TAB ── */}
+            {activeTab === 'dua' && (
+              <motion.div
+                key="dua"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{duaConfig.icon}</span>
+                    <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                      Du&apos;a du jour
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${duaConfig.color} bg-white/50 dark:bg-stone-800/50`}>
+                      {duaConfig.label}
+                    </span>
+                    <motion.button
+                      whileTap={{ scale: 0.8 }}
+                      onClick={() => {
+                        const next = !isFav;
+                        setIsFav(next);
+                        if (next) toast.success('Ajouté aux favoris ! 💝');
+                        else toast('Retiré des favoris');
+                      }}
+                      className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white/50 dark:hover:bg-stone-800/50 transition-colors"
+                      aria-label="Ajouter aux favoris"
+                    >
+                      <Heart className={`w-3.5 h-3.5 transition-colors ${isFav ? 'text-rose-500 dark:text-rose-400 fill-rose-500 dark:fill-rose-400' : 'text-stone-400 dark:text-stone-500'}`} />
+                    </motion.button>
+                  </div>
+                </div>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-2 font-medium">{dua.occasion}</p>
+                <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
+                  <p className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center" dir="rtl">{dua.textAr}</p>
+                </div>
+                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{dua.textFr}</p>
+                <p className="text-[10px] text-stone-400 dark:text-stone-500">📖 {dua.source}</p>
+              </motion.div>
+            )}
+
+            {/* ── QURAN VERSE TAB ── */}
+            {activeTab === 'verse' && (
+              <motion.div
+                key="verse"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">📖</span>
+                    <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                      Verset du Jour
+                    </p>
+                  </div>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${verseConfig.color} ${verseConfig.badgeBg}`}>
+                    {verseConfig.icon} {verseConfig.label}
+                  </span>
+                </div>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mb-2 font-medium">Sourate {verse.surahName}</p>
+                <div className="mb-3 p-3 rounded-xl bg-white/40 dark:bg-stone-800/30 border border-white/60 dark:border-stone-700/30">
+                  <p className="text-lg text-stone-800 dark:text-stone-100 font-amiri leading-relaxed text-center" dir="rtl">{verse.textAr}</p>
+                </div>
+                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-2">{verse.textFr}</p>
+                <p className="text-[10px] text-stone-400 dark:text-stone-500">📖 {verse.source}</p>
+              </motion.div>
+            )}
+
+            {/* ── FUN FACT TAB ── */}
+            {activeTab === 'funfact' && (
+              <motion.div
+                key="funfact"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.25 }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">💡</span>
+                  <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+                    Le savais-tu ?
+                  </p>
+                </div>
+                <div className="relative h-16 flex items-center overflow-hidden mb-4">
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={currentFact}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-base text-stone-700 dark:text-stone-200 font-medium leading-relaxed"
+                    >
+                      {funFacts[currentFact]}
+                    </motion.p>
+                  </AnimatePresence>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  {funFacts.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentFact(i)}
+                      className={`rounded-full transition-all duration-300 ${i === currentFact ? 'w-5 h-1.5 bg-amber-500 dark:bg-amber-400' : 'w-1.5 h-1.5 bg-stone-300 dark:bg-stone-600 hover:bg-stone-400 dark:hover:bg-stone-500'}`}
+                      aria-label={`Fun fait ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>
@@ -776,20 +749,9 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* Daily wisdom + Du'a side by side on desktop */}
+      {/* Daily Inspiration — unified tabbed card */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
-          <WisdomCard />
-          <DailyDuaCard />
-        </div>
-      </div>
-
-      {/* Quran Verse + Fun Facts side by side on desktop */}
-      <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
-          <QuranVerseCard />
-          <FunFacts />
-        </div>
+        <DailyInspirationCard />
       </div>
 
       {/* Daily Challenge */}
