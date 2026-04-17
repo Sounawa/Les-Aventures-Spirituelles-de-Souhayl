@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SkipForward } from 'lucide-react';
 
 interface TypewriterTextProps {
-  text: string[];
+  text: string | string[];
   speed?: number;
   onComplete?: () => void;
   className?: string;
@@ -42,6 +42,7 @@ function typewriterReducer(state: TypewriterState, action: TypewriterAction): Ty
 }
 
 export function TypewriterText({ text, speed = 25, onComplete, className = '' }: TypewriterTextProps) {
+  const paragraphs = typeof text === 'string' ? text.split('\n\n').filter(Boolean) : text;
   const [state, dispatch] = useReducer(typewriterReducer, {
     displayedTexts: [],
     isComplete: false,
@@ -50,7 +51,7 @@ export function TypewriterText({ text, speed = 25, onComplete, className = '' }:
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const charIndex = useRef(0);
   const paraIndex = useRef(0);
-  const textRef = useRef(text);
+  const textRef = useRef(paragraphs);
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export function TypewriterText({ text, speed = 25, onComplete, className = '' }:
   }, [onComplete]);
 
   useEffect(() => {
-    textRef.current = text;
+    textRef.current = paragraphs;
     charIndex.current = 0;
     paraIndex.current = 0;
     startedRef.current = false;
@@ -67,11 +68,11 @@ export function TypewriterText({ text, speed = 25, onComplete, className = '' }:
     // Start after a micro-task to avoid synchronous setState in effect
     const initTimer = setTimeout(() => {
       startedRef.current = true;
-      if (text.length === 0) {
+      if (paragraphs.length === 0) {
         dispatch({ type: 'COMPLETE' });
         return;
       }
-      dispatch({ type: 'ADD_CHAR', paraIndex: 0, text: text[0], charIndex: 1 });
+      dispatch({ type: 'ADD_CHAR', paraIndex: 0, text: paragraphs[0], charIndex: 1 });
       charIndex.current = 1;
       tick();
     }, 0);
@@ -114,9 +115,9 @@ export function TypewriterText({ text, speed = 25, onComplete, className = '' }:
 
   const handleSkip = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    dispatch({ type: 'SKIP', fullTexts: text });
+    dispatch({ type: 'SKIP', fullTexts: paragraphs });
     onCompleteRef.current?.();
-  }, [text]);
+  }, [paragraphs]);
 
   return (
     <div className={`relative ${className}`}>

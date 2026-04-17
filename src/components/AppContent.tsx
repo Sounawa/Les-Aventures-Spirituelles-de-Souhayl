@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useApp } from '@/components/AppContext';
+import { AppProvider, useApp } from '@/components/AppContext';
 import { HomeScreen } from '@/components/screens/HomeScreen';
 import { TomeSelectScreen } from '@/components/screens/TomeSelectScreen';
 import { ChapterSelectScreen } from '@/components/screens/ChapterSelectScreen';
@@ -31,7 +31,7 @@ const screenComponents: Record<ScreenType, React.ComponentType> = {
   ),
 };
 
-export default function AppContent() {
+function AppInner() {
   const { screen } = useApp();
   const ScreenComponent = screenComponents[screen];
 
@@ -62,5 +62,13 @@ export default function AppContent() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function AppContent() {
+  return (
+    <AppProvider>
+      <AppInner />
+    </AppProvider>
   );
 }
