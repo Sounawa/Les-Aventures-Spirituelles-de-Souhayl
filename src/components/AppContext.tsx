@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { createContext, useContext, type ReactNode } from 'react';
 import type { ScreenType } from '@/types/story';
+import { getDailyChallenge } from '@/data/dailyChallenges';
 
 interface AppSettings {
   darkMode: boolean;
@@ -26,6 +27,9 @@ interface AppState {
   bookmarkedScenes: string[];
   dailyStreak: number;
   lastPlayDate: string;
+  hasSeenOnboarding: boolean;
+  completedChallenges: string[];
+  challengeXP: number;
 }
 
 export interface JournalEntry {
@@ -67,6 +71,11 @@ interface AppContextType {
   dailyStreak: number;
   lastPlayDate: string;
   updateStreak: () => void;
+  hasSeenOnboarding: boolean;
+  setHasSeenOnboarding: () => void;
+  completedChallenges: string[];
+  completeChallenge: (date: string) => void;
+  challengeXP: number;
 }
 
 const STORAGE_KEY = 'nawfel-save-v3';
@@ -93,6 +102,9 @@ const defaultState: AppState = {
   bookmarkedScenes: [],
   dailyStreak: 0,
   lastPlayDate: '',
+  hasSeenOnboarding: false,
+  completedChallenges: [],
+  challengeXP: 0,
 };
 
 function readStorage(): Partial<AppState> {
@@ -122,6 +134,9 @@ function writeStorage(state: AppState) {
       bookmarkedScenes: state.bookmarkedScenes,
       dailyStreak: state.dailyStreak,
       lastPlayDate: state.lastPlayDate,
+      hasSeenOnboarding: state.hasSeenOnboarding,
+      completedChallenges: state.completedChallenges,
+      challengeXP: state.challengeXP,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch { /* noop */ }
@@ -180,6 +195,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         bookmarkedScenes: saved.bookmarkedScenes || [],
         dailyStreak: saved.dailyStreak || 0,
         lastPlayDate: saved.lastPlayDate || '',
+        hasSeenOnboarding: saved.hasSeenOnboarding || false,
+        completedChallenges: saved.completedChallenges || [],
+        challengeXP: saved.challengeXP || 0,
         screen: 'home' as ScreenType,
       }));
     } else if (saved.settings) {
@@ -260,6 +278,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, [updateAndPersist]);
 
+  const setHasSeenOnboarding = useCallback(() => {
+    updateAndPersist(prev => ({ ...prev, hasSeenOnboarding: true }));
+  }, [updateAndPersist]);
+
+  const completeChallenge = useCallback((date: string) => {
+    updateAndPersist(prev => ({
+      ...prev,
+      completedChallenges: prev.completedChallenges.includes(date)
+        ? prev.completedChallenges
+        : [...prev.completedChallenges, date],
+      challengeXP: prev.completedChallenges.includes(date)
+        ? prev.challengeXP
+        : prev.challengeXP + getDailyChallenge().xp,
+    }));
+  }, [updateAndPersist]);
+
   const updateStreak = useCallback(() => {
     updateAndPersist(prev => {
       const today = getTodayString();
@@ -298,6 +332,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       screenHistory: state.screenHistory,
       bookmarkedScenes: state.bookmarkedScenes, toggleBookmark,
       dailyStreak: state.dailyStreak, lastPlayDate: state.lastPlayDate, updateStreak,
+      hasSeenOnboarding: state.hasSeenOnboarding, setHasSeenOnboarding,
+      completedChallenges: state.completedChallenges, completeChallenge, challengeXP: state.challengeXP,
     }}>
       {children}
     </AppContext.Provider>

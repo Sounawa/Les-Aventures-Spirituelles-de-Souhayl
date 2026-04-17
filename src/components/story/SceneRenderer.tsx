@@ -364,7 +364,15 @@ export function SceneRenderer() {
         {/* Dialogues */}
         <AnimatePresence>
           {dialoguesStarted && scene.dialogues.map((dialogue, idx) => (
-            <DialogueBubble key={`${scene.id}-d-${idx}`} dialogue={dialogue} index={idx} />
+            <motion.div
+              key={`${scene.id}-d-${idx}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, delay: idx * 0.15 }}
+            >
+              <DialogueBubble dialogue={dialogue} index={idx} />
+            </motion.div>
           ))}
         </AnimatePresence>
 

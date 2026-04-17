@@ -21,7 +21,7 @@ const speedOptions = [
   { value: 45, label: 'Lent', desc: 'Pour bien lire chaque mot' },
 ];
 
-const STORAGE_KEY = 'nawfel-save-v2';
+const STORAGE_KEY = 'nawfel-save-v3';
 
 export function SettingsScreen() {
   const { navigateTo, settings, updateSettings, resetProgress } = useApp();
@@ -266,7 +266,7 @@ export function SettingsScreen() {
                 concepts du Tassawuf (soufisme) aux enfants de 8 à 12 ans à travers une aventure
                 passionnante. Basé sur les enseignements authentiques de l&apos;Islam.
               </p>
-              <p className="mt-2 text-stone-400 dark:text-stone-500">Version 3.2 — Narration audio, signets, série quotidienne, style amélioré</p>
+              <p className="mt-2 text-stone-400 dark:text-stone-500">Version 3.3 — Défis quotidiens, onboarding, navigation mobile, défis XP</p>
             </div>
           </div>
         </motion.div>

@@ -1,4 +1,173 @@
 ---
+Task ID: 11 — Cron Review Round 5 (Navigation, Challenges, Onboarding, Polish)
+Agent: Main Agent
+Task: QA testing, bug fixes, new features, styling improvements
+
+Work Log:
+- QA Testing with agent-browser:
+  - Tested home screen, onboarding modal, daily challenge, tome select, chapter select, story screen
+  - Tested mobile viewport (375x812) — bottom nav verified working
+  - Tested dark mode toggle
+  - Verified 0 console errors, 0 AnimatePresence warnings (fixed)
+  - Tested settings screen, sound effects persistence
+- Bug Fixes:
+  - Fixed AnimatePresence mode="wait" warnings in SceneRenderer dialogues
+  - Fixed SettingsScreen STORAGE_KEY: changed from 'nawfel-save-v2' to 'nawfel-save-v3' (was using wrong key for export/import)
+  - Fixed HomeScreen CTA button missing Play icon after card-hover-lift edit
+- New Feature: Bottom Navigation Bar
+  - Created BottomNavBar.tsx with 5 tabs: Accueil, Tomes, Carte, Succès, Profil
+  - Animated active tab indicator with framer-motion layoutId spring animation
+  - Glass-card styling with amber border accent
+  - Hidden on story screen, hidden on md+ breakpoint (mobile-only)
+  - iOS safe area inset support
+  - Footer padding adjusted for bottom nav
+- New Feature: Daily Challenge System
+  - Created dailyChallenges.ts with 20 spiritual challenges across 4 categories
+  - Categories: Action (emerald), Réflexion (purple), Dhikr (amber), Gentillesse (rose)
+  - XP reward system (10-30 XP per challenge)
+  - Daily rotation based on day-of-year for consistency
+  - Integrated into AppContext with completedChallenges[] and challengeXP tracking
+  - DailyChallengeCard on HomeScreen with completion toggle
+  - Persistent via localStorage
+- New Feature: Onboarding Welcome Modal
+  - 4-slide welcome carousel: Welcome, Interactive Book, Tassawuf, Badges
+  - Animated gradient banners per slide
+  - Clickable dot navigation indicators
+  - "C'est parti !" CTA on last slide
+  - "Passer l'introduction" skip link
+  - z-[100] fixed overlay with backdrop blur
+  - Persists via hasSeenOnboarding in localStorage
+- Styling Improvements (globals.css):
+  - Added animate-breathe keyframe (breathing glow on CTA buttons)
+  - Added text-gradient-amber, text-gradient-rose, text-gradient-emerald utility classes
+  - Added card-hover-lift effect (translateY + shadow on hover)
+  - Added ripple-container effect (radial gradient on active)
+  - Added loading-spinner CSS (dual-orbit spinning rings)
+  - Added page-enter animation (fade + slide + scale)
+  - Added xp-badge styling (gradient pill badge)
+  - Added star-field background pattern
+  - Added noise-texture overlay
+- HomeScreen Enhancements:
+  - CTA buttons now use animate-breathe instead of basic pulse
+  - Quick access cards use card-hover-lift for better interaction feedback
+- Version bumped to 3.3 in SettingsScreen
+
+Stage Summary:
+- 2 new files: src/data/dailyChallenges.ts, src/components/layout/BottomNavBar.tsx, src/components/OnboardingModal.tsx
+- 3 new features: Bottom Nav Bar, Daily Challenge System, Onboarding Modal
+- 2 bug fixes: AnimatePresence warnings, Settings STORAGE_KEY
+- 9 new CSS utilities in globals.css
+- 0 lint errors in app code
+- 0 console warnings
+- Version 3.3
+
+---
+
+Task ID: 11-c
+Agent: Full-Stack Agent
+Task: Create daily spiritual challenge system
+
+Work Log:
+- Created `/src/data/dailyChallenges.ts`:
+  - DailyChallenge interface with id, title, description, category, icon, xp
+  - 20 challenges across 4 categories: action, reflection, dhikr, kindness
+  - getDailyChallenge() function using day-of-year for consistent daily rotation
+  - categoryLabels map with color classes per category (emerald, purple, amber, rose)
+- Updated `/src/components/AppContext.tsx`:
+  - Added `completedChallenges: string[]` and `challengeXP: number` to AppState
+  - Added `completedChallenges`, `completeChallenge(date)`, `challengeXP` to AppContextType
+  - Added both to defaultState, writeStorage persistence, hydrate loading
+  - Created `completeChallenge` callback: adds date to array, awards XP from getDailyChallenge().xp
+  - Imported getDailyChallenge at top of file
+  - Added all new fields to Provider value
+- Updated `/src/components/screens/HomeScreen.tsx`:
+  - Imported getDailyChallenge, categoryLabels from dailyChallenges
+  - Imported Check icon from lucide-react
+  - Created DailyChallengeCard component:
+    - Glass-card with amber border (green border when completed)
+    - Challenge icon + "Défi du jour" header
+    - Category pill badge with color + XP reward display
+    - Challenge title and description
+    - Total XP counter (⭐)
+    - "J'ai fait ce défi !" amber/orange gradient button (uncompleted state)
+    - "Accompli !" green badge with Check icon (completed state, spring animation)
+    - Framer-motion fade-in at delay 2.0
+    - Dark mode support throughout
+  - Placed DailyChallengeCard between FunFacts and Quick Access Cards sections
+
+Stage Summary:
+- 1 new file: src/data/dailyChallenges.ts (20 challenges, 4 categories)
+- 2 modified files: AppContext.tsx (challenge state + persistence), HomeScreen.tsx (DailyChallengeCard)
+- Daily challenge rotates based on day-of-year for consistency
+- XP tracking persists via localStorage
+- 0 lint errors in changed files (verified with `npx eslint`)
+
+---
+
+Task ID: 11-d
+Agent: Full-Stack Agent
+Task: Add onboarding welcome modal for first-time users
+
+Work Log:
+- Added `hasSeenOnboarding: boolean` to AppState interface in AppContext
+- Added `hasSeenOnboarding` and `setHasSeenOnboarding` to AppContextType interface
+- Added `hasSeenOnboarding: false` to defaultState
+- Added `hasSeenOnboarding` to writeStorage persistence data
+- Added `setHasSeenOnboarding` callback using updateAndPersist
+- Added both to Provider value
+- Updated hydrate function to load `hasSeenOnboarding` from localStorage (with `|| false` fallback)
+- Created `/src/components/OnboardingModal.tsx`:
+  - 4-slide welcome carousel with framer-motion animations
+  - Slides: Welcome (amber), Interactive Book (emerald), Tassawuf Learning (purple), Badges (rose)
+  - Each slide has gradient banner, animated icon, title, description
+  - Dot indicators with click navigation
+  - "Suivant" button with ChevronRight icon on first 3 slides
+  - "C'est parti !" CTA on last slide with amber/orange gradient
+  - "Passer l'introduction" skip link
+  - Backdrop click to advance
+  - Fixed z-[100] overlay with backdrop blur
+  - Dark mode support (dark:bg-stone-900, dark text variants)
+  - AnimatePresence for enter/exit, spring animations for modal
+- Integrated OnboardingModal into AppContent after ThemeHandler
+- 0 lint errors in app code (only pre-existing mini-services errors)
+
+Stage Summary:
+- 1 new component: src/components/OnboardingModal.tsx
+- 1 modified file: src/components/AppContext.tsx (onboarding state tracking)
+- 1 modified file: src/components/AppContent.tsx (modal integration)
+- Onboarding persists via localStorage — only shows once for first-time users
+- 0 lint errors in app code (verified)
+
+---
+
+Task ID: 11-b
+Agent: Full-Stack Agent
+Task: Add bottom navigation bar for mobile UX
+
+Work Log:
+- Created BottomNavBar.tsx with 5 navigation tabs (Accueil, Tomes, Carte, Succès, Profil)
+- Used Lucide icons: Home, BookOpen, Map, Trophy, User
+- Integrated into AppContent.tsx after footer
+- Added animated active tab indicator with framer-motion layoutId spring animation
+- Hidden on story screen (returns null when screen === 'story')
+- Hidden on md+ breakpoint (md:hidden class)
+- Glass-card styling with amber border accent
+- Dark mode support with appropriate text colors
+- iOS safe area inset support via env(safe-area-inset-bottom)
+- Touch-friendly 44px min-height on tab buttons
+- Accessibility: aria-label on each tab, aria-current on active
+- Added pb-20 md:pb-3 to footer for bottom nav spacing on mobile
+- AnimatePresence wrapper for smooth enter/exit transitions
+
+Stage Summary:
+- New component: src/components/layout/BottomNavBar.tsx
+- Mobile-first bottom navigation with animated amber/gold indicator
+- 0 lint errors in changed files (verified)
+- Responsive: visible on mobile, hidden on md+ screens
+- Story screen: nav hidden to avoid interference with reading
+
+---
+
 Task ID: 10 — Cron Review Round 4 (Child-Friendly UX + Engagement)
 Agent: Main Agent
 Task: VLM-guided UX improvements, child-friendly features, engagement enhancements
@@ -253,3 +422,17 @@ Stage Summary:
 - Fixed all original bugs from prior sessions
 - App runs correctly with Next.js 16 + Turbopack
 - Hydration issues resolved with AppContext + dynamic ssr:false import
+
+---
+Task ID: 11-a
+Agent: Bug Fix Agent
+Task: Fix AnimatePresence mode="wait" warnings
+
+Work Log:
+- Fixed SceneRenderer.tsx: Wrapped each DialogueBubble in motion.div with individual key, keeping AnimatePresence without mode="wait"
+- Fixed DialogueBubble.tsx: Replaced motion.div wrapper with regular div, removed unused motion import
+- Verified: 0 lint errors in app code
+
+Stage Summary:
+- AnimatePresence warnings resolved for dialogues section
+- Individual dialogue bubbles now animate independently with staggered delays

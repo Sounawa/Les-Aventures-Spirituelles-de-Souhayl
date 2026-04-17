@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+
 import { characters } from '@/data/characters';
 import type { Dialogue } from '@/types/story';
 import { CharacterPortrait } from './CharacterPortrait';
@@ -47,12 +47,7 @@ export function DialogueBubble({ dialogue, index }: DialogueBubbleProps) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.2 }}
-      className="flex items-start gap-3 mb-4"
-    >
+    <div className="flex items-start gap-3 mb-4">
       <CharacterPortrait
         characterId={dialogue.characterId}
         size="sm"
@@ -88,6 +83,6 @@ export function DialogueBubble({ dialogue, index }: DialogueBubbleProps) {
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

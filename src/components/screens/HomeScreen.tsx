@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '@/components/AppContext';
 import { tomes } from '@/data/tomes';
 import { getDailyWisdom, type WisdomQuote } from '@/data/wisdom';
+import { getDailyChallenge, categoryLabels } from '@/data/dailyChallenges';
 import { Button } from '@/components/ui/button';
 import {
   BookOpen, Users, Award, Play, RotateCcw,
   BarChart3, BookHeart, Settings, Sparkles, ChevronRight,
-  Moon, Sun, Map, Trophy, Star, BookmarkCheck,
+  Moon, Sun, Map, Trophy, Star, BookmarkCheck, Check,
 } from 'lucide-react';
 
 // Floating particle component - enhanced
@@ -235,6 +236,76 @@ function StreakDisplay({ streak }: { streak: number }) {
   );
 }
 
+// Daily Challenge Card
+function DailyChallengeCard() {
+  const { completedChallenges, completeChallenge, challengeXP } = useApp();
+  const challenge = useMemo(() => getDailyChallenge(), []);
+  const todayString = new Date().toISOString().split('T')[0];
+  const isCompleted = completedChallenges.includes(todayString);
+  const category = categoryLabels[challenge.category];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 2.0 }}
+      className="max-w-md mx-auto"
+    >
+      <div className={`glass-card rounded-2xl border p-5 shadow-sm ${isCompleted ? 'border-green-200/40 dark:border-green-700/30' : 'border-amber-200/30 dark:border-amber-700/20'}`}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">{challenge.icon}</span>
+            <p className="text-xs font-semibold text-stone-500 dark:text-stone-400 uppercase tracking-wider">
+              Défi du jour
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${category.color}`}>
+              {category.label}
+            </span>
+            <span className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold">
+              +{challenge.xp} XP
+            </span>
+          </div>
+        </div>
+
+        <h3 className="text-base font-bold text-stone-800 dark:text-stone-100 mb-1.5">
+          {challenge.title}
+        </h3>
+        <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
+          {challenge.description}
+        </p>
+
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] text-stone-400 dark:text-stone-500">
+            ⭐ {challengeXP} XP total
+          </span>
+          {isCompleted ? (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold"
+            >
+              <Check className="w-3 h-3" />
+              Accompli !
+            </motion.div>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => completeChallenge(todayString)}
+              className="flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full text-xs font-semibold shadow-sm transition-all"
+            >
+              <span>✓</span>
+              J&apos;ai fait ce défi !
+            </motion.button>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function HomeScreen() {
   const {
     setScreen, navigateTo, selectTome,
@@ -435,16 +506,15 @@ export function HomeScreen() {
             {hasProgress ? (
               <Button
                 onClick={() => { selectTome(tomes[0].id); navigateTo('tome_select'); }}
-                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30 rounded-xl golden-glow-hover animate-[pulse_3s_ease-in-out_infinite]"
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30 rounded-xl golden-glow-hover animate-breathe"
               >
                 <Play className="w-5 h-5" />
                 Continuer l&apos;aventure
-                <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
               <Button
                 onClick={() => { selectTome(tomes[0].id); navigateTo('chapter_select'); }}
-                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30 rounded-xl golden-glow-hover animate-[pulse_3s_ease-in-out_infinite]"
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 dark:shadow-amber-900/30 rounded-xl golden-glow-hover animate-breathe"
               >
                 <Play className="w-5 h-5" />
                 Commencer l&apos;aventure
@@ -477,6 +547,11 @@ export function HomeScreen() {
         <FunFacts />
       </div>
 
+      {/* Daily Challenge */}
+      <div className="relative z-10 px-4 pb-4">
+        <DailyChallengeCard />
+      </div>
+
       {/* Quick access cards - enhanced grid */}
       <div className="relative z-10 px-4 pb-4">
         <div className="max-w-md mx-auto grid grid-cols-4 gap-2.5">
@@ -487,7 +562,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigateTo('tome_select')}
-            className="flex flex-col items-center gap-1.5 p-3 glass-card rounded-xl shadow-sm hover:shadow-md transition-all group border border-transparent hover:border-amber-200/40 dark:hover:border-amber-700/30"
+            className="flex flex-col items-center gap-1.5 p-3 glass-card rounded-xl shadow-sm hover:shadow-md transition-all group border border-transparent hover:border-amber-200/40 dark:hover:border-amber-700/30 card-hover-lift"
           >
             <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center group-hover:bg-amber-200 dark:group-hover:bg-amber-800/30 transition-colors shadow-sm">
               <BookOpen className="w-5 h-5 text-amber-600 dark:text-amber-400" />

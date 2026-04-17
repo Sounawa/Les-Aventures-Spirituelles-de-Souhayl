@@ -16,6 +16,8 @@ import { JournalScreen } from '@/components/screens/JournalScreen';
 import AchievementsScreen from '@/components/screens/AchievementsScreen';
 import QuizScreen from '@/components/screens/QuizScreen';
 import { WorldMapScreen } from '@/components/screens/WorldMapScreen';
+import { BottomNavBar } from '@/components/layout/BottomNavBar';
+import { OnboardingModal } from '@/components/OnboardingModal';
 import type { ScreenType } from '@/types/story';
 
 const screenComponents: Record<ScreenType, React.ComponentType> = {
@@ -59,6 +61,7 @@ function AppInner() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950 transition-colors duration-500">
       <ThemeHandler />
+      <OnboardingModal />
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div
@@ -73,7 +76,7 @@ function AppInner() {
         </AnimatePresence>
       </main>
 
-      <footer className="mt-auto glass-card border-t border-amber-200/30 dark:border-stone-700/30 py-3 transition-colors duration-500">
+      <footer className="mt-auto glass-card border-t border-amber-200/30 dark:border-stone-700/30 py-3 pb-20 md:pb-3 transition-colors duration-500">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <p className="text-[10px] text-stone-500 dark:text-stone-400">
             Les Aventures Spirituelles de Nawfel — مغامرات نوفل الروحية
@@ -83,6 +86,7 @@ function AppInner() {
           </p>
         </div>
       </footer>
+      <BottomNavBar />
     </div>
   );
 }
