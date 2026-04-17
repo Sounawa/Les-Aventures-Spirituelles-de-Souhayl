@@ -1,11 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '@/components/AppContext';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft, Moon, Sun, Type, Gauge, Volume2, VolumeX,
-  RotateCcw, Check, Info,
+  Check, Info, Download, Upload, Trash2, Copy, Check,
 } from 'lucide-react';
 
 const fontSizeOptions = [
@@ -20,8 +21,50 @@ const speedOptions = [
   { value: 45, label: 'Lent', desc: 'Pour bien lire chaque mot' },
 ];
 
+const STORAGE_KEY = 'nawfel-save-v2';
+
 export function SettingsScreen() {
-  const { navigateTo, settings, updateSettings } = useApp();
+  const { navigateTo, settings, updateSettings, resetProgress } = useApp();
+  const [exportStatus, setExportStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [importStatus, setImportStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleExport = () => {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) { setExportStatus('error'); return; }
+      navigator.clipboard.writeText(data);
+      setExportStatus('copied');
+      setTimeout(() => setExportStatus('idle'), 2000);
+    } catch { setExportStatus('error'); }
+  };
+
+  const handleImport = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target?.result as string);
+          if (!data || typeof data !== 'object') { setImportStatus('error'); return; }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          setImportStatus('success');
+          setTimeout(() => { setImportStatus('idle'); window.location.reload(); }, 1000);
+        } catch { setImportStatus('error'); }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  };
+
+  const handleReset = () => {
+    if (confirm('Es-tu sûr de vouloir recommencer ? Toute ta progression sera perdue.')) {
+      resetProgress();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50 to-orange-50">
@@ -48,7 +91,6 @@ export function SettingsScreen() {
             Apparence
           </h2>
 
-          {/* Dark mode */}
           <div className="parchment-card rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
@@ -62,19 +104,12 @@ export function SettingsScreen() {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => updateSettings({ darkMode: !settings.darkMode })}
-              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${
-                settings.darkMode ? 'bg-amber-600' : 'bg-stone-200'
-              }`}
+              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.darkMode ? 'bg-amber-600' : 'bg-stone-200'}`}
             >
-              <motion.div
-                className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1"
-                animate={{ left: settings.darkMode ? '24px' : '4px' }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              />
+              <motion.div className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1" animate={{ left: settings.darkMode ? '24px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
             </motion.button>
           </div>
 
-          {/* Font size */}
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
@@ -87,28 +122,10 @@ export function SettingsScreen() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {fontSizeOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => updateSettings({ fontSize: opt.value })}
-                  className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${
-                    settings.fontSize === opt.value
-                      ? 'border-amber-400 bg-amber-50 shadow-sm'
-                      : 'border-stone-200 bg-white/50 hover:border-amber-200'
-                  }`}
-                >
-                  <p className={`font-medium text-stone-700 ${opt.size}`}>
-                    Aa
-                  </p>
+                <button key={opt.value} onClick={() => updateSettings({ fontSize: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.fontSize === opt.value ? 'border-amber-400 bg-amber-50 shadow-sm' : 'border-stone-200 bg-white/50 hover:border-amber-200'}`}>
+                  <p className={`font-medium text-stone-700 ${opt.size}`}>Aa</p>
                   <p className="text-[10px] text-stone-400 mt-0.5">{opt.label}</p>
-                  {settings.fontSize === opt.value && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="flex justify-center mt-1"
-                    >
-                      <Check className="w-3 h-3 text-amber-600" />
-                    </motion.div>
-                  )}
+                  {settings.fontSize === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-amber-600" /></motion.div>}
                 </button>
               ))}
             </div>
@@ -116,18 +133,11 @@ export function SettingsScreen() {
         </motion.section>
 
         {/* Lecture */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-3"
-        >
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-3">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
             <Gauge className="w-3 h-3" />
             Lecture
           </h2>
-
-          {/* Typewriter speed */}
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center">
@@ -140,68 +150,113 @@ export function SettingsScreen() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {speedOptions.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => updateSettings({ typewriterSpeed: opt.value })}
-                  className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${
-                    settings.typewriterSpeed === opt.value
-                      ? 'border-teal-400 bg-teal-50 shadow-sm'
-                      : 'border-stone-200 bg-white/50 hover:border-teal-200'
-                  }`}
-                >
+                <button key={opt.value} onClick={() => updateSettings({ typewriterSpeed: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.typewriterSpeed === opt.value ? 'border-teal-400 bg-teal-50 shadow-sm' : 'border-stone-200 bg-white/50 hover:border-teal-200'}`}>
                   <p className="text-xs font-medium text-stone-700">{opt.label}</p>
                   <p className="text-[10px] text-stone-400 mt-0.5">{opt.desc}</p>
-                  {settings.typewriterSpeed === opt.value && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="flex justify-center mt-1"
-                    >
-                      <Check className="w-3 h-3 text-teal-600" />
-                    </motion.div>
-                  )}
+                  {settings.typewriterSpeed === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-teal-600" /></motion.div>}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Sound */}
           <div className="parchment-card rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
-                {settings.soundEnabled
-                  ? <Volume2 className="w-5 h-5 text-rose-600" />
-                  : <VolumeX className="w-5 h-5 text-stone-400" />
-                }
+                {settings.soundEnabled ? <Volume2 className="w-5 h-5 text-rose-600" /> : <VolumeX className="w-5 h-5 text-stone-400" />}
               </div>
               <div>
                 <p className="text-sm font-medium text-stone-700">Sons</p>
                 <p className="text-xs text-stone-400">Effets sonores de l&apos;histoire</p>
               </div>
             </div>
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })}
-              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${
-                settings.soundEnabled ? 'bg-rose-500' : 'bg-stone-200'
-              }`}
-            >
-              <motion.div
-                className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1"
-                animate={{ left: settings.soundEnabled ? '24px' : '4px' }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              />
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })} className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.soundEnabled ? 'bg-rose-500' : 'bg-stone-200'}`}>
+              <motion.div className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1" animate={{ left: settings.soundEnabled ? '24px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
             </motion.button>
           </div>
         </motion.section>
 
+        {/* Données */}
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-3">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
+            <Download className="w-3 h-3" />
+            Données
+          </h2>
+
+          {/* Export */}
+          <div className="parchment-card rounded-xl p-4 space-y-3">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <Download className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-stone-700">Exporter la sauvegarde</p>
+                <p className="text-xs text-stone-400">Copier dans le presse-papiers pour partager</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleExport}
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                disabled={exportStatus !== 'idle'}
+              >
+                {exportStatus === 'copied' ? <Check className="w-3 h-3 mr-1" /> : <Copy className="w-3 h-3 mr-1" />}
+                {exportStatus === 'copied' ? 'Copié !' : exportStatus === 'error' ? 'Erreur' : 'Copier'}
+              </Button>
+            </div>
+          </div>
+
+          {/* Import */}
+          <div className="parchment-card rounded-xl p-4 space-y-3">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                <Upload className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-stone-700">Importer une sauvegarde</p>
+                <p className="text-xs text-stone-400">Restaurer depuis un fichier JSON</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleImport}
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                disabled={importStatus !== 'idle'}
+              >
+                {importStatus === 'success' ? <Check className="w-3 h-3 mr-1" /> : <Upload className="w-3 h-3 mr-1" />}
+                {importStatus === 'success' ? 'Importé !' : 'Importer'}
+              </Button>
+            </div>
+          </div>
+
+          {/* Reset */}
+          <div className="parchment-card rounded-xl p-4 space-y-3">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-stone-700">Réinitialiser</p>
+                <p className="text-xs text-stone-400">Supprimer toute progression</p>
+              </div>
+            </div>
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              size="sm"
+              className="w-full border-red-200 text-red-600 hover:bg-red-50"
+            >
+              <Trash2 className="w-3 h-3 mr-1" />
+              Réinitialiser la progression
+            </Button>
+          </div>
+        </motion.section>
+
         {/* Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="parchment-card rounded-xl p-4"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="parchment-card rounded-xl p-4">
           <div className="flex items-start gap-3">
             <Info className="w-4 h-4 text-stone-400 mt-0.5 shrink-0" />
             <div className="text-xs text-stone-500 leading-relaxed">
@@ -211,7 +266,7 @@ export function SettingsScreen() {
                 concepts du Tassawuf (soufisme) aux enfants de 8 à 12 ans à travers une aventure
                 passionnante. Basé sur les enseignements authentiques de l&apos;Islam.
               </p>
-              <p className="mt-2 text-stone-400">Version 2.0 — Nouvelles fonctionnalités ajoutées !</p>
+              <p className="mt-2 text-stone-400">Version 3.0 — Succès, quiz étendus, narration audio, export de sauvegarde</p>
             </div>
           </div>
         </motion.div>

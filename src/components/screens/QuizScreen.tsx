@@ -5,16 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '@/components/AppContext';
 import { getChapter } from '@/data/tomes';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Brain, CheckCircle2, XCircle, Trophy, Star } from 'lucide-react';
-
-interface QuizQuestion {
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
-}
+import { ArrowLeft, Brain, CheckCircle2, XCircle, Trophy, Star, Volume2, VolumeX } from 'lucide-react';
+import { quizQuestions } from '@/data/quizData';
+import type { QuizQuestion } from '@/data/quizData';
+import { useNarration } from '@/hooks/useNarration';
 
 const chapterQuizzes: Record<string, QuizQuestion[]> = {
+  // Tome 1 quizzes are in quizData.ts — see that file
   t1c1: [
     { question: "Comment s'appelle le village où habite Nawfel ?", options: ["Marrakech", "Chefchaouen", "Fès", "Casablanca"], correctIndex: 1, explanation: "Nawfel habite dans un petit village au pied des montagnes du Rif, Chefchaouen, connu pour ses maisons bleues et blanches." },
     { question: "Que signifie le mot gravé au-dessus de la porte dans le rêve de Nawfel ?", options: ["Rûh (l'esprit)", "Qalb (le cœur)", "Nafs (l'âme)", "Aql (l'intellect)"], correctIndex: 1, explanation: "Le mot « قلب » (Qalb) signifie « le cœur ». C'est la porte du monde intérieur de Nawfel." },
@@ -46,7 +43,8 @@ const chapterQuizzes: Record<string, QuizQuestion[]> = {
 };
 
 export default function QuizScreen() {
-  const { setScreen, selectedTomeId, selectedChapterId, completeChapter, setQuizScore, quizScores } = useApp();
+  const { navigateTo, selectedTomeId, selectedChapterId, completeChapter, setQuizScore, quizScores, settings, updateSettings } = useApp();
+  const { speak, stop: stopNarration, isSpeaking } = useNarration();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -57,7 +55,9 @@ export default function QuizScreen() {
     ? getChapter(selectedTomeId, selectedChapterId)
     : null;
 
-  const questions = chapter ? (chapterQuizzes[chapter.id] || generateDefaultQuiz(chapter)) : [];
+  // Merge all quiz data sources
+  const allQuizzes = { ...chapterQuizzes, ...quizQuestions };
+  const questions = chapter ? (allQuizzes[chapter.id] || generateDefaultQuiz(chapter)) : [];
 
   const handleAnswer = useCallback((index: number) => {
     if (showResult) return;
@@ -94,8 +94,8 @@ export default function QuizScreen() {
   }, []);
 
   const handleBack = useCallback(() => {
-    setScreen('chapter_select');
-  }, [setScreen]);
+    navigateTo('chapter_select');
+  }, [navigateTo]);
 
   const bestScore = chapter ? (quizScores[chapter.id] || 0) : 0;
 
@@ -115,6 +115,18 @@ export default function QuizScreen() {
             {chapter && <p className="text-xs text-amber-600" dir="rtl">{chapter.titleAr}</p>}
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                if (isSpeaking) { stopNarration(); }
+                else { speak(questions[currentQuestion]?.question || ''); }
+              }}
+              className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 hover:bg-purple-200 transition-colors"
+              title={isSpeaking ? 'Arrêter la lecture' : 'Écouter la question'}
+            >
+              {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </motion.button>
             <Brain className="w-5 h-5 text-purple-500" />
             <span className="text-sm font-bold text-purple-700">{score}/{questions.length}</span>
           </div>

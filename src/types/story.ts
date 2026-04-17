@@ -89,7 +89,8 @@ export type ScreenType =
   | 'quiz'
   | 'settings'
   | 'stats'
-  | 'journal';
+  | 'journal'
+  | 'achievements';
 
 export interface GameState {
   currentScreen: ScreenType;

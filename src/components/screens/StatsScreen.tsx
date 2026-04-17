@@ -8,7 +8,7 @@ import { badges } from '@/data/badges';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft, BookOpen, Trophy, Star, Brain,
-  Flame, Target, Calendar, TrendingUp,
+  Flame, Target, TrendingUp,
 } from 'lucide-react';
 
 function StatCard({
