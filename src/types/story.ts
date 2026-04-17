@@ -94,7 +94,8 @@ export type ScreenType =
   | 'map'
   | 'profile'
   | 'memory_game'
-  | 'dhikr_counter';
+  | 'dhikr_counter'
+  | 'prayer_times';
 
 export interface GameState {
   currentScreen: ScreenType;

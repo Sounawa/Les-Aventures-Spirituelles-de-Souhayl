@@ -19,7 +19,9 @@ import { WorldMapScreen } from '@/components/screens/WorldMapScreen';
 import MemoryGameScreen from '@/components/screens/MemoryGameScreen';
 import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { DhikrCounterScreen } from '@/components/screens/DhikrCounterScreen';
+import { PrayerTimesScreen } from '@/components/screens/PrayerTimesScreen';
 import { BottomNavBar } from '@/components/layout/BottomNavBar';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import { OnboardingModal } from '@/components/OnboardingModal';
 import { AchievementPopup } from '@/components/AchievementPopup';
 import { Toaster } from '@/components/ui/sonner';
@@ -42,6 +44,7 @@ const screenComponents: Record<ScreenType, React.ComponentType> = {
   profile: ProfileScreen,
   memory_game: MemoryGameScreen,
   dhikr_counter: DhikrCounterScreen,
+  prayer_times: PrayerTimesScreen,
 };
 
 function Hydrator({ children }: { children: React.ReactNode }) {
@@ -84,16 +87,32 @@ function AppInner() {
         </AnimatePresence>
       </main>
 
-      <footer className="mt-auto glass-card border-t border-amber-200/30 dark:border-stone-700/30 py-3 pb-20 md:pb-3 transition-colors duration-500">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <p className="text-[10px] text-stone-500 dark:text-stone-400">
-            Les Aventures Spirituelles de Nawfel — مغامرات نوفل الروحية
-          </p>
-          <p className="text-[10px] text-stone-400 dark:text-stone-600 mt-0.5">
-            Un livre dont tu es le héros • Basé sur les enseignements du Tassawuf
-          </p>
+      <footer className="mt-auto relative transition-colors duration-500">
+        {/* Top gradient border */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 dark:via-amber-500/30 to-transparent" />
+        <div className="glass-card border-t border-amber-200/30 dark:border-stone-700/30 py-4 pb-20 md:pb-4">
+          <div className="max-w-2xl mx-auto px-4 text-center">
+            <p className="text-[10px] text-stone-500 dark:text-stone-400">
+              Les Aventures Spirituelles de Nawfel — مغامرات نوفل الروحية
+            </p>
+            <div className="flex items-center justify-center gap-2 my-1">
+              <span className="text-amber-400 dark:text-amber-500 text-xs">🌙</span>
+              <span className="text-stone-300 dark:text-stone-600">✦</span>
+              <span className="text-amber-300 dark:text-amber-500 text-[10px]">⭐</span>
+              <span className="text-stone-300 dark:text-stone-600">✦</span>
+              <span className="text-amber-400 dark:text-amber-500 text-xs">🌙</span>
+            </div>
+            <p className="text-[10px] text-stone-400 dark:text-stone-600">
+              Un livre dont tu es le héros • Basé sur les enseignements du Tassawuf
+            </p>
+            <p className="text-[10px] text-stone-400/70 dark:text-stone-600/50 mt-1">
+              Fait avec ❤️ pour les jeunes musulmans
+            </p>
+            <p className="text-[9px] text-stone-300 dark:text-stone-700 mt-1">v3.7</p>
+          </div>
         </div>
       </footer>
+      <ScrollToTop />
       <BottomNavBar />
       <AchievementPopup />
       <Toaster />

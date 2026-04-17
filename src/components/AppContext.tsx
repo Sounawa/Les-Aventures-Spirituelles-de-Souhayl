@@ -41,6 +41,7 @@ interface AppState {
   totalDhikr: number;
   totalDhikrSessions: number;
   achievements: string[];
+  prayerTimesCity: string;
 }
 
 export interface JournalEntry {
@@ -99,6 +100,8 @@ interface AppContextType {
   totalDhikrSessions: number;
   updateDhikrSession: (count: number) => void;
   achievements: string[];
+  prayerTimesCity: string;
+  setPrayerTimesCity: (city: string) => void;
   achievementPopup: Achievement | null;
   dismissAchievement: () => void;
   checkAchievements: () => void;
@@ -140,6 +143,7 @@ const defaultState: AppState = {
   totalDhikr: 0,
   totalDhikrSessions: 0,
   achievements: [],
+  prayerTimesCity: 'paris',
 };
 
 function readStorage(): Partial<AppState> {
@@ -181,6 +185,7 @@ function writeStorage(state: AppState) {
       totalDhikr: state.totalDhikr,
       totalDhikrSessions: state.totalDhikrSessions,
       achievements: state.achievements,
+      prayerTimesCity: state.prayerTimesCity,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch { /* noop */ }
@@ -258,6 +263,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         totalDhikr: saved.totalDhikr || 0,
         totalDhikrSessions: saved.totalDhikrSessions || 0,
         achievements: saved.achievements || [],
+        prayerTimesCity: saved.prayerTimesCity || 'paris',
         screen: 'home' as ScreenType,
       }));
     } else if (saved.settings || saved.hasSeenOnboarding) {
@@ -362,6 +368,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       totalDhikr: prev.totalDhikr + count,
       totalDhikrSessions: prev.totalDhikrSessions + 1,
     }));
+  }, [updateAndPersist]);
+
+  const setPrayerTimesCityFn = useCallback((city: string) => {
+    updateAndPersist(prev => ({ ...prev, prayerTimesCity: city }));
   }, [updateAndPersist]);
 
   const dismissAchievement = useCallback(() => {
@@ -499,6 +509,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       memoryBestScore: state.memoryBestScore, memoryGamesPlayed: state.memoryGamesPlayed, updateMemoryScore: updateMemoryScoreWithCheck,
       totalDhikr: state.totalDhikr, totalDhikrSessions: state.totalDhikrSessions, updateDhikrSession: updateDhikrSessionWithCheck,
       achievements: state.achievements,
+      prayerTimesCity: state.prayerTimesCity, setPrayerTimesCity: setPrayerTimesCityFn,
       achievementPopup, dismissAchievement, checkAchievements: checkAchievementsFn,
       completeChapter: completeChapterWithCheck,
     }}>
