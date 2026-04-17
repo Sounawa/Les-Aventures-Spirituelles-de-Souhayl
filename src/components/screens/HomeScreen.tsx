@@ -8,14 +8,14 @@ import { getDailyWisdom } from '@/data/wisdom';
 import { getDailyChallenge, categoryLabels } from '@/data/dailyChallenges';
 import { getDailyDua, duaCategoryConfig } from '@/data/duas';
 import { getDailyVerse, verseThemeConfig } from '@/data/quranVerses';
-import { getNextPrayer, getTimeRemaining } from '@/data/prayerTimes';
+
 import { toast } from 'sonner';
-import { formatHijriFr } from '@/lib/hijriDate';
+
 import { Button } from '@/components/ui/button';
 import {
   BookOpen, Users, Play, RotateCcw,
   BarChart3, BookHeart, Settings, Sparkles, ChevronRight,
-  Moon, Sun, Map, Trophy, Star, BookmarkCheck, Check, Brain, Heart, Clock,
+  Moon, Sun, Map, Trophy, Star, BookmarkCheck, Check, Brain, Heart,
 } from 'lucide-react';
 
 // Floating particle component - enhanced
@@ -538,58 +538,6 @@ function DailyChallengeCard() {
   );
 }
 
-// Prayer Times quick widget for HomeScreen
-function PrayerTimesWidget() {
-  const { prayerTimesCity, navigateTo } = useApp();
-
-  const nextPrayer = useMemo(() => getNextPrayer(prayerTimesCity), [prayerTimesCity]);
-  const timeRemaining = useMemo(() => getTimeRemaining(prayerTimesCity), [prayerTimesCity]);
-
-  if (!nextPrayer) return null;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.2 }}
-      className="max-w-lg lg:max-w-none mx-auto"
-    >
-      <motion.button
-        whileHover={{ scale: 1.01, y: -1 }}
-        whileTap={{ scale: 0.99 }}
-        onClick={() => navigateTo('prayer_times')}
-        className="w-full flex items-center gap-3 px-4 py-3 glass-card rounded-xl shadow-sm hover:shadow-md transition-all text-stone-600 dark:text-stone-300 border border-transparent hover:border-amber-200/40 dark:hover:border-amber-700/30"
-      >
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center shrink-0">
-          <span className="text-lg">🕌</span>
-        </div>
-        <div className="text-left flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-stone-700 dark:text-stone-200">Prières</span>
-            <span className="text-[9px] text-stone-400 dark:text-stone-500">
-              {nextPrayer.city.flag} {nextPrayer.city.name}
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5 mt-0.5">
-            <Clock className="w-3 h-3 text-amber-500 dark:text-amber-400" />
-            <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
-              Prochain : {nextPrayer.prayer.name} à {String(nextPrayer.prayer.hour).padStart(2, '0')}:{String(nextPrayer.prayer.minute).padStart(2, '0')}
-            </span>
-            <span className="text-[9px] text-stone-400 dark:text-stone-500">· {timeRemaining}</span>
-          </div>
-        </div>
-        <motion.span
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="text-base shrink-0"
-        >
-          {nextPrayer.prayer.icon}
-        </motion.span>
-      </motion.button>
-    </motion.div>
-  );
-}
-
 export function HomeScreen() {
   const {
     setScreen, navigateTo, selectTome,
@@ -737,21 +685,6 @@ export function HomeScreen() {
           >
             مغامرات نوفل الروحية
           </motion.p>
-
-          {/* Hijri date badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75 }}
-            className="mt-3 mb-2"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 glass-card rounded-full border border-amber-200/40 dark:border-amber-700/30 text-xs">
-              <span className="text-amber-500 dark:text-amber-400">🌙</span>
-              <span className="text-stone-600 dark:text-stone-300 font-medium">
-                {formatHijriFr()}
-              </span>
-            </span>
-          </motion.div>
 
           {/* Decorative line */}
           <motion.div
@@ -1001,13 +934,6 @@ export function HomeScreen() {
             </motion.button>
           </motion.div>
         </motion.div>
-      </div>
-
-      {/* Prayer times quick access widget */}
-      <div className="relative z-10 px-4 pb-3">
-        <div className="max-w-lg lg:max-w-5xl mx-auto">
-          <PrayerTimesWidget />
-        </div>
       </div>
 
       {/* Secondary actions row - staggered */}
