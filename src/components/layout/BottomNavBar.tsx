@@ -55,7 +55,7 @@ export function BottomNavBar() {
                     }`}
                   />
                   <span
-                    className={`text-[10px] font-medium transition-colors duration-200 ${
+                    className={`text-[11px] font-medium transition-colors duration-200 ${
                       isActive
                         ? 'text-amber-600 dark:text-amber-400'
                         : 'text-stone-400 dark:text-stone-500'

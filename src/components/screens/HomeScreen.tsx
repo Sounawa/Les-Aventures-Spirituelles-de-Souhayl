@@ -574,7 +574,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigateTo('settings')}
-            className="w-12 h-12 rounded-full glass-card border border-amber-200/30 dark:border-stone-600/40 flex items-center justify-center text-stone-500 dark:text-stone-300 hover:text-stone-700 dark:hover:text-stone-100 shadow-md transition-colors"
+            className="w-12 h-12 rounded-full glass-card border border-amber-200/30 dark:border-stone-600/40 flex items-center justify-center text-stone-500 dark:text-stone-200 hover:text-stone-700 dark:hover:text-stone-100 shadow-md transition-colors"
             aria-label="Paramètres"
           >
             <Settings className="w-5 h-5" />
@@ -583,7 +583,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => updateSettings({ darkMode: !settings.darkMode })}
-            className="w-12 h-12 rounded-full glass-card border border-amber-200/30 dark:border-stone-600/40 flex items-center justify-center text-stone-500 dark:text-stone-300 hover:text-stone-700 dark:hover:text-stone-100 shadow-md transition-colors"
+            className="w-12 h-12 rounded-full glass-card border border-amber-200/30 dark:border-stone-600/40 flex items-center justify-center text-stone-500 dark:text-stone-200 hover:text-stone-700 dark:hover:text-stone-100 shadow-md transition-colors"
             aria-label={settings.darkMode ? 'Mode clair' : 'Mode sombre'}
           >
             {settings.darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -776,7 +776,7 @@ export function HomeScreen() {
 
       {/* Daily wisdom + Du'a side by side on desktop */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
           <WisdomCard />
           <DailyDuaCard />
         </div>
@@ -784,7 +784,7 @@ export function HomeScreen() {
 
       {/* Quran Verse + Fun Facts side by side on desktop */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
           <QuranVerseCard />
           <FunFacts />
         </div>
@@ -792,14 +792,14 @@ export function HomeScreen() {
 
       {/* Daily Challenge */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-4xl mx-auto">
+        <div className="max-w-lg lg:max-w-5xl mx-auto">
           <DailyChallengeCard />
         </div>
       </div>
 
       {/* Quick access cards - enhanced grid */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-lg lg:max-w-4xl mx-auto grid grid-cols-4 gap-2.5">
+        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-4 gap-2.5">
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -868,7 +868,7 @@ export function HomeScreen() {
 
       {/* Feature cards: Dhikr + Mini-Jeux side by side */}
       <div className="relative z-10 px-4 pb-3">
-        <div className="max-w-lg lg:max-w-4xl mx-auto grid grid-cols-2 gap-2.5">
+        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-2 gap-2.5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -916,7 +916,7 @@ export function HomeScreen() {
 
       {/* Secondary actions row - enhanced */}
       <div className="relative z-10 px-4 pb-6">
-        <div className="max-w-lg lg:max-w-4xl mx-auto grid grid-cols-3 gap-2.5">
+        <div className="max-w-lg lg:max-w-5xl mx-auto grid grid-cols-3 gap-2.5">
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -963,7 +963,7 @@ export function HomeScreen() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.0 }}
-            className="mt-3 max-w-lg lg:max-w-4xl mx-auto"
+            className="mt-3 max-w-lg lg:max-w-5xl mx-auto"
           >
             <button
               onClick={() => navigateTo('lesson')}

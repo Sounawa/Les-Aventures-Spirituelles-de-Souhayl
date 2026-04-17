@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { createContext, useContext, type ReactNode } from 'react';
 import type { ScreenType } from '@/types/story';
 import { getDailyChallenge } from '@/data/dailyChallenges';
+import { getUnlockedAchievements, getAchievement, type Achievement } from '@/data/achievements';
+export type { Achievement };
 
 interface AppSettings {
   darkMode: boolean;
@@ -38,6 +40,7 @@ interface AppState {
   memoryGamesPlayed: number;
   totalDhikr: number;
   totalDhikrSessions: number;
+  achievements: string[];
 }
 
 export interface JournalEntry {
@@ -95,6 +98,10 @@ interface AppContextType {
   totalDhikr: number;
   totalDhikrSessions: number;
   updateDhikrSession: (count: number) => void;
+  achievements: string[];
+  achievementPopup: Achievement | null;
+  dismissAchievement: () => void;
+  checkAchievements: () => void;
 }
 
 const STORAGE_KEY = 'nawfel-save-v3';
@@ -132,6 +139,7 @@ const defaultState: AppState = {
   memoryGamesPlayed: 0,
   totalDhikr: 0,
   totalDhikrSessions: 0,
+  achievements: [],
 };
 
 function readStorage(): Partial<AppState> {
@@ -172,6 +180,7 @@ function writeStorage(state: AppState) {
       memoryGamesPlayed: state.memoryGamesPlayed,
       totalDhikr: state.totalDhikr,
       totalDhikrSessions: state.totalDhikrSessions,
+      achievements: state.achievements,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch { /* noop */ }
@@ -211,6 +220,13 @@ const AppContext = createContext<AppContextType | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>(defaultState);
+  const [achievementPopup, setAchievementPopup] = useState<Achievement | null>(null);
+  const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stateRef = useRef(state);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   const hydrate = useCallback(() => {
     let saved = readStorage();
@@ -241,6 +257,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         memoryGamesPlayed: saved.memoryGamesPlayed || 0,
         totalDhikr: saved.totalDhikr || 0,
         totalDhikrSessions: saved.totalDhikrSessions || 0,
+        achievements: saved.achievements || [],
         screen: 'home' as ScreenType,
       }));
     } else if (saved.settings || saved.hasSeenOnboarding) {
@@ -347,6 +364,62 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, [updateAndPersist]);
 
+  const dismissAchievement = useCallback(() => {
+    if (popupTimerRef.current) {
+      clearTimeout(popupTimerRef.current);
+      popupTimerRef.current = null;
+    }
+    setAchievementPopup(null);
+  }, []);
+
+  const checkAchievementsFn = useCallback(() => {
+    const s = stateRef.current;
+    const unlockedIds = getUnlockedAchievements({
+      completedChapters: s.completedChapters,
+      completedChallenges: s.completedChallenges,
+      earnedBadges: s.earnedBadges,
+      totalDhikr: s.totalDhikr,
+      totalDhikrSessions: s.totalDhikrSessions,
+      memoryBestScore: s.memoryBestScore,
+      memoryGamesPlayed: s.memoryGamesPlayed,
+      dailyStreak: s.dailyStreak,
+      readingDays: s.readingDays,
+      quizScores: s.quizScores,
+      journalEntries: s.journalEntries,
+      challengeXP: s.challengeXP,
+    });
+
+    const prevIds = s.achievements;
+    const newIds = unlockedIds.filter(id => !prevIds.includes(id));
+
+    if (newIds.length > 0) {
+      const updatedAchievements = [...prevIds, ...newIds];
+      updateAndPersist(prev => ({ ...prev, achievements: updatedAchievements }));
+
+      // Show popup for the first new achievement
+      const firstNew = getAchievement(newIds[0]);
+      if (firstNew) {
+        setAchievementPopup(firstNew);
+        if (popupTimerRef.current) clearTimeout(popupTimerRef.current);
+        popupTimerRef.current = setTimeout(() => {
+          setAchievementPopup(null);
+          popupTimerRef.current = null;
+        }, 4000);
+      }
+    }
+  }, [updateAndPersist]);
+
+  // Auto-check achievements after relevant state changes
+  const updateDhikrSessionWithCheck = useCallback((count: number) => {
+    updateDhikrSession(count);
+    setTimeout(() => checkAchievementsFn(), 100);
+  }, [updateDhikrSession, checkAchievementsFn]);
+
+  const updateMemoryScoreWithCheck = useCallback((moves: number) => {
+    updateMemoryScore(moves);
+    setTimeout(() => checkAchievementsFn(), 100);
+  }, [updateMemoryScore, checkAchievementsFn]);
+
   const setHasSeenOnboarding = useCallback(() => {
     updateAndPersist(prev => ({ ...prev, hasSeenOnboarding: true }));
   }, [updateAndPersist]);
@@ -362,6 +435,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
         : prev.challengeXP + getDailyChallenge().xp,
     }));
   }, [updateAndPersist]);
+
+  const completeChallengeWithCheck = useCallback((date: string) => {
+    completeChallenge(date);
+    setTimeout(() => checkAchievementsFn(), 100);
+  }, [completeChallenge, checkAchievementsFn]);
+
+  const completeChapterWithCheck = useCallback((id: string) => {
+    completeChapter(id);
+    setTimeout(() => checkAchievementsFn(), 100);
+  }, [completeChapter, checkAchievementsFn]);
+
+  const updateProfileWithCheck = useCallback((profile: { playerName?: string; playerAvatar?: string; playerColor?: string }) => {
+    updateProfile(profile);
+    setTimeout(() => checkAchievementsFn(), 100);
+  }, [updateProfile, checkAchievementsFn]);
 
   const updateStreak = useCallback(() => {
     updateAndPersist(prev => {
@@ -405,11 +493,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       bookmarkedScenes: state.bookmarkedScenes, toggleBookmark,
       dailyStreak: state.dailyStreak, lastPlayDate: state.lastPlayDate, updateStreak,
       hasSeenOnboarding: state.hasSeenOnboarding, setHasSeenOnboarding,
-      completedChallenges: state.completedChallenges, completeChallenge, challengeXP: state.challengeXP,
+      completedChallenges: state.completedChallenges, completeChallenge: completeChallengeWithCheck, challengeXP: state.challengeXP,
       readingDays: state.readingDays,
-      playerName: state.playerName, playerAvatar: state.playerAvatar, playerColor: state.playerColor, updateProfile,
-      memoryBestScore: state.memoryBestScore, memoryGamesPlayed: state.memoryGamesPlayed, updateMemoryScore,
-      totalDhikr: state.totalDhikr, totalDhikrSessions: state.totalDhikrSessions, updateDhikrSession,
+      playerName: state.playerName, playerAvatar: state.playerAvatar, playerColor: state.playerColor, updateProfile: updateProfileWithCheck,
+      memoryBestScore: state.memoryBestScore, memoryGamesPlayed: state.memoryGamesPlayed, updateMemoryScore: updateMemoryScoreWithCheck,
+      totalDhikr: state.totalDhikr, totalDhikrSessions: state.totalDhikrSessions, updateDhikrSession: updateDhikrSessionWithCheck,
+      achievements: state.achievements,
+      achievementPopup, dismissAchievement, checkAchievements: checkAchievementsFn,
+      completeChapter: completeChapterWithCheck,
     }}>
       {children}
     </AppContext.Provider>

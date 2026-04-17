@@ -1,389 +1,348 @@
 import { tomes } from '@/data/tomes';
 
 // ─────────────────────────────────────────────────────────────
-// Achievement System — Les Aventures Spirituelles de Nawfel
+// Islamic Learning Badges & Achievements System
+// Les Aventures Spirituelles de Nawfel
 // ─────────────────────────────────────────────────────────────
 
-export type AchievementCategory = 'progress' | 'wisdom' | 'exploration' | 'social';
+export type AchievementCategory = 'lecture' | 'sagesse' | 'spiritualite' | 'defis' | 'jeux';
 
 export interface Achievement {
   id: string;
-  name: string;
-  nameAr: string;
+  title: string;
   description: string;
   icon: string;
-  color: string;
-  condition: string;
   category: AchievementCategory;
+  color: string;
+}
+
+export interface AchievementState {
+  completedChapters: string[];
+  completedChallenges: string[];
+  earnedBadges: string[];
+  totalDhikr: number;
+  totalDhikrSessions: number;
+  memoryBestScore: number;
+  memoryGamesPlayed: number;
+  dailyStreak: number;
+  readingDays: string[];
+  quizScores: Record<string, number>;
+  journalEntries: { id: string }[];
+  challengeXP: number;
 }
 
 // ─────────────────────────────────────────────────────────────
-// Achievement Definitions
+// Category Configuration
+// ─────────────────────────────────────────────────────────────
+
+export const achievementCategories: { key: AchievementCategory; label: string; icon: string; color: string }[] = [
+  { key: 'lecture', label: 'Lecture', icon: '📖', color: '#D97706' },
+  { key: 'sagesse', label: 'Sagesse', icon: '🧠', color: '#7C3AED' },
+  { key: 'spiritualite', label: 'Spiritualité', icon: '📿', color: '#0D9488' },
+  { key: 'defis', label: 'Défis', icon: '⭐', color: '#EA580C' },
+  { key: 'jeux', label: 'Jeux', icon: '🎮', color: '#DB2777' },
+];
+
+// ─────────────────────────────────────────────────────────────
+// 20 Achievements
 // ─────────────────────────────────────────────────────────────
 
 export const achievements: Achievement[] = [
-  // ─── PROGRESS ─────────────────────────────────────────────
+  // ─── 📖 LECTURE (5) ───────────────────────────────────────
   {
-    id: 'first_chapter',
-    name: 'Première Lecture',
-    nameAr: 'أول قراءة',
-    description: 'Tu as lu ton premier chapitre de l\'aventure de Nawfel. Le voyage intérieur commence.',
+    id: 'first_lecture',
+    title: 'Première Lecture',
+    description: "Tu as lu ton premier chapitre. Le voyage spirituel commence !",
     icon: '📖',
-    color: '#6366F1',
-    condition: 'completedChapters.length >= 1',
-    category: 'progress',
-  },
-  {
-    id: 'explorer',
-    name: 'Explorateur',
-    nameAr: 'مستكشف',
-    description: 'Tu as exploré 5 chapitres. Ton cœur s\'ouvre à la sagesse.',
-    icon: '🧭',
-    color: '#0EA5E9',
-    condition: 'completedChapters.length >= 5',
-    category: 'progress',
-  },
-  {
-    id: 'truth_seeker',
-    name: 'Chercheur de Vérité',
-    nameAr: 'باحث الحقيقة',
-    description: 'Tu as complété 10 chapitres. La quête spirituelle s\'approfondit.',
-    icon: '🔭',
-    color: '#7C3AED',
-    condition: 'completedChapters.length >= 10',
-    category: 'progress',
-  },
-  {
-    id: 'spiritual_master',
-    name: 'Maître Spirituel',
-    nameAr: 'أستاذ روحي',
-    description: 'Tu as complété tous les chapitres de l\'histoire. Tu es devenu un maître du cheminement spirituel.',
-    icon: '👑',
-    color: '#F59E0B',
-    condition: 'completedChapters.length === totalChapters',
-    category: 'progress',
-  },
-  {
-    id: 'tome1_complete',
-    name: 'Tome I Conquis',
-    nameAr: 'المجلد الأول مكتمل',
-    description: 'Tu as complété le Tome I — L\'Éveil. La porte du cœur est grande ouverte.',
-    icon: '📕',
-    color: '#DC2626',
-    condition: 'All chapters of tome 1 completed',
-    category: 'progress',
-  },
-  {
-    id: 'complete_sage',
-    name: 'Sage Complet',
-    nameAr: 'حكيم كامل',
-    description: 'Tu as complété les 5 tomes de l\'aventure. Nawfel n\'a plus de secrets pour toi.',
-    icon: '🌟',
+    category: 'lecture',
     color: '#D97706',
-    condition: 'All 5 tomes completed',
-    category: 'progress',
+  },
+  {
+    id: 'lecteur_passionne',
+    title: 'Lecteur Passionné',
+    description: "Tu as complété 5 chapitres. Ton cœur s'ouvre à la sagesse.",
+    icon: '📚',
+    category: 'lecture',
+    color: '#D97706',
+  },
+  {
+    id: 'explorateur_tomes',
+    title: 'Explorateur des Tomes',
+    description: "Tu as exploré des chapitres dans 3 tomes différents.",
+    icon: '🧭',
+    category: 'lecture',
+    color: '#D97706',
+  },
+  {
+    id: 'maitre_histoires',
+    title: 'Maître des Histoires',
+    description: "Tu as complété 10 chapitres. La quête spirituelle s'approfondit.",
+    icon: '👑',
+    category: 'lecture',
+    color: '#D97706',
+  },
+  {
+    id: 'tous_tomes_complets',
+    title: 'Tous les Tomes Complétés',
+    description: "Tu as complété tous les chapitres de l'aventure. Masha'Allah !",
+    icon: '🌟',
+    category: 'lecture',
+    color: '#D97706',
   },
 
-  // ─── WISDOM ───────────────────────────────────────────────
+  // ─── 🧠 SAGESSE (3) ───────────────────────────────────────
   {
-    id: 'first_wisdom',
-    name: 'Première Sagesse',
-    nameAr: 'الحكمة الأولى',
-    description: 'Tu as passé ton premier quiz. La connaissance est une lumière que l\'on porte en soi.',
-    icon: '🧠',
-    color: '#8B5CF6',
-    condition: 'Object.keys(quizScores).length >= 1',
-    category: 'wisdom',
-  },
-  {
-    id: 'perfect_student',
-    name: 'Élève Exemplaire',
-    nameAr: 'تلميذ مثالي',
-    description: 'Tu as obtenu 100% à un quiz. Ton cœur retient la sagesse à la perfection, Masha\'Allah.',
-    icon: '💯',
-    color: '#10B981',
-    condition: 'Any quiz with perfect score (all correct)',
-    category: 'wisdom',
-  },
-  {
-    id: 'scholar',
-    name: 'Érudit',
-    nameAr: 'عالم',
-    description: 'Tu as complété 5 quiz. Le savoir s\'accumule comme les gouttes d\'eau qui forment un océan.',
-    icon: '🎓',
-    color: '#2563EB',
-    condition: 'Object.keys(quizScores).length >= 5',
-    category: 'wisdom',
-  },
-  {
-    id: 'wise_heart',
-    name: 'Cœur Savant',
-    nameAr: 'قلب عالم',
-    description: 'Tu as complété tous les quiz. Ton cœur est rempli de connaissance et de lumière.',
-    icon: '💡',
-    color: '#F59E0B',
-    condition: 'All quizzes completed',
-    category: 'wisdom',
-  },
-
-  // ─── EXPLORATION ──────────────────────────────────────────
-  {
-    id: 'collector',
-    name: 'Collectionneur',
-    nameAr: 'جامع',
-    description: 'Tu as obtenu ta première vertu spirituelle. Chaque badge est un pas vers la lumière.',
-    icon: '🏷️',
-    color: '#059669',
-    condition: 'earnedBadges.length >= 1',
-    category: 'exploration',
-  },
-  {
-    id: 'virtuous',
-    name: 'Vertueux',
-    nameAr: 'صاحب الفضيلة',
-    description: 'Tu as obtenu 5 vertus spirituelles. Tes qualités intérieures rayonnent comme des étoiles.',
-    icon: '🌺',
-    color: '#EC4899',
-    condition: 'earnedBadges.length >= 5',
-    category: 'exploration',
-  },
-  {
-    id: 'inner_light',
-    name: 'Lumière Intérieure',
-    nameAr: 'النور الداخلي',
-    description: 'Tu as collecté les 8 badges de vertus. La lumière de ton cœur illumine le monde.',
-    icon: '✨',
-    color: '#EAB308',
-    condition: 'earnedBadges.length >= 8',
-    category: 'exploration',
-  },
-  {
-    id: 'spiritual_writer',
-    name: 'Écrivain Spirituel',
-    nameAr: 'كاتب روحي',
-    description: 'Tu as écrit ta première réflexion dans le journal spirituel. L\'écriture est un miroir de l\'âme.',
-    icon: '📝',
-    color: '#0D9488',
-    condition: 'journalEntries.length >= 1',
-    category: 'exploration',
-  },
-  {
-    id: 'reflective',
-    name: 'Réflexif',
-    nameAr: 'متأمل',
-    description: 'Tu as écrit 5 réflexions spirituelles. La contemplation mène à la compréhension profonde.',
-    icon: '📜',
-    color: '#6D28D9',
-    condition: 'journalEntries.length >= 5',
-    category: 'exploration',
-  },
-
-  // ─── SOCIAL ───────────────────────────────────────────────
-  {
-    id: 'patience_pillar',
-    name: 'Pilier de Patience',
-    nameAr: 'عماد الصبر',
-    description: 'Tu as réussi un quiz du premier coup sans aucune erreur. La patience et la concentration portent leurs fruits.',
-    icon: '⚓',
-    color: '#14B8A6',
-    condition: 'Perfect first-attempt score on any quiz',
-    category: 'social',
-  },
-  {
-    id: 'faithful_path',
-    name: 'Fidèle au Chemin',
-    nameAr: 'المخلص للطريق',
-    description: 'Tu as visité tous les écrans de l\'application. Tu es un explorateur fidèle de l\'aventure de Nawfel.',
-    icon: '🗺️',
+    id: 'chercheur_verite',
+    title: 'Chercheur de Vérité',
+    description: "Tu as passé ton premier quiz. La connaissance est une lumière.",
+    icon: '🔍',
+    category: 'sagesse',
     color: '#7C3AED',
-    condition: 'All app screens visited',
-    category: 'social',
+  },
+  {
+    id: 'cœur_eclaire',
+    title: 'Cœur Éclairé',
+    description: "Tu as obtenu 100% à un quiz. Ton cœur retient la sagesse !",
+    icon: '💡',
+    category: 'sagesse',
+    color: '#7C3AED',
+  },
+  {
+    id: 'sage_en_herbe',
+    title: 'Sage en Herbe',
+    description: "Tu as complété 5 quiz. Le savoir s'accumule goutte par goutte.",
+    icon: '🎓',
+    category: 'sagesse',
+    color: '#7C3AED',
+  },
+
+  // ─── 📿 SPIRITUALITÉ (4) ──────────────────────────────────
+  {
+    id: 'dhikr_regulier',
+    title: 'Dhikr Régulier',
+    description: "Tu as complété 3 sessions de dhikr. Ton cœur se souvient d'Allah.",
+    icon: '📿',
+    category: 'spiritualite',
+    color: '#0D9488',
+  },
+  {
+    id: 'cœur_apaise',
+    title: 'Cœur Pacifié',
+    description: "Tu as récité 500 dhikrs au total. Le cœur trouve la paix.",
+    icon: '☮️',
+    category: 'spiritualite',
+    color: '#0D9488',
+  },
+  {
+    id: 'pilier_priere',
+    title: 'Pilier de la Prière',
+    description: "Tu as gardé une série de 7 jours consécutifs. La constance est une prière.",
+    icon: '🕌',
+    category: 'spiritualite',
+    color: '#0D9488',
+  },
+  {
+    id: 'amour_prophete',
+    title: "Amour du Prophète ﷺ",
+    description: "Tu as récité 1000 dhikrs. L'amour du Prophète éclaire ton chemin.",
+    icon: '🤲',
+    category: 'spiritualite',
+    color: '#0D9488',
+  },
+
+  // ─── ⭐ DÉFIS (4) ──────────────────────────────────────────
+  {
+    id: 'premier_defi',
+    title: 'Premier Défi',
+    description: "Tu as relevé ton premier défi spirituel quotidien.",
+    icon: '🎯',
+    category: 'defis',
+    color: '#EA580C',
+  },
+  {
+    id: 'defi_semaine',
+    title: 'Défi de la Semaine',
+    description: "Tu as accompli 5 défis quotidiens. La persévérance paie !",
+    icon: '📅',
+    category: 'defis',
+    color: '#EA580C',
+  },
+  {
+    id: 'champion_defis',
+    title: 'Champion des Défis',
+    description: "Tu as accumulé 200 XP de défis. Tu es un champion spirituel !",
+    icon: '🏆',
+    category: 'defis',
+    color: '#EA580C',
+  },
+  {
+    id: 'constance_royale',
+    title: 'Constance Royale',
+    description: "Tu as lu pendant 10 jours différents. La constance est la clé.",
+    icon: '👑',
+    category: 'defis',
+    color: '#EA580C',
+  },
+
+  // ─── 🎮 JEUX (4) ──────────────────────────────────────────
+  {
+    id: 'premiere_victoire',
+    title: 'Première Victoire',
+    description: "Tu as gagné ta première partie du Memory. Bravo !",
+    icon: '🎮',
+    category: 'jeux',
+    color: '#DB2777',
+  },
+  {
+    id: 'memoire_elephant',
+    title: 'Mémoire d\'Éléphant',
+    description: "Tu as joué 5 parties de Memory. Ton cerveau s'entraîne !",
+    icon: '🐘',
+    category: 'jeux',
+    color: '#DB2777',
+  },
+  {
+    id: 'speed_runner',
+    title: 'Speed Runner',
+    description: "Tu as terminé le Memory en moins de 16 coups. Vitesse et précision !",
+    icon: '⚡',
+    category: 'jeux',
+    color: '#DB2777',
+  },
+  {
+    id: 'badge_virtu',
+    title: 'Badge de Vertu',
+    description: "Tu as collecté 5 badges spirituels. Tes qualités rayonnent !",
+    icon: '🏅',
+    category: 'jeux',
+    color: '#DB2777',
   },
 ];
 
 // ─────────────────────────────────────────────────────────────
-// State interface for achievement checking
+// Helper Functions
 // ─────────────────────────────────────────────────────────────
 
-export interface AchievementState {
-  completedChapters: string[];
-  earnedBadges: string[];
-  quizScores: Record<string, number>;
-  journalEntries: any[];
-  /** Optional — track which screens the player has visited */
-  visitedScreens?: string[];
-  /** Optional — track whether a quiz was passed on the first attempt with no errors */
-  perfectFirstAttempts?: string[];
-}
-
-// ─────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────
-
-/** Total number of chapters across all tomes */
 function getTotalChapters(): number {
   return tomes.reduce((sum, tome) => sum + tome.chapters.length, 0);
 }
 
-/** All chapter IDs across all tomes */
 function getAllChapterIds(): string[] {
   return tomes.flatMap(tome => tome.chapters.map(ch => ch.id));
 }
 
-/** Chapter IDs belonging to a specific tome */
-function getTomeChapterIds(tomeId: string): string[] {
-  const tome = tomes.find(t => t.id === tomeId);
-  return tome ? tome.chapters.map(ch => ch.id) : [];
+function getTomesWithCompletedChapters(completedChapterIds: string[]): number {
+  const tomeIds = new Set<string>();
+  for (const chapterId of completedChapterIds) {
+    for (const tome of tomes) {
+      if (tome.chapters.some(ch => ch.id === chapterId)) {
+        tomeIds.add(tome.id);
+      }
+    }
+  }
+  return tomeIds.size;
 }
 
-/** Total number of questions per chapter (all quizzes have 5 questions) */
 const QUESTIONS_PER_QUIZ = 5;
 
-/** All possible screen types in the app */
-const ALL_SCREENS = [
-  'home',
-  'tome_select',
-  'chapter_select',
-  'story',
-  'character_gallery',
-  'badge_collection',
-  'lesson',
-  'quiz',
-  'settings',
-  'stats',
-  'journal',
-];
-
 // ─────────────────────────────────────────────────────────────
-// Achievement Checker
+// Achievement Progress — returns 0-1 progress for each achievement
 // ─────────────────────────────────────────────────────────────
 
-/**
- * Checks the player's current state and returns IDs of newly earned achievements.
- * The caller is responsible for persisting earned achievement IDs and only
- * triggering this for truly *new* unlocks by comparing against a previously-saved list.
- */
-export function checkAchievements(state: AchievementState): string[] {
-  const earned: string[] = [];
-  const { completedChapters, earnedBadges, quizScores, journalEntries, visitedScreens, perfectFirstAttempts } = state;
+export function getAchievementProgress(state: AchievementState): Record<string, number> {
+  const { completedChapters, completedChallenges, earnedBadges, totalDhikr, totalDhikrSessions, memoryBestScore, memoryGamesPlayed, dailyStreak, readingDays, quizScores, journalEntries, challengeXP } = state;
 
   const totalChapters = getTotalChapters();
-  const allChapterIds = getAllChapterIds();
   const quizKeys = Object.keys(quizScores);
   const hasPerfectScore = quizKeys.some(key => quizScores[key] >= QUESTIONS_PER_QUIZ);
+  const tomesExplored = getTomesWithCompletedChapters(completedChapters);
 
-  // ─── PROGRESS ─────────────────────────────────────────────
+  return {
+    // Lecture
+    first_lecture: Math.min(completedChapters.length / 1, 1),
+    lecteur_passionne: Math.min(completedChapters.length / 5, 1),
+    explorateur_tomes: Math.min(tomesExplored / 3, 1),
+    maitre_histoires: Math.min(completedChapters.length / 10, 1),
+    tous_tomes_complets: totalChapters > 0 ? Math.min(completedChapters.length / totalChapters, 1) : 0,
 
-  // Première Lecture — first chapter completed
-  if (completedChapters.length >= 1) {
-    earned.push('first_chapter');
-  }
+    // Sagesse
+    chercheur_verite: Math.min(quizKeys.length / 1, 1),
+    cœur_eclaire: hasPerfectScore ? 1 : quizKeys.length > 0 ? Math.min(Math.max(...quizKeys.map(k => quizScores[k])) / QUESTIONS_PER_QUIZ, 1) : 0,
+    sage_en_herbe: Math.min(quizKeys.length / 5, 1),
 
-  // Explorateur — 5 chapters completed
-  if (completedChapters.length >= 5) {
-    earned.push('explorer');
-  }
+    // Spiritualité
+    dhikr_regulier: Math.min(totalDhikrSessions / 3, 1),
+    cœur_apaise: Math.min(totalDhikr / 500, 1),
+    pilier_priere: Math.min(dailyStreak / 7, 1),
+    amour_prophete: Math.min(totalDhikr / 1000, 1),
 
-  // Chercheur de Vérité — 10 chapters completed
-  if (completedChapters.length >= 10) {
-    earned.push('truth_seeker');
-  }
+    // Défis
+    premier_defi: Math.min(completedChallenges.length / 1, 1),
+    defi_semaine: Math.min(completedChallenges.length / 5, 1),
+    champion_defis: Math.min(challengeXP / 200, 1),
+    constance_royale: Math.min(readingDays.length / 10, 1),
 
-  // Maître Spirituel — all chapters completed
-  if (completedChapters.length >= totalChapters) {
-    earned.push('spiritual_master');
-  }
-
-  // Tome I Conquis — all 4 chapters of tome 1 completed
-  const tome1Ids = getTomeChapterIds('tome1');
-  if (tome1Ids.every(id => completedChapters.includes(id))) {
-    earned.push('tome1_complete');
-  }
-
-  // Sage Complet — all 5 tomes completed (all chapters across all tomes)
-  if (completedChapters.length >= totalChapters && totalChapters > 0) {
-    earned.push('complete_sage');
-  }
-
-  // ─── WISDOM ───────────────────────────────────────────────
-
-  // Première Sagesse — at least one quiz taken
-  if (quizKeys.length >= 1) {
-    earned.push('first_wisdom');
-  }
-
-  // Élève Exemplaire — perfect score on any quiz
-  if (hasPerfectScore) {
-    earned.push('perfect_student');
-  }
-
-  // Érudit — 5 quizzes completed
-  if (quizKeys.length >= 5) {
-    earned.push('scholar');
-  }
-
-  // Cœur Savant — all quizzes completed (one per chapter that has a quiz)
-  // Every chapter can have a quiz, so we check against all completed chapters
-  // that the player has attempted. If they've attempted quizzes for every chapter
-  // in tomes that have quiz content (tome 1 has quizzes for all 4 chapters),
-  // we consider it "all quizzes".
-  const totalChaptersWithQuizzes = allChapterIds.length;
-  if (quizKeys.length >= totalChaptersWithQuizzes && totalChaptersWithQuizzes > 0) {
-    earned.push('wise_heart');
-  }
-
-  // ─── EXPLORATION ──────────────────────────────────────────
-
-  // Collectionneur — first badge earned
-  if (earnedBadges.length >= 1) {
-    earned.push('collector');
-  }
-
-  // Vertueux — 5 badges earned
-  if (earnedBadges.length >= 5) {
-    earned.push('virtuous');
-  }
-
-  // Lumière Intérieure — all 8 badges collected
-  if (earnedBadges.length >= 8) {
-    earned.push('inner_light');
-  }
-
-  // Écrivain Spirituel — first journal entry
-  if (journalEntries.length >= 1) {
-    earned.push('spiritual_writer');
-  }
-
-  // Réflexif — 5 journal entries
-  if (journalEntries.length >= 5) {
-    earned.push('reflective');
-  }
-
-  // ─── SOCIAL ───────────────────────────────────────────────
-
-  // Pilier de Patience — perfect score on the first attempt (no retries)
-  // Either use the explicit perfectFirstAttempts tracker, or check if any
-  // quiz score equals the max questions (which indicates a first-attempt perfect)
-  const hasFirstAttemptPerfect =
-    (perfectFirstAttempts && perfectFirstAttempts.length >= 1) ||
-    hasPerfectScore;
-  if (hasFirstAttemptPerfect) {
-    earned.push('patience_pillar');
-  }
-
-  // Fidèle au Chemin — visited all screens
-  if (
-    visitedScreens &&
-    ALL_SCREENS.every(screen => visitedScreens.includes(screen))
-  ) {
-    earned.push('faithful_path');
-  }
-
-  return earned;
+    // Jeux
+    premiere_victoire: memoryGamesPlayed >= 1 ? 1 : 0,
+    memoire_elephant: Math.min(memoryGamesPlayed / 5, 1),
+    speed_runner: memoryBestScore > 0 && memoryBestScore <= 16 ? 1 : memoryBestScore > 0 ? Math.min((16 / memoryBestScore) * 0.5, 1) : 0,
+    badge_virtu: Math.min(earnedBadges.length / 5, 1),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────
-// Achievement Lookup
+// Achievement Checker — returns IDs of currently unlockable achievements
+// ─────────────────────────────────────────────────────────────
+
+export function getUnlockedAchievements(state: AchievementState): string[] {
+  const unlocked: string[] = [];
+  const { completedChapters, completedChallenges, earnedBadges, totalDhikr, totalDhikrSessions, memoryBestScore, memoryGamesPlayed, dailyStreak, readingDays, quizScores, challengeXP } = state;
+
+  const totalChapters = getTotalChapters();
+  const quizKeys = Object.keys(quizScores);
+  const hasPerfectScore = quizKeys.some(key => quizScores[key] >= QUESTIONS_PER_QUIZ);
+  const tomesExplored = getTomesWithCompletedChapters(completedChapters);
+
+  // ─── LECTURE ──────────────────────────────────────────────
+
+  if (completedChapters.length >= 1) unlocked.push('first_lecture');
+  if (completedChapters.length >= 5) unlocked.push('lecteur_passionne');
+  if (tomesExplored >= 3) unlocked.push('explorateur_tomes');
+  if (completedChapters.length >= 10) unlocked.push('maitre_histoires');
+  if (totalChapters > 0 && completedChapters.length >= totalChapters) unlocked.push('tous_tomes_complets');
+
+  // ─── SAGESSE ──────────────────────────────────────────────
+
+  if (quizKeys.length >= 1) unlocked.push('chercheur_verite');
+  if (hasPerfectScore) unlocked.push('cœur_eclaire');
+  if (quizKeys.length >= 5) unlocked.push('sage_en_herbe');
+
+  // ─── SPIRITUALITÉ ─────────────────────────────────────────
+
+  if (totalDhikrSessions >= 3) unlocked.push('dhikr_regulier');
+  if (totalDhikr >= 500) unlocked.push('cœur_apaise');
+  if (dailyStreak >= 7) unlocked.push('pilier_priere');
+  if (totalDhikr >= 1000) unlocked.push('amour_prophete');
+
+  // ─── DÉFIS ────────────────────────────────────────────────
+
+  if (completedChallenges.length >= 1) unlocked.push('premier_defi');
+  if (completedChallenges.length >= 5) unlocked.push('defi_semaine');
+  if (challengeXP >= 200) unlocked.push('champion_defis');
+  if (readingDays.length >= 10) unlocked.push('constance_royale');
+
+  // ─── JEUX ─────────────────────────────────────────────────
+
+  if (memoryGamesPlayed >= 1) unlocked.push('premiere_victoire');
+  if (memoryGamesPlayed >= 5) unlocked.push('memoire_elephant');
+  if (memoryBestScore > 0 && memoryBestScore <= 16) unlocked.push('speed_runner');
+  if (earnedBadges.length >= 5) unlocked.push('badge_virtu');
+
+  return unlocked;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Lookup helper
 // ─────────────────────────────────────────────────────────────
 
 export function getAchievement(id: string): Achievement | undefined {

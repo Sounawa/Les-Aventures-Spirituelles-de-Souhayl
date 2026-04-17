@@ -21,6 +21,7 @@ import { ProfileScreen } from '@/components/screens/ProfileScreen';
 import { DhikrCounterScreen } from '@/components/screens/DhikrCounterScreen';
 import { BottomNavBar } from '@/components/layout/BottomNavBar';
 import { OnboardingModal } from '@/components/OnboardingModal';
+import { AchievementPopup } from '@/components/AchievementPopup';
 import { Toaster } from '@/components/ui/sonner';
 import type { ScreenType } from '@/types/story';
 
@@ -94,6 +95,7 @@ function AppInner() {
         </div>
       </footer>
       <BottomNavBar />
+      <AchievementPopup />
       <Toaster />
     </div>
   );
