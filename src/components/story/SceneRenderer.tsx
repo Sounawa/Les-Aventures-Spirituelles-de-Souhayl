@@ -9,10 +9,11 @@ import { ChoiceButton } from './ChoiceButton';
 import { StoryBackground } from './StoryBackground';
 import { TypewriterText } from './TypewriterText';
 import { badges } from '@/data/badges';
-import { Award, BookOpen, ChevronRight } from 'lucide-react';
+import { Award, BookOpen, ChevronRight, Brain } from 'lucide-react';
 
 export function SceneRenderer() {
   const {
+    setScreen,
     selectedTomeId,
     selectedChapterId,
     currentSceneId,
@@ -224,11 +225,27 @@ export function SceneRenderer() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 text-center"
+            className="mt-8 text-center space-y-4"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full text-amber-800 text-sm">
               <Award className="w-4 h-4" />
               Chapitre terminé !
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => setScreen('quiz')}
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-amber-500 hover:from-purple-600 hover:to-amber-600 text-white rounded-xl shadow-md transition-all min-h-[48px] font-medium"
+              >
+                <Brain className="w-4 h-4" />
+                Passer le quiz
+              </button>
+              <button
+                onClick={() => setScreen('chapter_select')}
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-xl transition-all min-h-[48px]"
+              >
+                Chapitres
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </motion.div>
         )}

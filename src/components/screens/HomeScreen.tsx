@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/components/AppContext';
 import { tomes } from '@/data/tomes';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Lock, ChevronRight, Star, Users, Award, Play, RotateCcw } from 'lucide-react';
+import { BookOpen, Users, Award, Play, Settings, RotateCcw } from 'lucide-react';
 
 export function HomeScreen() {
-  const { setScreen, selectTome, completedChapters, earnedBadges } = useApp();
+  const { setScreen, selectTome, completedChapters, earnedBadges, resetProgress } = useApp();
   const hasProgress = completedChapters.length > 0;
 
   return (
@@ -93,18 +93,40 @@ export function HomeScreen() {
             transition={{ delay: 1.1 }}
             className="mt-8 space-y-3"
           >
-            <Button
-              onClick={() => {
-                selectTome(tomes[0].id);
-                setScreen('chapter_select');
-              }}
-              className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl"
-            >
-              <Play className="w-5 h-5" />
-              Commencer l\'aventure
-            </Button>
+            {hasProgress ? (
+              <Button
+                onClick={() => {
+                  setScreen('tome_select');
+                }}
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl"
+              >
+                <Play className="w-5 h-5" />
+                Continuer l&#39;aventure
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  selectTome(tomes[0].id);
+                  setScreen('chapter_select');
+                }}
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl"
+              >
+                <Play className="w-5 h-5" />
+                Commencer l&#39;aventure
+              </Button>
+            )}
 
-
+            {hasProgress && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => resetProgress()}
+                className="mx-auto flex items-center gap-1 text-stone-400 hover:text-stone-600"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span className="text-xs">Recommencer</span>
+              </Button>
+            )}
           </motion.div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AppProvider, useApp } from '@/components/AppContext';
 import { HomeScreen } from '@/components/screens/HomeScreen';
@@ -9,6 +10,7 @@ import { StoryScreen } from '@/components/screens/StoryScreen';
 import { CharacterGalleryScreen } from '@/components/screens/CharacterGalleryScreen';
 import { BadgeCollectionScreen } from '@/components/screens/BadgeCollectionScreen';
 import { LessonScreen } from '@/components/screens/LessonScreen';
+import QuizScreen from '@/components/screens/QuizScreen';
 import type { ScreenType } from '@/types/story';
 
 const screenComponents: Record<ScreenType, React.ComponentType> = {
@@ -19,17 +21,19 @@ const screenComponents: Record<ScreenType, React.ComponentType> = {
   character_gallery: CharacterGalleryScreen,
   badge_collection: BadgeCollectionScreen,
   lesson: LessonScreen,
-  quiz: () => (
-    <div className="min-h-screen flex items-center justify-center text-stone-400 bg-gradient-to-b from-amber-50 to-teal-50">
-      Quiz — Bientôt disponible
-    </div>
-  ),
+  quiz: QuizScreen,
   settings: () => (
     <div className="min-h-screen flex items-center justify-center text-stone-400 bg-gradient-to-b from-amber-50 to-teal-50">
       Paramètres — Bientôt disponible
     </div>
   ),
 };
+
+function Hydrator({ children }: { children: React.ReactNode }) {
+  const { hydrate } = useApp();
+  useEffect(() => { hydrate(); }, [hydrate]);
+  return <>{children}</>;
+}
 
 function AppInner() {
   const { screen } = useApp();
@@ -68,7 +72,9 @@ function AppInner() {
 export default function AppContent() {
   return (
     <AppProvider>
-      <AppInner />
+      <Hydrator>
+        <AppInner />
+      </Hydrator>
     </AppProvider>
   );
 }
