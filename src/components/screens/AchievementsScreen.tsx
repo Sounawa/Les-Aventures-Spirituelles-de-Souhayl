@@ -29,22 +29,22 @@ export default function AchievementsScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-amber-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-10 bg-amber-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Retour
             </Button>
-            <h1 className="text-lg font-bold text-stone-800 flex items-center gap-2">
+            <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-600" />
               Succès
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+            <span className="text-sm font-semibold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-3 py-1 rounded-full">
               {earnedCount}/{totalAchievements}
             </span>
           </div>
@@ -61,7 +61,7 @@ export default function AchievementsScreen() {
           {/* Progress ring */}
           <div className="relative w-28 h-28 mx-auto mb-4">
             <svg width="112" height="112" className="-rotate-90">
-              <circle cx="56" cy="56" r="46" fill="none" stroke="currentColor" strokeWidth="8" className="text-stone-100" />
+              <circle cx="56" cy="56" r="46" fill="none" stroke="currentColor" strokeWidth="8" className="text-stone-100 dark:text-stone-700" />
               <motion.circle
                 cx="56" cy="56" r="46"
                 fill="none" stroke="#D97706" strokeWidth="8"
@@ -74,13 +74,13 @@ export default function AchievementsScreen() {
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
               <div>
-                <span className="text-2xl font-bold text-stone-700">{earnedCount}</span>
-                <p className="text-[10px] text-stone-400">/{totalAchievements}</p>
+                <span className="text-2xl font-bold text-stone-700 dark:text-stone-300">{earnedCount}</span>
+                <p className="text-[10px] text-stone-400 dark:text-stone-500">/{totalAchievements}</p>
               </div>
             </div>
           </div>
-          <h2 className="text-lg font-bold text-stone-800 mb-1">Succès & Achievements</h2>
-          <p className="text-sm text-stone-500 mb-3">
+          <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-1">Succès & Achievements</h2>
+          <p className="text-sm text-stone-500 dark:text-stone-400 mb-3">
             {earnedCount === 0
               ? 'Explore l\'aventure pour débloquer tes premiers succès !'
               : earnedCount === totalAchievements
@@ -89,7 +89,7 @@ export default function AchievementsScreen() {
             }
           </p>
           {/* Progress bar */}
-          <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-stone-100 dark:bg-stone-700 rounded-full overflow-hidden">
             <motion.div
               className="h-full story-progress-bar rounded-full"
               initial={{ width: 0 }}
@@ -117,8 +117,8 @@ export default function AchievementsScreen() {
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: cat.color }}
                 />
-                <h3 className="text-sm font-semibold text-stone-700">{cat.label}</h3>
-                <span className="text-xs text-stone-400 ml-auto">{catEarned}/{catAchievements.length}</span>
+                <h3 className="text-sm font-semibold text-stone-700 dark:text-stone-300">{cat.label}</h3>
+                <span className="text-xs text-stone-400 dark:text-stone-500 ml-auto">{catEarned}/{catAchievements.length}</span>
               </div>
 
               <div className="space-y-2">
@@ -140,18 +140,18 @@ export default function AchievementsScreen() {
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
                         style={{
-                          backgroundColor: isEarned ? `${achievement.color}15` : 'bg-stone-50',
-                        border: isEarned ? `2px solid ${achievement.color}30` : '2px solid #e7e5e4',
-                        boxShadow: isEarned ? `0 0 12px ${achievement.color}20` : 'none',
-                        transition: 'all 0.3s',
-                      }}
+                          backgroundColor: isEarned ? `${achievement.color}15` : 'bg-stone-50 dark:bg-stone-800',
+                          border: isEarned ? `2px solid ${achievement.color}30` : '2px solid #e7e5e4 dark:2px solid #44403c',
+                          boxShadow: isEarned ? `0 0 12px ${achievement.color}20` : 'none',
+                          transition: 'all 0.3s',
+                        }}
                       >
                         {isEarned ? achievement.icon : <Lock className="w-5 h-5 text-stone-300" />}
                       </div>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h4 className={`text-sm font-bold ${isEarned ? 'text-stone-800' : 'text-stone-400'}`}>
+                          <h4 className={`text-sm font-bold ${isEarned ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}>
                             {achievement.name}
                           </h4>
                         </div>
@@ -162,7 +162,7 @@ export default function AchievementsScreen() {
                         >
                           {achievement.nameAr}
                         </p>
-                        <p className={`text-xs mt-1 leading-relaxed ${isEarned ? 'text-stone-600' : 'text-stone-400'}`}>
+                        <p className={`text-xs mt-1 leading-relaxed ${isEarned ? 'text-stone-600 dark:text-stone-400' : 'text-stone-400'}`}>
                           {isEarned ? achievement.description : '???'}
                         </p>
                         {isEarned && (
@@ -192,7 +192,7 @@ export default function AchievementsScreen() {
           transition={{ delay: 0.3 }}
           className="parchment-card rounded-xl p-4 text-center islamic-border"
         >
-          <p className="text-xs text-stone-500 italic leading-relaxed">
+          <p className="text-xs text-stone-500 dark:text-stone-400 italic leading-relaxed">
             « Chaque pas en avant est une victoire sur soi-même. »
           </p>
         </motion.div>

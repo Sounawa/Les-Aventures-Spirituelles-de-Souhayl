@@ -9,6 +9,7 @@ import { ChoiceButton } from './ChoiceButton';
 import { StoryBackground } from './StoryBackground';
 import { TypewriterText } from './TypewriterText';
 import { badges } from '@/data/badges';
+import { useSoundEffects } from '@/hooks/useSoundEffects';
 import {
   Award, BookOpen, ChevronRight, Brain,
   Home, ArrowLeft, BookHeart, Sparkles,
@@ -27,6 +28,8 @@ export function SceneRenderer() {
     settings,
   } = useApp();
 
+  const { playClick, playSuccess, playBadge, playTransition, playComplete } = useSoundEffects();
+
   const [showLesson, setShowLesson] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
   const [dialoguesStarted, setDialoguesStarted] = useState(false);
@@ -44,9 +47,11 @@ export function SceneRenderer() {
   const totalScenes = chapter?.scenes.length ?? 0;
 
   const handleChoice = useCallback((choice: { id: string; nextSceneId: string; badgeId?: string }) => {
+    if (settings.soundEnabled) { playTransition(); }
     if (choice.badgeId) {
       earnBadge(choice.badgeId);
       setEarnedBadge(choice.badgeId);
+      if (settings.soundEnabled) { playBadge(); }
       setTimeout(() => setEarnedBadge(null), 3000);
     }
     if (scene) completeScene(scene.id);
@@ -54,10 +59,11 @@ export function SceneRenderer() {
     setNarrationComplete(false);
     setDialoguesStarted(false);
     setShowLesson(false);
-  }, [earnBadge, completeScene, setCurrentScene, scene]);
+  }, [earnBadge, completeScene, setCurrentScene, scene, settings.soundEnabled, playTransition, playBadge]);
 
   const handleContinue = useCallback(() => {
     if (!scene) return;
+    if (settings.soundEnabled) { playClick(); }
     if (scene.lesson && !showLesson) {
       setShowLesson(true);
       return;
@@ -70,9 +76,12 @@ export function SceneRenderer() {
       setShowLesson(false);
     } else {
       completeScene(scene.id);
-      if (selectedChapterId) completeChapter(selectedChapterId);
+      if (selectedChapterId) {
+        completeChapter(selectedChapterId);
+        if (settings.soundEnabled) { playComplete(); }
+      }
     }
-  }, [scene, showLesson, completeScene, setCurrentScene, completeChapter, selectedChapterId]);
+  }, [scene, showLesson, completeScene, setCurrentScene, completeChapter, selectedChapterId, settings.soundEnabled, playClick, playComplete]);
 
   // Track scene changes to trigger dialogues after narration
   useEffect(() => {
@@ -81,9 +90,6 @@ export function SceneRenderer() {
       return () => clearTimeout(timer);
     }
   }, [narrationComplete]);
-
-  // Reset on scene change via key-based remount pattern in parent
-  // (states reset through handleChoice and handleContinue)
 
   if (!scene) {
     return (
@@ -116,17 +122,17 @@ export function SceneRenderer() {
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-amber-600" />
-            <span className="text-xs text-stone-500">
+            <span className="text-xs text-stone-500 dark:text-stone-400">
               {chapter?.titleAr} — {chapter?.title}
             </span>
           </div>
-          <span className="text-xs text-stone-400 font-medium bg-white/40 backdrop-blur-sm px-2 py-0.5 rounded-full">
+          <span className="text-xs text-stone-400 dark:text-stone-500 font-medium bg-white/40 dark:bg-stone-800/40 backdrop-blur-sm px-2 py-0.5 rounded-full">
             {sceneIndex + 1}/{totalScenes}
           </span>
         </div>
 
         {/* Progress bar */}
-        <div className="w-full h-2 bg-white/40 rounded-full mb-6 overflow-hidden shadow-inner">
+        <div className="w-full h-2 bg-white/40 dark:bg-stone-800/40 rounded-full mb-6 overflow-hidden shadow-inner">
           <motion.div
             className="h-full story-progress-bar rounded-full"
             initial={{ width: 0 }}
@@ -142,22 +148,28 @@ export function SceneRenderer() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="text-lg md:text-xl font-bold text-stone-800 mb-4 flex items-center gap-2"
+            className="text-lg md:text-xl font-bold text-stone-800 dark:text-stone-100 mb-4 flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-amber-500" />
             {scene.title}
           </motion.h2>
         </AnimatePresence>
 
-        {/* Narration box */}
-        <div className="parchment-card rounded-xl p-4 md:p-5 mb-4 islamic-border">
+        {/* Narration box - with fade-in slide-up animation */}
+        <motion.div
+          key={`narration-${scene.id}`}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="parchment-card rounded-xl p-4 md:p-5 mb-4 islamic-border"
+        >
           <TypewriterText
             text={scene.narration}
             speed={settings.typewriterSpeed}
             onComplete={() => setNarrationComplete(true)}
-            className={`${fontSizeClass} text-stone-700`}
+            className={`${fontSizeClass} text-stone-700 dark:text-stone-300`}
           />
-        </div>
+        </motion.div>
 
         {/* Dialogues */}
         <AnimatePresence>
@@ -175,11 +187,11 @@ export function SceneRenderer() {
               className="mt-6 space-y-3"
             >
               <div className="flex items-center gap-2 mb-3">
-                <div className="h-px flex-1 bg-amber-300/30" />
-                <p className="text-sm font-semibold text-stone-600 flex items-center gap-1">
+                <div className="h-px flex-1 bg-amber-300/30 dark:bg-amber-500/20" />
+                <p className="text-sm font-semibold text-stone-600 dark:text-stone-400 flex items-center gap-1">
                   ✦ Que fais-tu ? ✦
                 </p>
-                <div className="h-px flex-1 bg-amber-300/30" />
+                <div className="h-px flex-1 bg-amber-300/30 dark:bg-amber-500/20" />
               </div>
               {scene.choices.map((choice, idx) => (
                 <ChoiceButton
@@ -187,6 +199,7 @@ export function SceneRenderer() {
                   choice={choice}
                   index={idx}
                   onClick={() => handleChoice(choice)}
+                  soundEnabled={settings.soundEnabled}
                 />
               ))}
             </motion.div>
@@ -221,19 +234,19 @@ export function SceneRenderer() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-6 parchment-card rounded-xl p-5 islamic-border bg-gradient-to-br from-amber-50 to-orange-50"
+              className="mt-6 parchment-card rounded-xl p-5 islamic-border bg-gradient-to-br from-amber-50 to-orange-50 dark:from-stone-800/80 dark:to-stone-800/60"
             >
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
-                  <BookOpen className="w-4 h-4 text-amber-700" />
+                <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                  <BookOpen className="w-4 h-4 text-amber-700 dark:text-amber-400" />
                 </div>
-                <h3 className="font-bold text-amber-800">{scene.lesson.title}</h3>
+                <h3 className="font-bold text-amber-800 dark:text-amber-300">{scene.lesson.title}</h3>
               </div>
-              <p className={`${fontSizeClass} text-stone-600 mb-4 leading-relaxed`}>{scene.lesson.content}</p>
-              <blockquote className="border-l-3 border-amber-400 pl-4 italic text-stone-500 text-sm mb-4 bg-amber-50/50 py-2 rounded-r-lg">
+              <p className={`${fontSizeClass} text-stone-600 dark:text-stone-300 mb-4 leading-relaxed`}>{scene.lesson.content}</p>
+              <blockquote className="border-l-3 border-amber-400 pl-4 italic text-stone-500 dark:text-stone-400 text-sm mb-4 bg-amber-50/50 dark:bg-amber-900/10 py-2 rounded-r-lg">
                 « {scene.lesson.quote} »
               </blockquote>
-              <p className="text-xs text-stone-400 mb-3">— {scene.lesson.source}</p>
+              <p className="text-xs text-stone-400 dark:text-stone-500 mb-3">— {scene.lesson.source}</p>
               {showContinueAfterLesson && (
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -264,8 +277,8 @@ export function SceneRenderer() {
             >
               <Award className="w-8 h-8 text-white" />
             </motion.div>
-            <h3 className="text-lg font-bold text-stone-800">Chapitre terminé !</h3>
-            <p className="text-sm text-stone-500">
+            <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">Chapitre terminé !</h3>
+            <p className="text-sm text-stone-500 dark:text-stone-400">
               Bravo ! Tu as terminé ce chapitre de l&apos;aventure.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
@@ -291,7 +304,7 @@ export function SceneRenderer() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigateTo('chapter_select')}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-xl transition-all min-h-[48px]"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-600 dark:text-stone-300 rounded-xl transition-all min-h-[48px]"
               >
                 Chapitres
                 <ChevronRight className="w-4 h-4" />

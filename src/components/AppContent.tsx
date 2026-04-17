@@ -15,6 +15,7 @@ import { StatsScreen } from '@/components/screens/StatsScreen';
 import { JournalScreen } from '@/components/screens/JournalScreen';
 import AchievementsScreen from '@/components/screens/AchievementsScreen';
 import QuizScreen from '@/components/screens/QuizScreen';
+import { WorldMapScreen } from '@/components/screens/WorldMapScreen';
 import type { ScreenType } from '@/types/story';
 
 const screenComponents: Record<ScreenType, React.ComponentType> = {
@@ -30,6 +31,7 @@ const screenComponents: Record<ScreenType, React.ComponentType> = {
   stats: StatsScreen,
   journal: JournalScreen,
   achievements: AchievementsScreen,
+  map: WorldMapScreen,
 };
 
 function Hydrator({ children }: { children: React.ReactNode }) {

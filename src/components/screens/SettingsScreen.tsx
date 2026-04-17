@@ -6,7 +6,7 @@ import { useApp } from '@/components/AppContext';
 import { Button } from '@/components/ui/button';
 import {
   ArrowLeft, Moon, Sun, Type, Gauge, Volume2, VolumeX,
-  Check, Info, Download, Upload, Trash2, Copy, Check,
+  Check, Info, Download, Upload, Trash2, Copy,
 } from 'lucide-react';
 
 const fontSizeOptions = [
@@ -67,15 +67,15 @@ export function SettingsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 via-amber-50 to-orange-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-stone-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-10 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Retour
           </Button>
-          <h1 className="text-lg font-bold text-stone-800">Paramètres</h1>
+          <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100">Paramètres</h1>
         </div>
       </div>
 
@@ -86,25 +86,25 @@ export function SettingsScreen() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-3"
         >
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500 flex items-center gap-2">
             <Sun className="w-3 h-3" />
             Apparence
           </h2>
 
           <div className="parchment-card rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                {settings.darkMode ? <Moon className="w-5 h-5 text-amber-700" /> : <Sun className="w-5 h-5 text-amber-600" />}
+              <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                {settings.darkMode ? <Moon className="w-5 h-5 text-amber-700 dark:text-amber-400" /> : <Sun className="w-5 h-5 text-amber-600" />}
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Mode sombre</p>
-                <p className="text-xs text-stone-400">Réduire la fatigue visuelle</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Mode sombre</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Réduire la fatigue visuelle</p>
               </div>
             </div>
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => updateSettings({ darkMode: !settings.darkMode })}
-              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.darkMode ? 'bg-amber-600' : 'bg-stone-200'}`}
+              className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.darkMode ? 'bg-amber-600' : 'bg-stone-200 dark:bg-stone-600'}`}
             >
               <motion.div className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1" animate={{ left: settings.darkMode ? '24px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
             </motion.button>
@@ -112,19 +112,19 @@ export function SettingsScreen() {
 
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                <Type className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                <Type className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Taille du texte</p>
-                <p className="text-xs text-stone-400">Ajuster la lisibilité</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Taille du texte</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Ajuster la lisibilité</p>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {fontSizeOptions.map((opt) => (
-                <button key={opt.value} onClick={() => updateSettings({ fontSize: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.fontSize === opt.value ? 'border-amber-400 bg-amber-50 shadow-sm' : 'border-stone-200 bg-white/50 hover:border-amber-200'}`}>
-                  <p className={`font-medium text-stone-700 ${opt.size}`}>Aa</p>
-                  <p className="text-[10px] text-stone-400 mt-0.5">{opt.label}</p>
+                <button key={opt.value} onClick={() => updateSettings({ fontSize: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.fontSize === opt.value ? 'border-amber-400 bg-amber-50 dark:bg-amber-900/20 shadow-sm' : 'border-stone-200 dark:border-stone-700 bg-white/50 dark:bg-stone-800/50 hover:border-amber-200 dark:hover:border-stone-600'}`}>
+                  <p className={`font-medium text-stone-700 dark:text-stone-300 ${opt.size}`}>Aa</p>
+                  <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5">{opt.label}</p>
                   {settings.fontSize === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-amber-600" /></motion.div>}
                 </button>
               ))}
@@ -134,25 +134,25 @@ export function SettingsScreen() {
 
         {/* Lecture */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-3">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500 flex items-center gap-2">
             <Gauge className="w-3 h-3" />
             Lecture
           </h2>
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center">
-                <Gauge className="w-5 h-5 text-teal-600" />
+              <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                <Gauge className="w-5 h-5 text-teal-600 dark:text-teal-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Vitesse de l&apos;histoire</p>
-                <p className="text-xs text-stone-400">Vitesse de l&apos;effet machine à écrire</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Vitesse de l&apos;histoire</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Vitesse de l&apos;effet machine à écrire</p>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {speedOptions.map((opt) => (
-                <button key={opt.value} onClick={() => updateSettings({ typewriterSpeed: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.typewriterSpeed === opt.value ? 'border-teal-400 bg-teal-50 shadow-sm' : 'border-stone-200 bg-white/50 hover:border-teal-200'}`}>
-                  <p className="text-xs font-medium text-stone-700">{opt.label}</p>
-                  <p className="text-[10px] text-stone-400 mt-0.5">{opt.desc}</p>
+                <button key={opt.value} onClick={() => updateSettings({ typewriterSpeed: opt.value })} className={`px-3 py-2 rounded-lg border-2 transition-all text-center ${settings.typewriterSpeed === opt.value ? 'border-teal-400 bg-teal-50 dark:bg-teal-900/20 shadow-sm' : 'border-stone-200 dark:border-stone-700 bg-white/50 dark:bg-stone-800/50 hover:border-teal-200 dark:hover:border-teal-600'}`}>
+                  <p className="text-xs font-medium text-stone-700 dark:text-stone-300">{opt.label}</p>
+                  <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5">{opt.desc}</p>
                   {settings.typewriterSpeed === opt.value && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex justify-center mt-1"><Check className="w-3 h-3 text-teal-600" /></motion.div>}
                 </button>
               ))}
@@ -161,15 +161,15 @@ export function SettingsScreen() {
 
           <div className="parchment-card rounded-xl p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center">
-                {settings.soundEnabled ? <Volume2 className="w-5 h-5 text-rose-600" /> : <VolumeX className="w-5 h-5 text-stone-400" />}
+              <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center">
+                {settings.soundEnabled ? <Volume2 className="w-5 h-5 text-rose-600 dark:text-rose-400" /> : <VolumeX className="w-5 h-5 text-stone-400" />}
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Sons</p>
-                <p className="text-xs text-stone-400">Effets sonores de l&apos;histoire</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Sons</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Effets sonores de l&apos;histoire</p>
               </div>
             </div>
-            <motion.button whileTap={{ scale: 0.9 }} onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })} className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.soundEnabled ? 'bg-rose-500' : 'bg-stone-200'}`}>
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })} className={`w-12 h-7 rounded-full transition-colors duration-300 relative ${settings.soundEnabled ? 'bg-rose-500' : 'bg-stone-200 dark:bg-stone-600'}`}>
               <motion.div className="w-5 h-5 rounded-full bg-white shadow-sm absolute top-1" animate={{ left: settings.soundEnabled ? '24px' : '4px' }} transition={{ type: 'spring', stiffness: 500, damping: 30 }} />
             </motion.button>
           </div>
@@ -177,7 +177,7 @@ export function SettingsScreen() {
 
         {/* Données */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-3">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500 flex items-center gap-2">
             <Download className="w-3 h-3" />
             Données
           </h2>
@@ -185,12 +185,12 @@ export function SettingsScreen() {
           {/* Export */}
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <Download className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <Download className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Exporter la sauvegarde</p>
-                <p className="text-xs text-stone-400">Copier dans le presse-papiers pour partager</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Exporter la sauvegarde</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Copier dans le presse-papiers pour partager</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -210,12 +210,12 @@ export function SettingsScreen() {
           {/* Import */}
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                <Upload className="w-5 h-5 text-green-600" />
+              <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <Upload className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Importer une sauvegarde</p>
-                <p className="text-xs text-stone-400">Restaurer depuis un fichier JSON</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Importer une sauvegarde</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Restaurer depuis un fichier JSON</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -235,19 +235,19 @@ export function SettingsScreen() {
           {/* Reset */}
           <div className="parchment-card rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-3 mb-1">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                <Trash2 className="w-5 h-5 text-red-600" />
+              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
               </div>
               <div>
-                <p className="text-sm font-medium text-stone-700">Réinitialiser</p>
-                <p className="text-xs text-stone-400">Supprimer toute progression</p>
+                <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Réinitialiser</p>
+                <p className="text-xs text-stone-400 dark:text-stone-500">Supprimer toute progression</p>
               </div>
             </div>
             <Button
               onClick={handleReset}
               variant="outline"
               size="sm"
-              className="w-full border-red-200 text-red-600 hover:bg-red-50"
+              className="w-full border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
             >
               <Trash2 className="w-3 h-3 mr-1" />
               Réinitialiser la progression
@@ -258,15 +258,15 @@ export function SettingsScreen() {
         {/* Info */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="parchment-card rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <Info className="w-4 h-4 text-stone-400 mt-0.5 shrink-0" />
-            <div className="text-xs text-stone-500 leading-relaxed">
-              <p className="font-medium text-stone-600 mb-1">À propos</p>
+            <Info className="w-4 h-4 text-stone-400 dark:text-stone-500 mt-0.5 shrink-0" />
+            <div className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+              <p className="font-medium text-stone-600 dark:text-stone-300 mb-1">À propos</p>
               <p>
                 Les Aventures Spirituelles de Nawfel est un livre interactif qui enseigne les
                 concepts du Tassawuf (soufisme) aux enfants de 8 à 12 ans à travers une aventure
                 passionnante. Basé sur les enseignements authentiques de l&apos;Islam.
               </p>
-              <p className="mt-2 text-stone-400">Version 3.0 — Succès, quiz étendus, narration audio, export de sauvegarde</p>
+              <p className="mt-2 text-stone-400 dark:text-stone-500">Version 3.1 — Carte du monde, sons, mode sombre, reprise de scène</p>
             </div>
           </div>
         </motion.div>

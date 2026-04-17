@@ -90,7 +90,8 @@ export type ScreenType =
   | 'settings'
   | 'stats'
   | 'journal'
-  | 'achievements';
+  | 'achievements'
+  | 'map';
 
 export interface GameState {
   currentScreen: ScreenType;

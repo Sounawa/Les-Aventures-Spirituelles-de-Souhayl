@@ -22,6 +22,7 @@ interface AppState {
   quizScores: Record<string, number>;
   settings: AppSettings;
   journalEntries: JournalEntry[];
+  screenHistory: ScreenType[];
 }
 
 export interface JournalEntry {
@@ -80,6 +81,7 @@ const defaultState: AppState = {
   quizScores: {},
   settings: defaultSettings,
   journalEntries: [],
+  screenHistory: [],
 };
 
 function readStorage(): Partial<AppState> {

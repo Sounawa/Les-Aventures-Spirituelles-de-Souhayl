@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import {
   BookOpen, Users, Award, Play, RotateCcw,
   BarChart3, BookHeart, Settings, Sparkles, ChevronRight,
-  Moon, Sun,
+  Moon, Sun, Map,
 } from 'lucide-react';
 
 // Floating particle component
@@ -175,7 +175,7 @@ export function HomeScreen() {
       {/* Hero section */}
       <div className="relative flex-1 flex flex-col items-center justify-center px-4 py-8 overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950" />
         <div className="absolute inset-0 opacity-[0.02]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D97706' fill-opacity='1'%3E%3Cpath d='M40 0l10 20h20l-15 15 5 20-20-10-20 10 5-20L10 20h20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
@@ -190,7 +190,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigateTo('settings')}
-            className="w-10 h-10 rounded-full bg-white/60 backdrop-blur-sm border border-amber-200/30 flex items-center justify-center text-stone-500 hover:text-stone-700 shadow-sm transition-colors"
+            className="w-10 h-10 rounded-full bg-white/60 dark:bg-stone-800/60 backdrop-blur-sm border border-amber-200/30 dark:border-stone-700/30 flex items-center justify-center text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 shadow-sm transition-colors"
             aria-label="Paramètres"
           >
             <Settings className="w-4 h-4" />
@@ -199,7 +199,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => updateSettings({ darkMode: !settings.darkMode })}
-            className="w-10 h-10 rounded-full bg-white/60 backdrop-blur-sm border border-amber-200/30 flex items-center justify-center text-stone-500 hover:text-stone-700 shadow-sm transition-colors"
+            className="w-10 h-10 rounded-full bg-white/60 dark:bg-stone-800/60 backdrop-blur-sm border border-amber-200/30 dark:border-stone-700/30 flex items-center justify-center text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 shadow-sm transition-colors"
             aria-label={settings.darkMode ? 'Mode clair' : 'Mode sombre'}
           >
             {settings.darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -250,7 +250,7 @@ export function HomeScreen() {
             initial={{ opacity: 0, y: 20, letterSpacing: '0.3em' }}
             animate={{ opacity: 1, y: 0, letterSpacing: '0.05em' }}
             transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-3xl md:text-4xl font-bold text-stone-800 mb-2 tracking-wide"
+            className="text-3xl md:text-4xl font-bold text-stone-800 dark:text-stone-100 mb-2 tracking-wide"
           >
             Les Aventures Spirituelles
           </motion.h1>
@@ -266,7 +266,7 @@ export function HomeScreen() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="text-xl text-amber-600/80 mb-1 font-amiri"
+            className="text-xl text-amber-600/80 dark:text-amber-400/80 mb-1 font-amiri"
             dir="rtl"
           >
             مغامرات نوفل الروحية
@@ -288,7 +288,7 @@ export function HomeScreen() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="text-sm text-stone-500 max-w-md mx-auto leading-relaxed"
+            className="text-sm text-stone-500 dark:text-stone-400 max-w-md mx-auto leading-relaxed"
           >
             Un livre dont tu es le héros — Découvre le cheminement spirituel de Nawfel,
             un garçon de 8 ans qui apprend à combattre son ego avec les armes de l&apos;âme.
@@ -300,9 +300,9 @@ export function HomeScreen() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.0 }}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm rounded-full border border-amber-200/40 shadow-sm"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-stone-800/60 backdrop-blur-sm rounded-full border border-amber-200/40 dark:border-stone-700/40 shadow-sm"
             >
-              <div className="w-32 h-2 bg-stone-100 rounded-full overflow-hidden">
+              <div className="w-32 h-2 bg-stone-100 dark:bg-stone-700 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full story-progress-bar rounded-full"
                   initial={{ width: 0 }}
@@ -310,7 +310,7 @@ export function HomeScreen() {
                   transition={{ delay: 1.2, duration: 1 }}
                 />
               </div>
-              <span className="text-xs font-semibold text-amber-700">{progressPercent}%</span>
+              <span className="text-xs font-semibold text-amber-700 dark:text-amber-400">{progressPercent}%</span>
             </motion.div>
           )}
 
@@ -324,7 +324,7 @@ export function HomeScreen() {
             {hasProgress ? (
               <Button
                 onClick={() => { selectTome(tomes[0].id); navigateTo('tome_select'); }}
-                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl golden-glow-hover"
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl golden-glow-hover animate-[pulse_3s_ease-in-out_infinite]"
               >
                 <Play className="w-5 h-5" />
                 Continuer l&apos;aventure
@@ -333,7 +333,7 @@ export function HomeScreen() {
             ) : (
               <Button
                 onClick={() => { selectTome(tomes[0].id); navigateTo('chapter_select'); }}
-                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl golden-glow-hover"
+                className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 h-14 text-base bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg shadow-amber-200/50 rounded-xl golden-glow-hover animate-[pulse_3s_ease-in-out_infinite]"
               >
                 <Play className="w-5 h-5" />
                 Commencer l&apos;aventure
@@ -346,7 +346,7 @@ export function HomeScreen() {
                 variant="ghost"
                 size="sm"
                 onClick={() => resetProgress()}
-                className="mx-auto flex items-center gap-1 text-stone-400 hover:text-stone-600"
+                className="mx-auto flex items-center gap-1 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span className="text-xs">Recommencer</span>
@@ -363,7 +363,7 @@ export function HomeScreen() {
 
       {/* Quick access cards */}
       <div className="relative z-10 px-4 pb-4">
-        <div className="max-w-md mx-auto grid grid-cols-3 gap-3">
+        <div className="max-w-md mx-auto grid grid-cols-4 gap-3">
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -376,8 +376,8 @@ export function HomeScreen() {
             <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center group-hover:bg-amber-200 transition-colors">
               <BookOpen className="w-5 h-5 text-amber-600" />
             </div>
-            <span className="text-xs font-semibold text-stone-700">Tomes</span>
-            <span className="text-[10px] text-stone-400">{tomes.length} aventures</span>
+            <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">Tomes</span>
+            <span className="text-[10px] text-stone-400 dark:text-stone-500">{tomes.length} aventures</span>
           </motion.button>
 
           <motion.button
@@ -392,8 +392,8 @@ export function HomeScreen() {
             <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center group-hover:bg-teal-200 transition-colors">
               <Users className="w-5 h-5 text-teal-600" />
             </div>
-            <span className="text-xs font-semibold text-stone-700">Personnages</span>
-            <span className="text-[10px] text-stone-400">6 personnages</span>
+            <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">Personnages</span>
+            <span className="text-[10px] text-stone-400 dark:text-stone-500">6 personnages</span>
           </motion.button>
 
           <motion.button
@@ -408,8 +408,24 @@ export function HomeScreen() {
             <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
               <Award className="w-5 h-5 text-purple-600" />
             </div>
-            <span className="text-xs font-semibold text-stone-700">Badges</span>
-            <span className="text-[10px] text-stone-400">{earnedBadges.length}/8</span>
+            <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">Badges</span>
+            <span className="text-[10px] text-stone-400 dark:text-stone-500">{earnedBadges.length}/8</span>
+          </motion.button>
+
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.6 }}
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigateTo('map')}
+            className="flex flex-col items-center gap-2 p-4 parchment-card rounded-xl shadow-sm hover:shadow-md transition-all group"
+          >
+            <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/30 transition-colors">
+              <Map className="w-5 h-5 text-orange-600" />
+            </div>
+            <span className="text-xs font-semibold text-stone-700 dark:text-stone-200">Carte</span>
+            <span className="text-[10px] text-stone-400 dark:text-stone-500">Monde entier</span>
           </motion.button>
         </div>
       </div>
@@ -424,7 +440,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigateTo('stats')}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 parchment-card rounded-xl shadow-sm hover:shadow-md transition-all text-stone-600"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 parchment-card rounded-xl shadow-sm hover:shadow-md transition-all text-stone-600 dark:text-stone-300"
           >
             <BarChart3 className="w-4 h-4 text-amber-600" />
             <span className="text-xs font-medium">Statistiques</span>
@@ -437,7 +453,7 @@ export function HomeScreen() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigateTo('journal')}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 parchment-card rounded-xl shadow-sm hover:shadow-md transition-all text-stone-600"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 parchment-card rounded-xl shadow-sm hover:shadow-md transition-all text-stone-600 dark:text-stone-300"
           >
             <BookHeart className="w-4 h-4 text-rose-500" />
             <span className="text-xs font-medium">Journal Spirituel</span>

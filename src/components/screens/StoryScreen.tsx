@@ -26,16 +26,16 @@ export function StoryScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-50 to-amber-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 to-amber-50 dark:from-stone-900 dark:to-stone-950 flex flex-col">
       {/* Header */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-amber-200/30 shadow-sm"
+        className="sticky top-0 z-20 bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-amber-200/30 dark:border-stone-700/30 shadow-sm"
       >
         <div className="max-w-2xl mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">
-            <Button variant="ghost" size="sm" onClick={handleBack} className="shrink-0 hover:bg-amber-100/50">
+            <Button variant="ghost" size="sm" onClick={handleBack} className="shrink-0 hover:bg-amber-100/50 dark:hover:bg-stone-800/50">
               <ArrowLeft className="w-4 h-4 mr-1" />
               <span className="hidden sm:inline text-xs">Chapitres</span>
             </Button>
@@ -46,10 +46,10 @@ export function StoryScreen() {
                 transition={{ delay: 0.2 }}
                 className="min-w-0"
               >
-                <p className="text-xs font-medium text-stone-800 truncate">
+                <p className="text-xs font-medium text-stone-800 dark:text-stone-100 truncate">
                   Chapitre {chapter.number} — {chapter.title}
                 </p>
-                <p className="text-[10px] text-amber-600 truncate font-amiri" dir="rtl">{chapter.titleAr}</p>
+                <p className="text-[10px] text-amber-600 dark:text-amber-400 truncate font-amiri" dir="rtl">{chapter.titleAr}</p>
               </motion.div>
             )}
           </div>
@@ -58,12 +58,12 @@ export function StoryScreen() {
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="text-[10px] px-2.5 py-1 bg-green-100 text-green-700 rounded-full font-medium"
+                className="text-[10px] px-2.5 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full font-medium"
               >
                 ✓ Terminé
               </motion.span>
             )}
-            <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0 hover:bg-amber-100/50">
+            <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0 hover:bg-amber-100/50 dark:hover:bg-stone-800/50">
               <Home className="w-4 h-4" />
             </Button>
           </div>

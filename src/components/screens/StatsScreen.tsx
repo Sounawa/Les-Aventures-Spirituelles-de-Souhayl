@@ -35,9 +35,9 @@ function StatCard({
         <div style={{ color }}>{icon}</div>
       </div>
       <div className="min-w-0">
-        <p className="text-xs text-stone-400 font-medium">{label}</p>
-        <p className="text-xl font-bold text-stone-800 mt-0.5">{value}</p>
-        {sub && <p className="text-[10px] text-stone-400 mt-0.5">{sub}</p>}
+        <p className="text-xs text-stone-400 dark:text-stone-500 font-medium">{label}</p>
+        <p className="text-xl font-bold text-stone-800 dark:text-stone-100 mt-0.5">{value}</p>
+        {sub && <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5">{sub}</p>}
       </div>
     </motion.div>
   );
@@ -61,7 +61,7 @@ function ProgressRing({
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none" stroke="currentColor" strokeWidth={strokeWidth}
-          className="text-stone-100"
+          className="text-stone-100 dark:text-stone-700"
         />
         <motion.circle
           cx={size / 2} cy={size / 2} r={radius}
@@ -74,7 +74,7 @@ function ProgressRing({
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-lg font-bold text-stone-700">{Math.round(progress)}%</span>
+        <span className="text-lg font-bold text-stone-700 dark:text-stone-300">{Math.round(progress)}%</span>
       </div>
     </div>
   );
@@ -129,15 +129,15 @@ export function StatsScreen() {
   const hasNoProgress = completedChapters.length === 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-amber-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-10 bg-amber-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Retour
           </Button>
-          <h1 className="text-lg font-bold text-stone-800 flex items-center gap-2">
+          <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-amber-600" />
             Statistiques
           </h1>
@@ -151,11 +151,11 @@ export function StatsScreen() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
               <BookOpen className="w-10 h-10 text-amber-400" />
             </div>
-            <h2 className="text-lg font-bold text-stone-700 mb-2">Aucune progression</h2>
-            <p className="text-sm text-stone-500 mb-4">Commence ton aventure pour voir tes statistiques !</p>
+            <h2 className="text-lg font-bold text-stone-700 dark:text-stone-300 mb-2">Aucune progression</h2>
+            <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">Commence ton aventure pour voir tes statistiques !</p>
             <Button onClick={() => navigateTo('tome_select')} className="bg-amber-600 hover:bg-amber-700">
               Commencer
             </Button>
@@ -170,13 +170,13 @@ export function StatsScreen() {
             >
               <ProgressRing progress={stats.globalProgress} size={100} strokeWidth={8} />
               <div className="flex-1">
-                <h2 className="text-lg font-bold text-stone-800 mb-1">Progression globale</h2>
-                <p className="text-sm text-stone-500">
+                <h2 className="text-lg font-bold text-stone-800 dark:text-stone-100 mb-1">Progression globale</h2>
+                <p className="text-sm text-stone-500 dark:text-stone-400">
                   {completedChapters.length} chapitres terminés sur {stats.totalChapters}
                 </p>
                 <div className="flex items-center gap-1 mt-2">
                   <Flame className="w-4 h-4 text-orange-500" />
-                  <span className="text-xs font-medium text-orange-600">
+                  <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
                     {stats.completedTomes > 0 ? `${stats.completedTomes} tome${stats.completedTomes > 1 ? 's' : ''} complété${stats.completedTomes > 1 ? 's' : ''}` : 'Continue ton chemin !'}
                   </span>
                 </div>
@@ -228,10 +228,10 @@ export function StatsScreen() {
             >
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-teal-600" />
-                <h3 className="text-sm font-semibold text-stone-700">Scènes parcourues</h3>
-                <span className="ml-auto text-xs text-stone-400">{completedScenes.length}/{stats.totalScenes}</span>
+                <h3 className="text-sm font-semibold text-stone-700 dark:text-stone-300">Scènes parcourues</h3>
+                <span className="ml-auto text-xs text-stone-400 dark:text-stone-500">{completedScenes.length}/{stats.totalScenes}</span>
               </div>
-              <div className="w-full h-3 bg-stone-100 rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-stone-100 dark:bg-stone-700 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-teal-400 to-emerald-400 rounded-full"
                   initial={{ width: 0 }}
@@ -248,7 +248,7 @@ export function StatsScreen() {
               transition={{ delay: 0.35 }}
               className="space-y-3"
             >
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center gap-2">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-stone-400 dark:text-stone-500 flex items-center gap-2">
                 <BookOpen className="w-3 h-3" />
                 Progression par tome
               </h2>
@@ -269,8 +269,8 @@ export function StatsScreen() {
                       {ts.number}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-stone-700 truncate">{ts.title}</p>
-                      <div className="w-full h-1.5 bg-stone-100 rounded-full mt-1 overflow-hidden">
+                      <p className="text-xs font-medium text-stone-700 dark:text-stone-300 truncate">{ts.title}</p>
+                      <div className="w-full h-1.5 bg-stone-100 dark:bg-stone-700 rounded-full mt-1 overflow-hidden">
                         <motion.div
                           className="h-full rounded-full"
                           style={{ backgroundColor: colors[idx] }}
@@ -280,7 +280,7 @@ export function StatsScreen() {
                         />
                       </div>
                     </div>
-                    <span className="text-xs font-medium text-stone-500 shrink-0">
+                    <span className="text-xs font-medium text-stone-500 dark:text-stone-400 shrink-0">
                       {ts.completed}/{ts.total}
                     </span>
                   </motion.div>

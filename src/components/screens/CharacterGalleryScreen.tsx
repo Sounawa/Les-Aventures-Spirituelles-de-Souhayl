@@ -14,9 +14,9 @@ export function CharacterGalleryScreen() {
   const character = selectedCharacter ? characters.find(c => c.id === selectedCharacter) : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-50 via-amber-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 via-amber-50 to-orange-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-teal-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-20 bg-teal-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button
             variant="ghost"
@@ -27,11 +27,11 @@ export function CharacterGalleryScreen() {
             <ArrowLeft className="w-4 h-4 mr-1" />
             {selectedCharacter ? 'Retour' : 'Accueil'}
           </Button>
-          <h1 className="text-lg font-bold text-stone-800">
+          <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100">
             {selectedCharacter ? character?.name : 'Personnages'}
           </h1>
           {!selectedCharacter && (
-            <span className="ml-auto text-xs font-medium text-teal-700 bg-teal-100 px-2 py-1 rounded-full">
+            <span className="ml-auto text-xs font-medium text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900/30 px-2 py-1 rounded-full">
               {characters.length} personnages
             </span>
           )}
@@ -80,17 +80,17 @@ export function CharacterGalleryScreen() {
               {/* Details */}
               <div className="p-6 space-y-5">
                 <div>
-                  <h3 className="text-xs uppercase tracking-wider text-stone-400 mb-2 flex items-center gap-1">
+                  <h3 className="text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500 mb-2 flex items-center gap-1">
                     <Sparkles className="w-3 h-3" />
                     Description
                   </h3>
-                  <p className="text-sm text-stone-600 leading-relaxed">{character.description}</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">{character.description}</p>
                 </div>
-                <div className="border-t border-stone-100 pt-4">
-                  <h3 className="text-xs uppercase tracking-wider text-stone-400 mb-2 flex items-center gap-1">
+                <div className="border-t border-stone-100 dark:border-stone-700 pt-4">
+                  <h3 className="text-xs uppercase tracking-wider text-stone-400 dark:text-stone-500 mb-2 flex items-center gap-1">
                     🎨 Apparence manga
                   </h3>
-                  <p className="text-sm text-stone-600 leading-relaxed">{character.appearance}</p>
+                  <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">{character.appearance}</p>
                 </div>
 
                 {/* Character color accent */}
@@ -99,7 +99,7 @@ export function CharacterGalleryScreen() {
                     className="w-6 h-6 rounded-full shadow-sm"
                     style={{ backgroundColor: character.color }}
                   />
-                  <span className="text-xs text-stone-400">Couleur du personnage</span>
+                  <span className="text-xs text-stone-400 dark:text-stone-500">Couleur du personnage</span>
                 </div>
               </div>
             </motion.div>
@@ -136,11 +136,11 @@ export function CharacterGalleryScreen() {
                   >
                     {char.icon}
                   </div>
-                  <p className="font-bold text-stone-800 text-sm relative z-10">{char.name}</p>
+                  <p className="font-bold text-stone-800 dark:text-stone-100 text-sm relative z-10">{char.name}</p>
                   <p className="text-xs font-amiri relative z-10" style={{ color: char.color }} dir="rtl">{char.nameAr}</p>
-                  <p className="text-[10px] text-stone-400 mt-1 relative z-10">{char.role.split('—')[0].trim()}</p>
+                  <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-1 relative z-10">{char.role.split('—')[0].trim()}</p>
                   {char.age && (
-                    <p className="text-[10px] text-stone-400 mt-0.5 relative z-10">{char.age}</p>
+                    <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-0.5 relative z-10">{char.age}</p>
                   )}
                 </motion.button>
               ))}
@@ -156,7 +156,7 @@ export function CharacterGalleryScreen() {
             transition={{ delay: 0.3 }}
             className="mt-6 parchment-card rounded-xl p-4"
           >
-            <p className="text-xs text-stone-500 italic leading-relaxed text-center">
+            <p className="text-xs text-stone-500 dark:text-stone-400 italic leading-relaxed text-center">
               Chaque personnage incarne une qualité spirituelle. En découvrant leur histoire,
               tu apprendras à cultiver ces vertus dans ta propre vie.
             </p>

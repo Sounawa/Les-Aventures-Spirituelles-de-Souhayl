@@ -54,16 +54,16 @@ export function JournalScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-amber-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-amber-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-rose-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-10 bg-rose-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Retour
             </Button>
-            <h1 className="text-lg font-bold text-stone-800 flex items-center gap-2">
+            <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
               <BookHeart className="w-5 h-5 text-rose-500" />
               Journal Spirituel
             </h1>
@@ -93,16 +93,16 @@ export function JournalScreen() {
               <div className="parchment-card rounded-xl p-4 space-y-3 islamic-border">
                 <div className="flex items-center gap-2 mb-1">
                   <PenLine className="w-4 h-4 text-rose-500" />
-                  <h3 className="text-sm font-semibold text-stone-700">Nouvelle réflexion</h3>
+                  <h3 className="text-sm font-semibold text-stone-700 dark:text-stone-300">Nouvelle réflexion</h3>
                 </div>
 
                 {/* Chapter selector */}
                 <div>
-                  <label className="text-xs text-stone-400 mb-1 block">Chapitre</label>
+                  <label className="text-xs text-stone-400 dark:text-stone-500 mb-1 block">Chapitre</label>
                   <select
                     value={selectedChapter}
                     onChange={(e) => setSelectedChapter(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-stone-200 bg-white/70 text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-300"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-white/70 dark:bg-stone-800/70 text-sm text-stone-700 dark:text-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-300"
                   >
                     <option value="">Choisir un chapitre...</option>
                     {completedChaptersList.map((c) => (
@@ -113,14 +113,14 @@ export function JournalScreen() {
 
                 {/* Text area */}
                 <div>
-                  <label className="text-xs text-stone-400 mb-1 block">Ta réflexion</label>
+                  <label className="text-xs text-stone-400 dark:text-stone-500 mb-1 block">Ta réflexion</label>
                   <textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Qu'as-tu appris de ce chapitre ? Comment peux-tu appliquer cette leçon dans ta vie quotidienne ?"
-                    className="w-full px-3 py-3 rounded-lg border border-stone-200 bg-white/70 text-sm text-stone-700 resize-none focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-300 min-h-[120px] custom-scrollbar"
+                    className="w-full px-3 py-3 rounded-lg border border-stone-200 dark:border-stone-700 bg-white/70 dark:bg-stone-800/70 text-sm text-stone-700 dark:text-stone-300 resize-none focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-300 min-h-[120px] custom-scrollbar"
                   />
-                  <p className="text-[10px] text-stone-400 mt-1">{text.length} caractères</p>
+                  <p className="text-[10px] text-stone-400 dark:text-stone-500 mt-1">{text.length} caractères</p>
                 </div>
 
                 {/* Actions */}
@@ -155,18 +155,18 @@ export function JournalScreen() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-rose-100 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center">
               <BookHeart className="w-10 h-10 text-rose-300" />
             </div>
-            <h2 className="text-lg font-bold text-stone-700 mb-2">Ton journal est vide</h2>
-            <p className="text-sm text-stone-500 max-w-xs mx-auto mb-4">
+            <h2 className="text-lg font-bold text-stone-700 dark:text-stone-300 mb-2">Ton journal est vide</h2>
+            <p className="text-sm text-stone-500 dark:text-stone-400 max-w-xs mx-auto mb-4">
               Après avoir terminé un chapitre, écris tes réflexions spirituelles ici.
               C&apos;est ton espace personnel pour grandir.
             </p>
             <div className="parchment-card rounded-xl p-4 max-w-xs mx-auto text-left">
               <div className="flex items-start gap-2">
                 <Quote className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                <p className="text-xs text-stone-500 italic leading-relaxed">
+                <p className="text-xs text-stone-500 dark:text-stone-400 italic leading-relaxed">
                   « Le savoir sans l&apos;action est comme un arbre sans fruits. »
                 </p>
               </div>
@@ -174,7 +174,7 @@ export function JournalScreen() {
           </motion.div>
         ) : (
           <div className="space-y-3">
-            <p className="text-xs text-stone-400 font-medium">
+            <p className="text-xs text-stone-400 dark:text-stone-500 font-medium">
               {journalEntries.length} réflexion{journalEntries.length > 1 ? 's' : ''}
             </p>
             {journalEntries
@@ -194,8 +194,8 @@ export function JournalScreen() {
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs font-medium text-rose-600 mb-1">{entry.chapterTitle}</p>
-                        <p className="text-sm text-stone-700 line-clamp-2">
+                        <p className="text-xs font-medium text-rose-600 dark:text-rose-400 mb-1">{entry.chapterTitle}</p>
+                        <p className="text-sm text-stone-700 dark:text-stone-300 line-clamp-2">
                           {entry.text}
                         </p>
                       </div>
@@ -209,7 +209,7 @@ export function JournalScreen() {
                     </div>
                     <div className="flex items-center gap-1 mt-2">
                       <Calendar className="w-3 h-3 text-stone-400" />
-                      <span className="text-[10px] text-stone-400">{formatDate(entry.createdAt)}</span>
+                      <span className="text-[10px] text-stone-400 dark:text-stone-500">{formatDate(entry.createdAt)}</span>
                     </div>
                   </button>
 
@@ -221,14 +221,14 @@ export function JournalScreen() {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-4 pb-4 border-t border-amber-200/30 pt-3">
-                          <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap mb-3">
+                        <div className="px-4 pb-4 border-t border-amber-200/30 dark:border-stone-700/30 pt-3">
+                          <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed whitespace-pre-wrap mb-3">
                             {entry.text}
                           </p>
                           <div className="flex justify-end">
                             {showDeleteConfirm === entry.id ? (
                               <div className="flex items-center gap-2">
-                                <span className="text-xs text-stone-500">Supprimer ?</span>
+                                <span className="text-xs text-stone-500 dark:text-stone-400">Supprimer ?</span>
                                 <button
                                   onClick={() => { deleteJournalEntry(entry.id); setExpandedId(null); setShowDeleteConfirm(null); }}
                                   className="text-xs px-3 py-1 bg-red-500 text-white rounded-lg"
@@ -237,7 +237,7 @@ export function JournalScreen() {
                                 </button>
                                 <button
                                   onClick={() => setShowDeleteConfirm(null)}
-                                  className="text-xs px-3 py-1 bg-stone-100 text-stone-600 rounded-lg"
+                                  className="text-xs px-3 py-1 bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 rounded-lg"
                                 >
                                   Non
                                 </button>

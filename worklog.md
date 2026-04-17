@@ -1,4 +1,60 @@
 ---
+Task ID: 8 — Comprehensive Enhancement: Dark Mode, Sound, Map, Bookmarks
+Agent: Main Agent
+Task: Bug fixes, dark mode, sound effects, world map, scene bookmarking, styling
+
+Work Log:
+- Bug Fix 1a: Added `screenHistory: ScreenType[]` to AppState interface and defaultState in AppContext
+- Bug Fix 1b: Fixed quiz progress dots in QuizScreen — past questions now show `bg-stone-300 dark:bg-stone-500` (were incorrectly checking current answer for past questions)
+- Comprehensive Dark Mode: Added dark mode variants to ALL 13 screens + SceneRenderer + ChoiceButton
+  - Pattern: `dark:from-stone-900 dark:via-stone-900 dark:to-stone-950` for backgrounds
+  - `dark:bg-stone-900/80` for sticky headers with `dark:border-stone-700/30` borders
+  - `dark:text-stone-100` for headings, `dark:text-stone-300/400` for body text
+  - `dark:bg-stone-800/60` for cards, buttons, overlays
+  - Updated: HomeScreen, TomeSelectScreen, ChapterSelectScreen, QuizScreen, BadgeCollectionScreen, CharacterGalleryScreen, LessonScreen, JournalScreen, StatsScreen, SettingsScreen, AchievementsScreen, StoryScreen, SceneRenderer, ChoiceButton
+- Created `/src/hooks/useSoundEffects.ts` — Web Audio API synthesized sounds (no external files)
+  - playClick: short sine tone for button clicks
+  - playSuccess: ascending C-E-G triad for correct answers
+  - playBadge: ascending triangle wave arpeggio for badge earning
+  - playTransition: ascending sine sweep for scene navigation
+  - playComplete: ascending C-E-G-C tetrad for chapter completion
+- Integrated sound effects into SceneRenderer (transitions, badges, completion, choices)
+- Integrated sound effects into ChoiceButton (playClick on press)
+- Scene Bookmarking: Updated ChapterSelectScreen handleStartChapter to find first uncompleted scene instead of always starting from scene 0
+- New World Map Screen (`/src/components/screens/WorldMapScreen.tsx`):
+  - Vertical scrollable journey map with decorative path dots
+  - 5 tome regions with themed gradient headers and icons
+  - Chapter nodes showing name, completion status, scene progress bars
+  - Completed chapters glow green, locked chapters grayed out
+  - Legend showing progress colors
+  - Direct chapter navigation on click
+- Added 'map' to ScreenType union in types/story.ts
+- Wired WorldMapScreen into AppContent screenComponents map
+- HomeScreen enhancements:
+  - Added Map button to quick access grid (changed from 3-col to 4-col grid)
+  - Pulse animation on main CTA button (animate-[pulse_3s_ease-in-out_infinite])
+  - Map icon imported from lucide-react
+- Loading screen enhancement in page.tsx:
+  - Elaborate CSS spinner with nested circles and spinning border
+  - Moon emoji with pulse animation
+  - Dark mode support for loading state
+  - Arabic subtitle "مغامرات نوفل الروحية"
+- SceneRenderer: Added fade-in slide-up animation for narration box (key-based motion.div)
+- TypeScript: Verified 0 errors in src/ directory
+- ESLint: Verified 0 errors in src/ directory (only pre-existing mini-services errors)
+
+Stage Summary:
+- 2 bug fixes: screenHistory default, quiz progress dots
+- 1 new hook: useSoundEffects (5 synthesized sounds via Web Audio API)
+- 1 new screen: WorldMapScreen with visual journey map
+- Dark mode: comprehensive dark variants across ALL screens and components
+- Sound effects: integrated into SceneRenderer, ChoiceButton (settings.soundEnabled toggle)
+- Scene bookmarking: chapters resume from first uncompleted scene
+- UI polish: pulse CTA animation, enhanced loading screen, fade-in narration
+- 0 lint errors, 0 TypeScript errors in app code
+- Version bumped to 3.1 in SettingsScreen
+
+---
 Task ID: 7 — Cron Review Round 2 (Major Enhancement)
 Agent: Main Agent
 Task: Styling improvements, new features, QA testing

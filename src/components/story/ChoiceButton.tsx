@@ -10,11 +10,20 @@ interface ChoiceButtonProps {
   index: number;
   onClick: () => void;
   disabled?: boolean;
+  soundEnabled?: boolean;
+  onPlayClick?: () => void;
 }
 
-export function ChoiceButton({ choice, index, onClick, disabled }: ChoiceButtonProps) {
+export function ChoiceButton({ choice, index, onClick, disabled, soundEnabled, onPlayClick }: ChoiceButtonProps) {
   const badge = choice.badgeId ? badges.find(b => b.id === choice.badgeId) : null;
   const letterColors = ['#D97706', '#059669', '#7C3AED', '#E11D48'];
+
+  const handleClick = () => {
+    if (soundEnabled && onPlayClick) {
+      onPlayClick();
+    }
+    onClick();
+  };
 
   return (
     <motion.button
@@ -23,9 +32,9 @@ export function ChoiceButton({ choice, index, onClick, disabled }: ChoiceButtonP
       transition={{ duration: 0.4, delay: index * 0.15 }}
       whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
-      className="w-full text-left px-5 py-4 rounded-xl border-2 border-amber-300/50 parchment-card shadow-md hover:shadow-lg hover:border-amber-400 hover:bg-amber-50/50 transition-all duration-300 group relative overflow-hidden min-h-[56px] disabled:opacity-50 disabled:cursor-not-allowed"
+      className="w-full text-left px-5 py-4 rounded-xl border-2 border-amber-300/50 dark:border-amber-500/30 parchment-card shadow-md hover:shadow-lg hover:border-amber-400 dark:hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-amber-900/10 transition-all duration-300 group relative overflow-hidden min-h-[56px] disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {/* Geometric pattern overlay */}
       <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -34,7 +43,7 @@ export function ChoiceButton({ choice, index, onClick, disabled }: ChoiceButtonP
       </div>
 
       {/* Shimmer on hover */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-transparent via-amber-100/20 to-transparent" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-transparent via-amber-100/20 dark:via-amber-500/10 to-transparent" />
 
       <div className="relative flex items-center gap-3">
         <div
@@ -46,7 +55,7 @@ export function ChoiceButton({ choice, index, onClick, disabled }: ChoiceButtonP
         >
           {String.fromCharCode(65 + index)}
         </div>
-        <p className="flex-1 text-sm md:text-base text-stone-700 font-medium leading-relaxed">
+        <p className="flex-1 text-sm md:text-base text-stone-700 dark:text-stone-300 font-medium leading-relaxed">
           {choice.text}
         </p>
         {badge && (

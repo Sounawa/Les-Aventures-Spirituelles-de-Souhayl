@@ -23,18 +23,18 @@ export function TomeSelectScreen() {
   const { navigateTo, selectTome, completedChapters } = useApp();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-teal-50 dark:from-stone-900 dark:via-stone-900 dark:to-stone-950">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-amber-50/80 backdrop-blur-sm border-b border-amber-200/30">
+      <div className="sticky top-0 z-10 bg-amber-50/80 dark:bg-stone-900/80 backdrop-blur-sm border-b border-amber-200/30 dark:border-stone-700/30">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigateTo('home')} className="shrink-0">
             <ArrowLeft className="w-4 h-4 mr-1" />
             Retour
           </Button>
-          <h1 className="text-lg font-bold text-stone-800">Les Tomes</h1>
+          <h1 className="text-lg font-bold text-stone-800 dark:text-stone-100">Les Tomes</h1>
           <div className="ml-auto flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-amber-600" />
-            <span className="text-xs font-medium text-amber-700 bg-amber-100 px-2 py-1 rounded-full">
+            <span className="text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 px-2 py-1 rounded-full">
               {tomes.length} tomes
             </span>
           </div>
@@ -48,12 +48,12 @@ export function TomeSelectScreen() {
           animate={{ opacity: 1 }}
           className="parchment-card rounded-xl p-4 flex items-center gap-3"
         >
-          <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
             <span className="text-xl">📖</span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-stone-700">Progression globale</p>
-            <div className="w-full h-2 bg-stone-100 rounded-full mt-1 overflow-hidden">
+            <p className="text-sm font-medium text-stone-700 dark:text-stone-300">Progression globale</p>
+            <div className="w-full h-2 bg-stone-100 dark:bg-stone-700 rounded-full mt-1 overflow-hidden">
               {(() => {
                 const total = tomes.reduce((s, t) => s + t.chapters.length, 0);
                 const done = completedChapters.length;
@@ -69,7 +69,7 @@ export function TomeSelectScreen() {
               })()}
             </div>
           </div>
-          <span className="text-sm font-bold text-amber-700">
+          <span className="text-sm font-bold text-amber-700 dark:text-amber-400">
             {completedChapters.length}/{tomes.reduce((s, t) => s + t.chapters.length, 0)}
           </span>
         </motion.div>
@@ -102,7 +102,7 @@ export function TomeSelectScreen() {
               className={`w-full text-left rounded-xl border overflow-hidden transition-all group relative ${
                 isUnlocked
                   ? 'parchment-card shadow-sm hover:shadow-lg golden-glow-hover cursor-pointer'
-                  : 'bg-white/30 border-stone-200/40 opacity-60 cursor-not-allowed'
+                  : 'bg-white/30 dark:bg-stone-800/30 border-stone-200/40 dark:border-stone-700/40 opacity-60 cursor-not-allowed'
               }`}
             >
               <div className="flex">
@@ -141,14 +141,14 @@ export function TomeSelectScreen() {
                 <div className="flex-1 p-4">
                   <div className="flex items-start justify-between">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-stone-800 text-base">{tome.title}</h3>
-                      <p className="text-sm text-amber-600 font-amiri" dir="rtl">{tome.titleAr}</p>
+                      <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base">{tome.title}</h3>
+                      <p className="text-sm text-amber-600 dark:text-amber-400 font-amiri" dir="rtl">{tome.titleAr}</p>
                     </div>
                     {isUnlocked && (
-                      <ChevronRight className="w-4 h-4 text-stone-400 group-hover:text-amber-600 transition-colors mt-1 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-stone-400 dark:text-stone-500 group-hover:text-amber-600 transition-colors mt-1 shrink-0" />
                     )}
                   </div>
-                  <p className="text-xs text-stone-500 mt-1 italic">{tome.subtitle}</p>
+                  <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 italic">{tome.subtitle}</p>
 
                   {/* Monsters */}
                   <div className="mt-2 flex flex-wrap gap-1">
@@ -169,7 +169,7 @@ export function TomeSelectScreen() {
 
                   {/* Progress bar */}
                   <div className="mt-3 flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-stone-100 dark:bg-stone-700 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full rounded-full"
                         style={{ backgroundColor: colors.from }}
@@ -180,7 +180,7 @@ export function TomeSelectScreen() {
                         transition={{ duration: 0.8, delay: idx * 0.1 }}
                       />
                     </div>
-                    <span className="text-[10px] text-stone-400 font-medium">
+                    <span className="text-[10px] text-stone-400 dark:text-stone-500 font-medium">
                       {completedInTome}/{tome.chapters.length}
                     </span>
                     {isTomeComplete && (
@@ -200,10 +200,10 @@ export function TomeSelectScreen() {
           transition={{ delay: 0.6 }}
           className="parchment-card rounded-xl p-5 text-center islamic-border"
         >
-          <p className="text-sm text-stone-600 italic leading-relaxed">
+          <p className="text-sm text-stone-600 dark:text-stone-400 italic leading-relaxed">
             « Le plus grand jihad est le jihad contre soi-même. »
           </p>
-          <p className="text-xs text-stone-400 mt-2">— Rapporté par Ahmad et Bayhaqi</p>
+          <p className="text-xs text-stone-400 dark:text-stone-500 mt-2">— Rapporté par Ahmad et Bayhaqi</p>
         </motion.div>
       </div>
     </div>
