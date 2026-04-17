@@ -205,7 +205,7 @@ export function ProfileScreen() {
                           ? 'ring-3 ring-offset-2 ring-offset-white dark:ring-offset-stone-900 shadow-lg scale-110'
                           : 'opacity-60 group-hover:opacity-100 group-hover:scale-105'
                       }`}
-                      style={{ ringColor: undefined }}
+                      
                     />
                     <span className={`text-[10px] font-medium transition-colors ${
                       isSelected

@@ -18,7 +18,6 @@ export const verseThemeConfig: Record<QuranVerse['theme'], {
   darkBgColor: string;
   leftBorder: string;
   badgeBg: string;
-  darkBadgeBg: string;
 }> = {
   courage: {
     icon: '🦁',

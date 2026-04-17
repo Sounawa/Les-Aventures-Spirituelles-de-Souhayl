@@ -484,7 +484,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       currentSceneId: state.currentSceneId, setCurrentScene,
       earnedBadges: state.earnedBadges, earnBadge,
       completedScenes: state.completedScenes, completeScene,
-      completedChapters: state.completedChapters, completeChapter,
+      completedChapters: state.completedChapters,
       quizScores: state.quizScores, setQuizScore,
       resetProgress, hydrate,
       settings: state.settings, updateSettings,
