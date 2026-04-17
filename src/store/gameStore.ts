@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { ScreenType, GameState } from '@/types/story';
 
 interface GameStore extends GameState {
@@ -24,6 +24,9 @@ interface GameStore extends GameState {
 
   // Reset
   resetProgress: () => void;
+  // Hydration
+  _hasHydrated: boolean;
+  _setHasHydrated: (state: boolean) => void;
 }
 
 const initialState: GameState = {
@@ -46,8 +49,10 @@ const initialState: GameState = {
 
 export const useGameStore = create<GameStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
+      _hasHydrated: false,
+      _setHasHydrated: (state) => set({ _hasHydrated: state }),
 
       setScreen: (screen) =>
         set((state) => ({
@@ -121,6 +126,30 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'nawfel-adventures-storage',
+      storage: createJSONStorage(() => {
+        if (typeof window !== 'undefined') return localStorage;
+        return {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        };
+      }),
+      partialize: (state) => ({
+        currentScreen: state.currentScreen,
+        selectedTomeId: state.selectedTomeId,
+        selectedChapterId: state.selectedChapterId,
+        currentSceneId: state.currentSceneId,
+        earnedBadges: state.earnedBadges,
+        completedScenes: state.completedScenes,
+        completedChapters: state.completedChapters,
+        completedTomes: state.completedTomes,
+        choicesMade: state.choicesMade,
+        settings: state.settings,
+        screenHistory: state.screenHistory,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?._setHasHydrated(true);
+      },
     }
   )
 );
