@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(isStaticExport
+    ? {
+        output: "export" as const,
+        basePath: "/Les-Aventures-Spirituelles-de-Nawfel",
+      }
+    : {}),
+  images: {
+    unoptimized: true,
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
